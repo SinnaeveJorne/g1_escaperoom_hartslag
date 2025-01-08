@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar Heart Rate Monitor</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        #user-updates {
+            color: #666;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        .other-users-heartrates {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .user-heartrate {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <p id="connection-status">Connecting to server...</p>
+    <p id="user-updates"></p>
+    <p>
+        <button id="connectButton">Connect Heart Rate Monitor</button>
+    </p>
+    <p id="connect"></p>
+    <p id="message"></p>
+    <p id="blood pressure"></p>
+
+    <p class="logged__heartrates"></p>
+    
+    <!-- New section for other users' heart rates -->
+    <div class="other-users-heartrates">
+        <h3>Other Users' Heart Rates:</h3>
+        <div id="other-users"></div>
+    </div>
+
+    <script>
+        // Socket.IO connection setup with error handling
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const serverUrl = isLocalhost ? 'http://localhost:3000' : 'https://alexanderperneel.be:3000';
+        
+        const socket = io(serverUrl, {
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            timeout: 20000,
+            transports: ['websocket', 'polling']
+        });
+
+        // Add connection error handling with more detailed messages
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+            document.getElementById('connection-status').textContent = 
+                `Connection error: ${error.message}. Server URL: ${serverUrl}`;
+        });
+
+        // Keep track of other users' heart rates
+        const otherUsers = new Map();
+
+        // Check if Web Bluetooth API is available
+        if (!navigator.bluetooth) {
+            document.getElementById('message').textContent = 'Web Bluetooth API is not available. Make sure you are using a supported browser and running from localhost or HTTPS.';
+            document.getElementById('connectButton').disabled = true;
+        }
+       
+        // Handle connection events
+        socket.on('connect', () => {
+            document.getElementById('connection-status').textContent = 'Connected to server';
+        });
+
+        socket.on('disconnect', () => {
+            document.getElementById('connection-status').textContent = 'Disconnected from server';
+            // Clear other users when disconnected
+            otherUsers.clear();
+            updateOtherUsersDisplay();
+        });
+
+        // Listen for other users' heart rates
+        socket.on('otherUserHeartRate', (data) => {
+            console.log('Received heart rate from other user:', data);
+            otherUsers.set(data.userId, data);
+            updateOtherUsersDisplay();
+        });
+
+        // Listen for user disconnection
+        socket.on('userDisconnected', (data) => {
+            console.log('User disconnected:', data.userId);
+            otherUsers.delete(data.userId);
+            updateOtherUsersDisplay();
+        });
+
+        // Function to update the display of other users' heart rates
+        function updateOtherUsersDisplay() {
+            const container = document.getElementById('other-users');
+            container.innerHTML = '';
+            
+            otherUsers.forEach((data, userId) => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'user-heartrate';
+                userDiv.innerHTML = `
+                    Device: ${data.deviceName}<br>
+                    Heart Rate: ${data.heartRate} bpm<br>
+                    Time: ${new Date(data.timestamp).toLocaleTimeString()}
+                `;
+                container.appendChild(userDiv);
+            });
+
+            if (otherUsers.size === 0) {
+                container.innerHTML = '<p>No other users connected with heart rate monitors.</p>';
+            }
+        }
+
+        // Listen for user count updates
+        socket.on('userCount', (data) => {
+            console.log('User count update:', data);
+            document.getElementById('user-updates').textContent = data.message;
+        });
+
+        // Listen for welcome message
+        socket.on('welcome', (message) => {
+            console.log('Welcome message:', message);
+            document.getElementById('message').textContent = message;
+        });
+
+        // Listen for other messages from the server
+        socket.on('message', (data) => {
+            console.log(data);
+            document.getElementById('message').textContent = data;
+        });
+
+        let heartRateCharacteristic;
+        let currentDeviceName;
+
+        // Function to request a Polar Heart Rate Monitor
+        async function connectPolarHeartRateMonitor() {
+            try {
+                console.log("Requesting Bluetooth Device...");
+
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: ['heart_rate'] }]
+                });
+
+                console.log("Found device:", device.name);
+                currentDeviceName = device.name; // Store the device name
+                document.getElementById('connect').textContent = `Connecting to ${device.name}...`;
+
+                // Connect to the device's GATT server
+                const server = await device.gatt.connect();
+                console.log("Connected to GATT server");
+
+                // Get the Heart Rate Service
+                const service = await server.getPrimaryService('heart_rate');
+                console.log("Heart Rate Service:", service);
+                console.log("Hierbij mijn naam", device.name);
+
+                // Get the Heart Rate Measurement Characteristic
+                heartRateCharacteristic = await service.getCharacteristic('heart_rate_measurement');
+                console.log("Heart Rate Measurement Characteristic:", heartRateCharacteristic);
+
+                // Set up notifications to receive heart rate data
+                await heartRateCharacteristic.startNotifications();
+                heartRateCharacteristic.addEventListener('characteristicvaluechanged', handleHeartRateNotification);
+                console.log("Notifications started. Listening for heart rate data...");
+
+                // Handle disconnection event
+                device.addEventListener('gattserverdisconnected', onDisconnected);
+
+            } catch (error) {
+                console.error("Error connecting to Polar Heart Rate Monitor:", error);
+                document.getElementById('connect').textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Function to handle heart rate notifications
+        function handleHeartRateNotification(event) {
+            const value = event.target.value;
+            const heartRate = parseHeartRate(value);
+            
+            // Check if the heart rate is within a valid range (e.g., 30 to 180 BPM)
+            if (heartRate < 30 || heartRate > 180) {
+                console.log("Invalid heart rate data:", heartRate);
+                document.getElementById('connect').textContent = `Invalid heart rate data. Try repositioning the sensor.`;
+                return; // Exit if the heart rate is invalid
+            }
+
+            console.log("Heart Rate:", heartRate);
+            document.getElementById('connect').textContent = `Heart Rate: ${heartRate} bpm`;
+
+            // Get the time and log it
+            const time = new Date();
+            console.log(time);
+            document.querySelector(".logged__heartrates").innerHTML += `<p>Heart Rate: ${heartRate} bpm at ${time}</p>`;
+
+            // Broadcast heart rate to other users
+            socket.emit('heartRateUpdate', {
+                heartRate: heartRate,
+                deviceName: currentDeviceName || 'Unknown Device',
+                timestamp: time.getTime()
+            });
+        }
+
+        // Helper function to parse heart rate value
+        function parseHeartRate(value) {
+            const data = new DataView(value.buffer);
+            const flags = data.getUint8(0);
+            let heartRate;
+            if (flags & 0x01) {
+                heartRate = data.getUint16(1, true); // 16-bit
+            } else {
+                heartRate = data.getUint8(1); // 8-bit
+            }
+            return heartRate;
+        }
+
+        // Handle device disconnection
+        function onDisconnected() {
+            console.log("Device disconnected");
+            // Stop notifications if device is disconnected
+            if (heartRateCharacteristic) {
+                heartRateCharacteristic.stopNotifications();
+            }
+            // Reset UI or handle disconnect scenario
+            document.getElementById('connect').textContent = 'Device disconnected. Please reconnect.';
+            document.querySelector(".logged__heartrates").innerHTML = ''; // Optional: Clear logged heart rates
+        }
+
+        // Attach event listener to the button
+        document.querySelector("#connectButton").addEventListener("click", connectPolarHeartRateMonitor);
+    </script>
+</body>
+</html> 
