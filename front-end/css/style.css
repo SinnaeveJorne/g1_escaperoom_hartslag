@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+
+:root {
+    /* colors */
+    --bronze: #c49c48;
+    --zilver: #d0d2d1;
+    --blauw-blauw-accent-100: #006fb7;
+    --blauw-blauw-accent-20: #e3eff7;
+    --blauw-blauw-accent-30: #c6dfef;
+    --blauw-blauw-accent-40: #aacfe7;
+    --blauw-blauw-accent-50: #8ebfdf;
+    --blauw-blauw-accent-60: #71afd7;
+    --blauw-blauw-accent-70: #559fcf;
+    --blauw-blauw-accent-80: #398fc7;
+    --blauw-blauw-accent-90: #1c7fbf;
+    --geel-geel-accent-100: #d6a500;
+    --geel-geel-accent-20: #faf5e3;
+    --geel-geel-accent-30: #f6ebc6;
+    --geel-geel-accent-40: #f1e1aa;
+    --geel-geel-accent-50: #edd78e;
+    --geel-geel-accent-60: #e8cd71;
+    --geel-geel-accent-70: #e4c355;
+    --geel-geel-accent-80: #dfb939;
+    --geel-geel-accent-90: #dbaf1c;
+    --neutral-100: #f5f5f5;
+    --neutral-200: #e5e5e5;
+    --neutral-300: #d4d4d4;
+    --neutral-400: #a3a3a3;
+    --neutral-50: #fafafa;
+    --neutral-500: #737373;
+    --neutral-600: #525252;
+    --neutral-700: #404040;
+    --neutral-800: #262626;
+    --neutral-900: #171717;
+    --neutral-950: #0a0a0a;
+    --rood-rood-accent-100: #e63946;
+    --rood-rood-accent-20: #fce9ea;
+    --rood-rood-accent-30: #f9d3d6;
+    --rood-rood-accent-40: #f7bdc1;
+    --rood-rood-accent-50: #f4a7ad;
+    --rood-rood-accent-60: #f19198;
+    --rood-rood-accent-70: #ee7b84;
+    --rood-rood-accent-80: #ec656f;
+    --rood-rood-accent-90: #e94f5b;
+    --background-background-color: #ffffff;
+    --text-color: #000000;
+    --text-white: #ffffff;
+
+    /* font-sizes */
+    --font-size-xs: 0.75rem;
+    --font-size-s: 1rem;
+    --font-size-m: 1.5rem;
+    --font-size-l: 1.75rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 3rem;
+
+    /* radius */
+    --radius-s: 0.25rem;
+    --radius-m: 0.5rem;
+    --radius-l: 1rem;
+
+  /* spacings */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-5: 1.5rem;
+    --spacing-6: 2rem;
+  
+
+  /* line-heights */
+    --line-height-xs: 1rem;
+    --line-height-s: 1.25rem;
+    --line-height-m: 2rem;
+    --line-height-l: 2.25rem;
+    --line-height-xl: 2.625rem;
+    --line-height-xxl: 3.875rem;
+  }
+
+  h1, h2, h3, h4, h5, h6{
+    color: var(--text-color);
+    font-family: 'Fredoka';
+    font-weight: 500;
+  }
+
+h1{
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+}
+
+h2{
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
+}
+
+h3{
+    font-size: var(--font-size-l);
+    line-height: var(--line-height-l);
+}
+
+h4{
+    font-size: var(--font-size-m);
+    line-height: var(--line-height-m);
+}
+
+h5{
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-s);
+}
+
+h6{
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-xs);
+}
+
+body{
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-s);
+    background-color: var(--background-background-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    justify-content: center;
+    font-family: inter, sans-serif;
+}
+
+.c-loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 70dvh;
+    gap: 3.75rem;
+}
+
+
+
+.c-loginForm__title{
+   text-align: center;
+}
+
+.c-loginForm__inputdiv{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.c-input{
+    width: 100%;
+    padding: var(--spacing-3) calc(var(--spacing-3) + var(--spacing-5)) var(--spacing-3) var(--spacing-3) ;
+    border-radius: var(--radius-s);
+    border: 2px solid var(--neutral-400);
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-s);
+    transition: border-color 0.3s;
+}
+
+.c-input:focus{
+    border-color: var(--blauw-blauw-accent-70);
+    box-shadow: 0 0 5px 0 var(--blauw-blauw-accent-70);
+    outline: none;
+    
+}
+.c-label{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.c-input__errorSpan{
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-xs);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    color: var(--rood-rood-accent-100);
+    transition: all 0.3s;
+    height: 1rem;
+
+}
+
+.c-input__span{
+    display: relative;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.c-input__errorIcon{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: var(--spacing-5);
+    animation: fadein 0.3s forwards;
+}
+
+.c-input--error{
+    border-color: var(--rood-rood-accent-100);
+}
+
+
+.c-button{
+    padding: var(--spacing-3);
+    border-radius: var(--radius-m);
+    background-color: var(--blauw-blauw-accent-80);
+    color: var(--neutral-100);
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-s);
+    width: 100%;
+    text-align: center;
+}
+
+.c-loginForm__buttondiv
+{   
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    align-items: center;
+}
+
+.c-loginForm__link{
+    color: var(--blauw-blauw-accent-50);
+    text-underline-offset: var(--spacing-1);
+}
+
+@media (max-width: 768px){
+    
+    body{
+        padding: 0 var(--spacing-4);
+    }
+    
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
