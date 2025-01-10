@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<nav class="c-nav">
+    <a>
+        <h2>Home</h2>
+    </a>
+
+    <a>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.552 14.8461C7.552 15.4921 7.80855 16.1117 8.26522 16.5685C8.72188 17.0253 9.34125 17.282 9.98706 17.282C10.6329 17.282 11.2523 17.0253 11.7089 16.5685C12.1656 16.1117 12.4221 15.4921 12.4221 14.8461" fill="#171717"/>
+            <path d="M4.5083 8.1474C4.5083 6.6938 5.08554 5.29975 6.11303 4.27191C7.14052 3.24406 8.5341 2.66663 9.98719 2.66663C11.4403 2.66663 12.8339 3.24406 13.8614 4.27191C14.8888 5.29975 15.4661 6.6938 15.4661 8.1474C15.4661 10.8741 16.0977 13.0649 16.5999 13.9327C16.6532 14.0251 16.6814 14.1299 16.6815 14.2366C16.6816 14.3433 16.6536 14.4482 16.6004 14.5407C16.5473 14.6332 16.4707 14.7101 16.3785 14.7637C16.2862 14.8173 16.1815 14.8457 16.0748 14.8461H3.89954C3.79299 14.8455 3.68847 14.8169 3.59644 14.7632C3.5044 14.7094 3.42807 14.6325 3.37508 14.54C3.32208 14.4476 3.29427 14.3428 3.29443 14.2362C3.2946 14.1296 3.32272 14.025 3.376 13.9327C3.87747 13.0649 4.5083 10.8733 4.5083 8.1474Z" fill="#171717"/>
+            </svg>            
+    </a>
+</nav>
+
+
+<h3>Uw dagelijkse oefeningen van deze maand</h3>
+<div id="donut-chart" class="js-donutchart c-donutchart" style="width: 100%; height: 300px; margin: 0 auto;"></div>
+
+
+<div id="bar-chart" class="js-barchart c-barchart" style="width: 100%; height: 300px; margin: 0 auto;"></div>
+
+ 
+  
+
+<footer class="c-footer">
+    <ul class="c-footer__list">         
+        <li class="c-footer__listitem">
+            <a href="home.html" class="c-footer__listlink" data-link="home"> 
+            <span class="c-footer__listiconspan">
+            <svg class="c-footer__listicon" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.91675 20.7501V14.7501H14.4167V20.7501H20.4167V11.7501C20.4168 11.6516 20.3975 11.554 20.3599 11.463C20.3222 11.3719 20.267 11.2892 20.1974 11.2195L12.6974 3.71948C12.6277 3.64974 12.545 3.59443 12.454 3.55668C12.3629 3.51894 12.2653 3.49951 12.1667 3.49951C12.0682 3.49951 11.9706 3.51894 11.8795 3.55668C11.7885 3.59443 11.7058 3.64974 11.6361 3.71948L4.13612 11.2195C4.0665 11.2892 4.01129 11.3719 3.97365 11.463C3.936 11.554 3.91667 11.6516 3.91675 11.7501V20.7501H9.91675Z" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+            Home
+        </a>
+    </li>
+
+    <li class="c-footer__listitem">
+        <a href="stats.html" class="c-footer__listlink c-footer__listlink--active" data-link="stats"> 
+        <span class="c-footer__listiconspan">
+            <svg  class="c-footer__listicon c-footer__listicon--statestiek " width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.5 20H3.5V5" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21.5 9.5L15.5 14.75L9.5 10.25L3.5 15.5" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> 
+    </span>
+        Statestieken
+    </a>
+</li>
+
+<li class="c-footer__listitem">
+    <a href="profile.html" class="c-footer__listlink" data-link="profile"> 
+    <span class="c-footer__listiconspan">
+        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.8335 15.5C16.1472 15.5 18.8335 12.8137 18.8335 9.5C18.8335 6.18629 16.1472 3.5 12.8335 3.5C9.51979 3.5 6.8335 6.18629 6.8335 9.5C6.8335 12.8137 9.51979 15.5 12.8335 15.5Z" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3.8335 20.75C5.64943 17.6122 8.94756 15.5 12.8335 15.5C16.7194 15.5 20.0176 17.6122 21.8335 20.75" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>  
+</span>
+    Profiel
+</a>
+</li>
+</ul>
+</footer>
+</body>
+
+
+</html>
