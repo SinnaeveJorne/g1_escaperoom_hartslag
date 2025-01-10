@@ -26,6 +26,170 @@ function init() {
             });
         });
     }
+
+    if(document.querySelector('.js-donutchart')){
+    var donutChart = echarts.init(document.getElementById('donut-chart'));
+    var option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      series: [
+        {
+          name: 'Oefeningen',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          label: { show: false },
+          data: [
+            { value: 12, name: 'Red', itemStyle: { color: '#F26B6C' } },
+            { value: 8, name: 'Blue', itemStyle: { color: '#4E91F1' } },
+            { value: 3, name: 'Yellow', itemStyle: { color: '#F7CE66' } }
+          ]
+        }
+      ],
+      graphic: {
+        elements: [
+          {
+            type: 'group',
+            left: 'center',
+            top: 'center',
+            children: [
+              {
+                type: 'text',
+                style: {
+                  text: '23\nTotaal',
+                  textAlign: 'center',
+                  font: '500 16px Fredoka, sans-serif',
+                  fill: 'var(--text-color)'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+  
+    donutChart.setOption(option);
+    }
+
+    if(document.querySelector('.js-barchart')) {
+    var barChart = echarts.init(document.getElementById('bar-chart'));
+  
+    var option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' }
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '10%',
+        top: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        axisLine: { lineStyle: { color: '#888' } },
+        axisTick: { show: false },
+        axisLabel: { color: '#555', fontSize: 12 }
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: {
+          lineStyle: {
+            type: 'dotted',
+            color: '#CCC'
+          }
+        },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#555', fontSize: 12 }
+      },
+      series: [
+        {
+          name: 'Min Heart Rate',
+          type: 'bar',
+          stack: 'heartRate',  // Stacked bars
+          data: [50, 40, 30, 60, 70, 80, 90],
+          barWidth: '20%',  // Bar width
+          itemStyle: {
+            color: '#4E91F1',
+          }
+        },
+        {
+          name: 'Max Heart Rate',
+          type: 'bar',
+          stack: 'heartRate',  // Stacked bars
+          data: [150, 140, 130, 160, 170, 180, 190],
+          barWidth: '20%',  // Bar width
+          itemStyle: {
+            color: '#F26B6C',
+            borderRadius: [8, 8, 0, 0]  // Rounded top corners
+          }
+        }
+      ]
+    };
+  
+    // Set the chart option
+    barChart.setOption(option);
+  
+    // Resize the chart when the window is resized
+    window.addEventListener('resize', function () {
+      barChart.resize();
+    });
+
+    window.addEventListener('resize', function () {
+        donutChart.resize();
+      });
+}
+
+const startGameButton = document.querySelector(".js-startgame");
+
+    if (startGameButton) {
+        startGameButton.addEventListener("click", () => {
+            // Create the popup container
+            const popupContainer = document.createElement("div");
+            popupContainer.className = "c-popup__container";
+
+            // Create the popup
+            const popup = document.createElement("div");
+            popup.className = "c-popup";
+
+            // Add content to the popup
+            const popupText = document.createElement("p");
+            popupText.textContent = "Wil je dit spel alleen spelen of met vrienden";
+
+            const popuptitle = document.createElement("h5");
+            popuptitle.textContent = "Voor dat je het spel start";
+
+            const yesButton = document.createElement("button");
+            yesButton.className = "c-popup__button c-popup__button--yes";
+            yesButton.textContent = "Yes";
+
+            const noButton = document.createElement("button");
+            noButton.className = "c-popup__button c-popup__button--no";
+            noButton.textContent = "No";
+
+            // Append elements
+            popup.appendChild(popuptitle);
+            popup.appendChild(popupText);
+            popup.appendChild(yesButton);
+            popup.appendChild(noButton);
+            popupContainer.appendChild(popup);
+            document.body.appendChild(popupContainer);
+
+            // Handle button clicks
+            yesButton.addEventListener("click", () => {
+                window.location.href = "index.html";
+            });
+
+            noButton.addEventListener("click", () => {
+                window.location.href = "multi.html";
+            });
+        });
+    }
+
     }
 
 
@@ -52,6 +216,40 @@ function init() {
             }
         }
 
+        if(document.querySelector('.js-repeatpassword'))
+        {
+            if(e.target.type === 'password') {
+                //check if password is at least 8 characters long has a number and a capital letter
+                const re = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+                if(!re.test(e.target.value)) {
+                    e.target.classList.add('c-input--error');
+                    showerror(error,'Dit wachtwoord is niet veilig');
+                    summonicon(inputspan,error)
+                    return;
+                }
+                else
+                {
+                    const passwordFields = document.querySelectorAll('input[type="password"]');
+                     let allFilled = true;
+                        passwordFields.forEach(field => {
+                            if (!field.value.trim()) {
+                                allFilled = false;
+                            }
+                        });
+
+                        if(allFilled) {
+                            if(passwordFields[0].value !== passwordFields[1].value) {
+                                document.querySelector('.js-repeatpassword').classList.add('c-input--error');
+                                showerror(document.querySelector('.c-input__errorSpan--repeatpassword'),'Wachtwoorden komen niet overeen');
+                                summonicon(document.querySelector('.js-repeatpassword'),document.querySelector('.c-input__errorSpan--repeatpassword'))
+                        }
+
+                }
+        }
+
+    }
+
+}
     }
 
     function validateEmail(email) {
@@ -60,7 +258,7 @@ function init() {
     }
 
     function summonicon(inputspan) {
-        // Check if the icon already exists to avoid duplicates
+            if(!inputspan.querySelector('.c-input__errorIcon')) {
             inputspan.insertAdjacentHTML('beforeend', `
                 <svg class="c-input__errorIcon" width="16" height="16" viewBox="0 0 16 16" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -70,6 +268,7 @@ function init() {
                         fill="#DE350B" />
                 </svg>
             `);
+            }
     }
 
     function removeicon(inputspan) {
