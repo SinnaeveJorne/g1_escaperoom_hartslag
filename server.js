@@ -3,11 +3,12 @@ const app = require('./config/expressConfig');
 const initSocket = require('./config/socketConfig');
 const registerRoute = require('./routes/registerRoute');
 const loginRoute = require('./routes/loginRoute');
+const gamelobbyRoute = require('./routes/gamelobbyRoute');
 
 // Mount register and login routes
 app.use(registerRoute);
 app.use(loginRoute);
-
+app.use(gamelobbyRoute);
 // Create an HTTP server from the Express app
 const server = http.createServer(app);
 
