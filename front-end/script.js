@@ -284,3 +284,13 @@ const startGameButton = document.querySelector(".js-startgame");
         error.textContent = '';
         error.style.opacity = 0;
     }
+
+
+
+    // uitploien voor profielinfo 
+    function toggleForm(event) {
+      event.preventDefault();
+      const formSection = document.getElementById('form-section');
+      formSection.style.display = formSection.style.display === 'block' ? 'none' : 'block';
+    }
+    
