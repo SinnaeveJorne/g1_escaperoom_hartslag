@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registreren</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="script.js"></script>
+</head>
+<body class="c-loginbody">
+    <div class="c-logincontainer">
+    <form class="c-loginForm js-registerform" action="/register" method="post" novalidate>
+        <h1 class="c-loginForm__title">Maak account</h1>
+<div class="c-loginForm__inputdiv">
+    <h4 class="c-loginForm__subtitle">Contact Info</h4>
+    <div class="c-loginForm__subdiv">
+    <label class="c-label" for="naam">
+    Naam
+    <span class="c-input__span">
+        <input class="c-input js-input" type="text" name="naam" id="naam" required>
+    </span>
+    <span class="c-input__errorSpan"></span>
+</label>
+<label class="c-label" for="voornaam">
+    Voornaam
+    <span class="c-input__span">
+        <input class="c-input js-input" type="text" name="voornaam" id="voornaam" required>
+    </span>
+    <span class="c-input__errorSpan"></span>
+</label>
+</div>
+
+<label class="c-label" for="email">
+    Email
+    <span class="c-input__span">
+        <input class="c-input js-input" type="email" name="email" id="email" required>
+    </span>
+    <span class="c-input__errorSpan"></span>
+</label>
+
+<h4 class="c-loginForm__subtitle">Maak Wachtwoord</h4>
+<label class="c-label" for="wachtwoord">
+    Wachtwoord
+    <span class="c-input__span">
+        <input class="c-input js-input" type="password" name="wachtwoord" id="wachtwoord" required>
+    </span>
+    <span class="c-input__errorSpan"></span>
+</label>
+<label class="c-label" for="herhaalwachtwoord">
+    Herhaal Wachtwoord
+    <span class="c-input__span">
+        <input class="c-input js-input js-repeatpassword" type="password" name="herhaalwachtwoord" id="herhaalwachtwoord" required>
+    </span>
+    <span class="c-input__errorSpan"></span>
+</label>
+</div>
+
+<div class="c-loginForm__buttondiv">
+    <button class="c-button" type="submit">Registreren</button>
+    <a class="c-loginForm__link" href="login.html">Toch een account ? Log hier in</a>
+</div>
+
+
+    </form>
+</div>
+</body>
+</html>

@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <p id="connection-status">Connecting to server...</p>
+    <input type="text" name="username" placeholder="Enter your username">
     <p id="user-updates"></p>
     <p>
         <button id="connectButton">Connect Heart Rate Monitor</button>
@@ -95,7 +95,7 @@
         }
 
         // Update the heart rate and device name
-        userDiv.textContent = `User ${data.userId}: ${data.heartRate} bpm (${data.deviceName})`;
+        userDiv.textContent = `User ${data.username}: ${data.heartRate} bpm (${data.deviceName})`;
     });
 
     // Remove a user's heart rate display when they disconnect
@@ -112,6 +112,7 @@
             heartRate: heartRate,
             deviceName: heartRateCharacteristic.service.device.name,
             timestamp: new Date().toISOString(),
+            username: document.querySelector('input[name="username"]').value
         };
         socket.emit('heartRateUpdate', data);
     }
