@@ -1,1 +1,5 @@
 node_modules
+.deployment
+.vscode/settings.json
+api
+g1_escaperoom_hartslag.sln

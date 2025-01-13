@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div class="c-logincontainer">
+    <form class="c-loginForm js-loginform" action="/login" method="post" novalidate>
+        <h1 class="c-loginForm__title">Welecome to Beatscape</h1>
+        <div class="c-loginForm__inputdiv">
+            <label class="c-label" for="email">
+                Email
+                <span class="c-input__span">
+                    <input class="c-input js-input" type="email" name="email" id="email" required>
+                </span>
+                <span class="c-input__errorSpan"></span>
+            </label>
+
+            <label class="c-label" for="password">
+                Password
+                <span class="c-input__span">
+                    <input class="c-input js-input" type="password" name="password" id="password" required>
+                </span>
+                <span class="c-input__errorSpan"></span>
+            </label>
+        </div>
+
+        <div class="c-loginForm__buttondiv">
+            <button class="c-button" type="submit">Inloggen</button>
+            <a class="c-loginForm__link" href="registreren.html">Geen account? Registreer hier</a>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>
