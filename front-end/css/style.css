@@ -569,6 +569,98 @@ width: 100%;
 .c-popup__button--no:hover {
     background-color: #e53935;
 }
+.c-profilemain{
+  max-width: 90rem;
+  margin: 0 auto;
+}
+.c-profielheader{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.c-profielheader__imgcontainer{
+    position: relative;
+
+}
+.c-profielheader__img{
+    border-radius: 50%;
+    object-fit: contain;
+    width: 150px;
+    border: 1px solid;
+    height: 150px;
+    
+}
+.c-profielheader__icon{
+    position: absolute;
+    right: .5rem;
+    bottom: 0;
+}
+.c-profielstats{
+    margin-top: 16px;
+    display: flex;
+    /* gap: var(--spacing-3); */
+    /* width: 100%; */
+    justify-content: space-evenly;
+}
+
+.c-accountsettings{
+    margin-top: 2rem;
+}
+.c-accountsettings__listitem {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+  
+  .c-accountsettings__link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--neutral-900);
+    gap: var(--spacing-3);
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .c-accountsettings__form {
+    display: none;
+    margin-top: 10px;
+    padding: 15px;
+
+  }
+  
+  .c-accountsettings__form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .c-accountsettings__form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .c-accountsettings__form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .c-accountsettings__form button {
+    padding: 10px 15px;
+    background-color: #006FB7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .c-accountsettings__form button:hover {
+    background-color: #005a9b;
+  }
+  
 
 /* Animation */
 @keyframes fadeIn {
