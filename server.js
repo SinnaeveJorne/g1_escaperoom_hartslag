@@ -5,12 +5,13 @@ const registerRoute = require('./routes/registerRoute');
 const loginRoute = require('./routes/loginRoute');
 const gamelobbyRoute = require('./routes/gamelobbyRoute');
 const roomsRoute = require('./routes/roomsRoute');
-
+const roomRoute = require('./routes/roomRoute');
 // Mount register and login routes
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(gamelobbyRoute);
 app.use(roomsRoute);
+app.use(roomRoute);
 // Create an HTTP server from the Express app
 const server = http.createServer(app);
 

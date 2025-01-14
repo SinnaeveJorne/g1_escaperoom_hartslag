@@ -755,8 +755,14 @@ background-position:14px  ;
         width: 100%;
         height: fit-content;
     }
-    .c-room__btn{
+    .c-roomsearch__btn{
         width: fit-content;
+    }
+    .c-room__info{
+        flex-wrap: wrap;
+    }
+    .c-room + h4 {
+        font-size: 1.5rem;
     }
 }
 /* Pagination Styling */
@@ -792,6 +798,72 @@ background-position:14px  ;
     color: var(--blauw-blauw-accent-100);
 }
 
+
+.radio-toggle {
+    display: flex;
+    border: 2px solid var(--neutral-700);
+    border-radius: 8px;
+    overflow: hidden;
+    /* width: 80px; */
+    /* height: 40px; */
+    background-color: #fff;
+  }
+
+  .radio-toggle input {
+    display: none;
+  }
+
+  .radio-toggle label {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .radio-toggle label svg {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  /* Standaard stijl */
+  .radio-toggle input:not(:checked) + label {
+    background-color: #fff;
+    color: var(--neutral-700);
+  }
+
+  /* Geactiveerde stijl */
+  .radio-toggle input:checked + label {
+    background-color: var(--neutral-700);
+    color: #fff;
+  }
+
+  /* Animatie om de focus aan te geven */
+  .radio-toggle input:checked + label svg {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  .c-lobbysearch{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  
+    gap: var(--spacing-3);
+  }
+  .c-personcard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .c-lobbysearch__flex{
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+  }
+  .c-w50{
+    width: 50%;
+  }
 /* Animation */
 @keyframes fadeIn {
     from {
