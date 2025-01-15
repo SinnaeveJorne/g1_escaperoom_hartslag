@@ -403,3 +403,29 @@ function parseHeartRate(value) {
     const flags = data.getUint8(0);
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
 }
+
+document.querySelectorAll('.js-room-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        console.log('Room button clicked');
+        fetch('/api/check-room-lock', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ roomId: button.dataset.roomId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.locked) {
+                alert('This room is currently locked.');
+            } else {
+                window.location.href = `/room/${button.dataset.roomId}`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while checking the room status.');
+        });
+        // Add your logic here
+    });
+});
