@@ -404,32 +404,19 @@ function parseHeartRate(value) {
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
 }
 
-document.querySelectorAll('.js-room-btn').forEach(button => {
-    button.addEventListener('click', (event) => {
-        // Haal de waarde van het data-locked attribuut op
-        const isLocked = button.getAttribute('data-locked') === 'true';
-
-        if (isLocked) {
-            // Voorkom de standaard linkactie en toon de modal
-            event.preventDefault();
-            showModal();
-        } else {
-            // Als de kamer niet vergrendeld is, doe de redirect zelf
-            event.preventDefault();  // Zorg ervoor dat de standaard actie geblokkeerd wordt
-            window.location = button.getAttribute('href');
-        }
-    });
-});
-
 // Functie om een modal te tonen
-function showModal() {
+function showModal(button) {
     const modal = document.createElement('div');
     modal.classList.add('modal');
     modal.innerHTML = `
-        <div class="modal__content">
+        <div class="modalroom__content">
+            <button class=" c-button modal__close">x</button>
             <h2>Room is locked 🔒</h2>
             <p>You need permission to join this room.</p>
-            <button class="modal__close">Close</button>
+            <form id="passwordForm">
+                <input class="c-loginForm__inputdiv" type="password" id="passwordInput" placeholder="Enter password" required />
+                <button class="c-button c-mt" type="submit" class="modal__submit">Submit</button>
+            </form>
         </div>
     `;
 
@@ -439,20 +426,34 @@ function showModal() {
     modal.querySelector('.modal__close').addEventListener('click', () => {
         modal.remove();
     });
+
+    // Handeling voor het verzenden van het wachtwoord
+    modal.querySelector('#passwordForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Voorkom standaard formulieractie
+        const pass = document.querySelector('#passwordInput').value;
+        if (pass === '1234') {
+            // Redirect naar de link van de knop
+            window.location = button.getAttribute('href');
+        } else {
+            alert('Incorrect password');
+        }
+    });
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.js-room-btn').forEach(button => {
         button.addEventListener('click', (event) => {
             const isLocked = button.getAttribute('data-locked') === 'true';
 
             if (isLocked) {
-                event.preventDefault();
-                showModal();
+                event.preventDefault(); // Voorkom de standaard linkactie
+                showModal(button); // Geef de knop door aan de modal
             } else {
-                event.preventDefault();
+                event.preventDefault(); // Zorg ervoor dat de standaard actie geblokkeerd wordt
                 window.location = button.getAttribute('href');
             }
         });
     });
 });
+
 
