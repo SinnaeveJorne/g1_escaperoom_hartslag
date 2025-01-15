@@ -405,27 +405,54 @@ function parseHeartRate(value) {
 }
 
 document.querySelectorAll('.js-room-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        console.log('Room button clicked');
-        fetch('/api/check-room-lock', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ roomId: button.dataset.roomId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.locked) {
-                alert('This room is currently locked.');
-            } else {
-                window.location.href = `/room/${button.dataset.roomId}`;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while checking the room status.');
-        });
-        // Add your logic here
+    button.addEventListener('click', (event) => {
+        // Haal de waarde van het data-locked attribuut op
+        const isLocked = button.getAttribute('data-locked') === 'true';
+
+        if (isLocked) {
+            // Voorkom de standaard linkactie en toon de modal
+            event.preventDefault();
+            showModal();
+        } else {
+            // Als de kamer niet vergrendeld is, doe de redirect zelf
+            event.preventDefault();  // Zorg ervoor dat de standaard actie geblokkeerd wordt
+            window.location = button.getAttribute('href');
+        }
     });
 });
+
+// Functie om een modal te tonen
+function showModal() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+        <div class="modal__content">
+            <h2>Room is locked 🔒</h2>
+            <p>You need permission to join this room.</p>
+            <button class="modal__close">Close</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Sluitknop voor de modal
+    modal.querySelector('.modal__close').addEventListener('click', () => {
+        modal.remove();
+    });
+}
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.js-room-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const isLocked = button.getAttribute('data-locked') === 'true';
+
+            if (isLocked) {
+                event.preventDefault();
+                showModal();
+            } else {
+                event.preventDefault();
+                window.location = button.getAttribute('href');
+            }
+        });
+    });
+});
+
