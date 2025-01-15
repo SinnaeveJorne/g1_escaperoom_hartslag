@@ -104,12 +104,16 @@ function initRegisterForm() {
 }
 
 function initStartGameButton() {
-    const startGameButton = document.querySelector(".js-startgame");
-    if (startGameButton) {
+    const startGameButtons = document.querySelectorAll(".js-startgame");
+    if (startGameButtons) {
+        startGameButtons.forEach(startGameButton => {
         startGameButton.addEventListener("click", async () => {
-            // Attempt to reconnect
-            const isReconnected = await reconnectPolarHeartRateMonitor();
-          
+            
+          loadanimation();
+
+            const isReconnected = await reconnectPolarHeartRateMonitor(); // Perform the async operation
+            
+            removeanimation();   
             if (isReconnected) {
               // Show the next popup if reconnect works
               showPopup({
@@ -133,7 +137,9 @@ function initStartGameButton() {
                   {
                     text: "Connect",
                     action: async () => {
+                    
                       const isConnected = await connectPolarHeartRateMonitor();
+                       
                       if (isConnected) {
                         showPopup({
                           title: "Connection Successful",
@@ -157,8 +163,9 @@ function initStartGameButton() {
             }
           });
           
-            
+        });
         }
+        
     } 
 
 
@@ -324,13 +331,15 @@ function handleFocus(e) {
   
   // Reconnect function
   async function reconnectPolarHeartRateMonitor() {
-    const deviceId = sessionStorage.getItem("bluetoothDeviceId");
+    const deviceId = localStorage.getItem("bluetoothDeviceId");
+    // const deviceId ="39/5Qt9drL95/Se/Qx4FDg==";
     if (!deviceId) return false;
   
     const devices = await navigator.bluetooth.getDevices();
     const device = devices.find((d) => d.id === deviceId);
+   
     if (!device) return false;
-  
+    console.log("run ik hier ???");
     if (!device.watchAdvertisements) return false;
   
     return new Promise((resolve) => {
@@ -354,8 +363,10 @@ function handleFocus(e) {
         optionalServices: ["heart_rate"]
       });
   
-      sessionStorage.setItem("bluetoothDeviceId", device.id);
+      localStorage.setItem("bluetoothDeviceId", device.id);
+      loadanimation();
       await setupHeartRateNotifications(device);
+        removeanimation();
   
       return true;
     } catch (error) {
@@ -403,6 +414,7 @@ function parseHeartRate(value) {
     const flags = data.getUint8(0);
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
 }
+
 
 // Functie om een modal te tonen
 function showModal(button) {
@@ -456,4 +468,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+
+function loadanimation() {
+    const loadcontainer = document.createElement("div");
+    loadcontainer.className = "c-popup__container";     // Append the element to the body
+    const loader = document.createElement("div");
+    loader.className = "loader";
+    loadcontainer.appendChild(loader);
+    document.body.appendChild(loadcontainer);
+}
+
+function removeanimation() {
+    const loadcontainer = document.querySelector('.c-popup__container');
+    if(loadcontainer) {
+        loadcontainer.remove();
+    }
+}
 

@@ -645,6 +645,7 @@ width: 100%;
   width: 100%;
 }
 
+
 .c-roomsearch{
     display: flex;
     flex-wrap: wrap;
@@ -877,6 +878,26 @@ background-position:14px  ;
     right: 1rem;
     width: 1rem;
 }
+
+.loader {
+    border: 8px solid var(--neutral-300); /* Light gray */
+    border-top: 8px solid var(--blauw-blauw-accent-90); /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+
 
 
 .radio-toggle {
