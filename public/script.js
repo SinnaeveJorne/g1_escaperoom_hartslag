@@ -415,6 +415,61 @@ function parseHeartRate(value) {
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
 }
 
+
+// Functie om een modal te tonen
+function showModal(button) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+        <div class="modalroom__content">
+            <button class=" c-button modal__close">x</button>
+            <h2>Room is locked 🔒</h2>
+            <p>You need permission to join this room.</p>
+            <form id="passwordForm">
+                <input class="c-loginForm__inputdiv" type="password" id="passwordInput" placeholder="Enter password" required />
+                <button class="c-button c-mt" type="submit" class="modal__submit">Submit</button>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Sluitknop voor de modal
+    modal.querySelector('.modal__close').addEventListener('click', () => {
+        modal.remove();
+    });
+
+    // Handeling voor het verzenden van het wachtwoord
+    modal.querySelector('#passwordForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Voorkom standaard formulieractie
+        const pass = document.querySelector('#passwordInput').value;
+        if (pass === '1234') {
+            // Redirect naar de link van de knop
+            window.location = button.getAttribute('href');
+        } else {
+            alert('Incorrect password');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.js-room-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const isLocked = button.getAttribute('data-locked') === 'true';
+
+            if (isLocked) {
+                event.preventDefault(); // Voorkom de standaard linkactie
+                showModal(button); // Geef de knop door aan de modal
+            } else {
+                event.preventDefault(); // Zorg ervoor dat de standaard actie geblokkeerd wordt
+                window.location = button.getAttribute('href');
+            }
+        });
+    });
+});
+
+
+
 function loadanimation() {
     const loadcontainer = document.createElement("div");
     loadcontainer.className = "c-popup__container";     // Append the element to the body
@@ -430,3 +485,4 @@ function removeanimation() {
         loadcontainer.remove();
     }
 }
+
