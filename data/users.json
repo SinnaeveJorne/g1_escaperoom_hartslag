@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "email": "jorne@gmail.com",
+    "wachtwoord": "1234",
+    "username": "jorne",
+    "isadmin": false
+  },
+  {
+    "id": 2,
+    "email": "alexander@gmail.com",
+    "wachtwoord": "1234",
+    "username": "alex",
+    "isadmin": true
+  },
+  {
+    "id": 3,
+    "naam": "alex",
+    "voornaam": "perneel",
+    "email": "alex@gmail.com",
+    "wachtwoord": "Kaas1234!",
+    "isadmin": true
+  },
+  {
+
+    "naam": "riet",
+    "voornaam": "demeulemeester",
+    "email": "suikerriet@gmail.com"
+  },
+  {
+    "id": 4,
+    "username": "riet",
+    "naam": "riet",
+    "voornaam": "riet",
+    "email": "riet@gmail.com",
+    "wachtwoord": "Riet123!",
+    "isadmin": true
+  },
+  {
+    "naam": "riet",
+    "voornaam": "riet!",
+    "email": "rietje@gmail.com",
+    "wachtwoord": "Riet1234"
+  }
+]

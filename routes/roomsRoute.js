@@ -11,5 +11,17 @@ router.get('/rooms', (req, res) => {
   }
   );
 
+  router.get('/getrooms', (req, res) => {
+    const rooms = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/roomcodes.json')));
+    if(req.session.username){
+      res.json({ success: true, rooms: rooms });
+    }
+    else
+    {
+      res.json({ success: false, message: 'Je bent niet ingelogd'});
+    }
+  
+  });
+
 
 module.exports = router;
