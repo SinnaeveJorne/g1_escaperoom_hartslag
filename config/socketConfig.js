@@ -1,54 +1,27 @@
-const socketIo = require('socket.io');
+const cookieParser = require('cookie-parser');
 
-module.exports = (server) => {
-  const io = socketIo(server, {
+
+module.exports = (server, sessionMiddleware) => {
+  const io = require('socket.io')(server, {
     cors: {
-      origin: "*", // Allow all origins for Socket.IO
+      origin: "*",
       methods: ["GET", "POST"],
       allowedHeaders: ["*"],
-      credentials: true
+      credentials: true,
     },
-    allowEIO3: true, // Allow Engine.IO version 3
-    transports: ['websocket', 'polling']
   });
 
-  let connectedUsers = 0;
+  const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
+  io.use(wrap(cookieParser()));
+  io.use(wrap(sessionMiddleware));
 
   io.on('connection', (socket) => {
-    connectedUsers++;
-    console.log('A user connected');
+    console.log(socket.request.session.cookie);
+    console.log(socket.request.session);
     
-    io.emit('userCount', {
-      count: connectedUsers,
-      message: `A new user connected! Total users: ${connectedUsers}`
-    });
-
-    socket.emit('welcome', 'Welcome to Beatscape!');
-
-    socket.on('heartRateUpdate', (data) => {
-      socket.broadcast.emit('otherUserHeartRate', {
-        userId: socket.id,
-        heartRate: data.heartRate,
-        deviceName: data.deviceName,
-        timestamp: data.timestamp,
-        username: data.username
-      });
-    });
-
-    socket.on('clientMessage', (message) => {
-      console.log('Message from client:', message);
-    });
-
-    socket.on('disconnect', () => {
-      connectedUsers--;
-      console.log('A user disconnected');
-      io.emit('userCount', {
-        count: connectedUsers,
-        message: `A user disconnected. Total users: ${connectedUsers}`
-      });
-      socket.broadcast.emit('userDisconnected', {
-        userId: socket.id
-      });
-    });
+    if (socket.request.session && socket.request.session.username) {
+      console.log(`User connected: ${socket.request.session.username}`);
+    }
+    // Handle other events...
   });
 };

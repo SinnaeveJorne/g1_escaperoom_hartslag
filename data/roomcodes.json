@@ -1,0 +1,16 @@
+[
+    {
+       "roomname": "room2",
+        "roomcode": "5678",
+        "isactive": true,
+        "users": [0],
+        "admin": 2
+    },
+    {
+        "roomname": "jornestinkt",
+        "roomcode": "1234",
+        "isactive": true,
+        "users": [1],
+        "admin": 1
+    }
+]

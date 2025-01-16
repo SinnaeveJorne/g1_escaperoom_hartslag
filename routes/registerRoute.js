@@ -9,39 +9,51 @@ router.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/registreren.html'));
 });
 
-router.post('/register', (req, res) => {
-  const { naam, voornaam, email, wachtwoord, herhaalwachtwoord } = req.body;
 
-  if (wachtwoord !== herhaalwachtwoord) {
+router.post('/register', (req, res) => {
+  // Extracting fields from the request body
+  const { naam, voornaam, email, wachtwoord, herhaalWachtwoord } = req.body;
+
+  
+  if (wachtwoord !== herhaalWachtwoord) {
     return res.status(400).send('Wachtwoorden komen niet overeen');
   }
 
-  fs.readFile('users.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    const users = JSON.parse(data);
+  try {
+    // Path to the users data file
+    const usersFilePath = path.join(__dirname, '../data/users.json');
 
+    // Read existing users data
+    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+
+    // Check if the email already exists
     const emailExists = users.some(user => user.email === email);
     if (emailExists) {
-      return res.status(400).send('Email al geregistreerd');
+      return res.status(400).send('Email is al geregistreerd');
     }
 
-    bcrypt.hash(wachtwoord, 10, (err, hashedPassword) => {
-      if (err) throw err;
+    // Create new user object
+    const newUser = {
+      naam,
+      voornaam,
+      email,
+      wachtwoord // In a real-world scenario, always hash the password before storing it
+    };
 
-      const newUser = {
-        naam,
-        voornaam,
-        email,
-        wachtwoord: hashedPassword
-      };
+    // Add the new user to the users array
+    users.push(newUser);
 
-      users.push(newUser);
-      fs.writeFile('users.json', JSON.stringify(users), 'utf8', (err) => {
-        if (err) throw err;
-        res.status(201).send('Registratie succesvol');
-      });
-    });
-  });
+    // Write the updated users array back to the file
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+
+    // Send a success response
+    res.status(201).send('Registratie succesvol');
+  } catch (error) {
+    console.error('Error handling registration:', error);
+    res.status(500).send('Er is een fout opgetreden');
+  }
 });
+
+
 
 module.exports = router;

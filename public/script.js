@@ -4,7 +4,88 @@ function init() {
     initLoginForm();
     initRegisterForm();
     initStartGameButton();
+    initrooms()
 }
+
+
+function initrooms()
+{
+if(document.querySelector('.js-rooms'))
+{
+    const makeroombutton = document.querySelector('.js-makeroom')
+    makeroombutton.addEventListener('click',function(){
+        showPopup({
+            title: "Kamer gegevens",
+            type: "start_game",
+            buttons: [
+              {
+                text: "Continue",
+                action: () => {
+                
+                }
+              }
+            ]
+          });
+    })
+
+    const socket = io(""); // Replace with your server URL
+socket.on("connection", () => {
+    console.log("Connected to server");
+});
+
+console.log("gzegz");
+
+
+let xhrstatus = new XMLHttpRequest();
+xhrstatus.open("GET", "/getrooms", true);
+xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+xhrstatus.onreadystatechange = function () {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+        if(response.success == true) {
+           const rooms = response.rooms;
+           document.querySelector('.js-rooms').innerHTML = '';
+           let roomlist = "";
+            rooms.forEach(room => {
+                const playerCount = room.users.length;
+                const roomHTML = `
+                <div class="c-room">
+                    <div class="c-room__info">
+                        <img src="img/profile_1.png" alt="profile" class="c-room__img">
+                        <h3 class="c-room__title">${room.roomname}</h3>
+                    </div>
+                    <div class="c-room__info">
+                        <h4 class="c-room__players">${playerCount}</h4>
+                        <a href="./room/${room.roomcode}" class="c-button c-room__btn">
+                            <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Join
+                        </a>
+                    </div>
+                </div>`;
+            roomlist += roomHTML;
+            });
+            document.querySelector('.js-rooms').innerHTML = roomlist;
+        }
+        else{
+            //go to /login
+            window.location.href = '/login';
+        }
+    }
+};
+
+xhrstatus.onerror = function () {
+    console.error('An error occurred during the AJAX request.');
+};
+xhrstatus.send();
+}
+}
+
 
 function initLoginForm() {
     if(document.querySelector('.js-loginform')) {
@@ -33,10 +114,7 @@ function initLoginForm() {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            email: data.email,
-                            password: data.password
-                        })
+                        body: JSON.stringify(data)
                     });
 
                     if (response.ok) {
@@ -50,7 +128,12 @@ function initLoginForm() {
                 }
             }
         });
+
+
     }
+
+    
+    
 }
 
 function initRegisterForm() {
@@ -80,13 +163,7 @@ function initRegisterForm() {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            naam: data.naam,
-                            voornaam: data.voornaam,
-                            email: data.email,
-                            wachtwoord: data.wachtwoord,
-                            herhaalWachtwoord: data.herhaalwachtwoord
-                        })
+                        body: JSON.stringify(data)
                     });
 
                     if (response.ok) {

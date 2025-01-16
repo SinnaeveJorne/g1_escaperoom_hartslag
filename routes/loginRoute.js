@@ -13,27 +13,28 @@ router.get('/login', (req, res) => {
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
+  const users = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/users.json')));
+  const user = users.find(user => user.email === email);
 
-  fs.readFile('users.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    const users = JSON.parse(data);
-
-    const user = users.find(u => u.email === email);
-    if (!user) {
-      return res.status(400).send('Email of wachtwoord onjuist');
+  if (user) {
+    if(user.wachtwoord === password) {
+      req.session.username = user.username, req.session.email = user.email, req.session.password = user.password, req.session.userid = user.id,req.session.isadmin = user.isadmin;
+      res.json({ success: true, message: 'Login successful' });
+    } else {
+      res.json({ success: false, message: 'Het ingevulde wachtwoord is niet correct' });
     }
-
-    bcrypt.compare(password, user.wachtwoord, (err, result) => {
-      if (err) throw err;
-
-      if (result) {
-        req.session.user = user;
-        res.status(200).send('Inloggen succesvol');
-      } else {
-        res.status(400).send('Email of wachtwoord onjuist');
-      }
-    });
-  });
+  }
+  else{
+    res.json({ success: false, message: 'Dit account bestaat niet'});
+  }
+   
 });
+
+const crypto = require('crypto');
+
+function generateSessionId() {
+  return crypto.randomBytes(16).toString('hex'); // 32-character hex string
+}
+
 
 module.exports = router;
