@@ -1,135 +1,290 @@
-from flask import Flask, jsonify, request
-import pymysql
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
-from datetime import timedelta
+from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
 from passlib.context import CryptContext
-from flask_jwt_extended import get_jwt_identity
-from flask_cors import CORS
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 from repositories.DataRepository import DataRepository
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi import Depends, HTTPException, status
+import secrets
+from typing import Optional
 
+# FastAPI app instance
+app = FastAPI()
 
-# Flask app instance
-app = Flask(__name__)
-CORS(app)
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+# Configuration
+SECRET_KEY = "your_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_HOURS = 2
 
-ENDPOINT = '/api/v1'
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@127.0.0.1:3306/beatscape"
 
-# Secret key for JWT
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1:3306/beatscape'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Initialize extensions
-db = SQLAlchemy(app)
-jwt = JWTManager(app)
-
-# Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Function to create database if not exists
-#--------------------------------------------------------------
-# # Model definition
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     firstname = db.Column(db.String(100), nullable=False)
-#     lastname = db.Column(db.String(100), nullable=False)
-#     email = db.Column(db.String(100), unique=True, nullable=False)
-#     hashed_password = db.Column(db.String(255), nullable=False)
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-# # Function to create database if not exists
-# def create_database_if_not_exists():
-#     connection = pymysql.connect(
-#         host='127.0.0.1',
-#         user='root',
-#         password='root'
-#     )
-#     cursor = connection.cursor()
-#     cursor.execute("CREATE DATABASE IF NOT EXISTS beatscape")
-#     cursor.close()
-#     connection.close()
-
-# # Initialize the app
-# with app.app_context():
-#     create_database_if_not_exists()  # Create the database
-#     db.create_all()  # Create the tables
-
-# @app.route('/')
-# def home():
-#     return "Database and tables are ready!"
-#--------------------------------------------------------------
-
-@app.route(ENDPOINT + '/register/', methods=['POST'])
-def register_user():
-    if request.method == 'POST':
-        gegevens = DataRepository.json_or_formdata(request)
-        
-        # Access plain password, not hashed_password
-        firstname = gegevens['firstname']
-        lastname = gegevens['lastname']
-        email = gegevens['email']
-        password = gegevens['password']
-        
-        # Hash the password before saving it
-        hashed_password = pwd_context.hash(password)
-
-        # Validate the input
-        if not firstname or not lastname or not email or not password:
-            return jsonify({"message": "Missing parameters"}), 400
-        
-       # Use DataRepository to check if the user already exists
-        user_exists = DataRepository.get_user_by_email(email)  # This should return user data if found, else None
-        if user_exists:
-            return jsonify({"message": "User already exists"}), 400
-        
-        
-        # Call DataRepository to create a new user with hashed password
-        DataRepository.create_register(firstname, lastname, email, hashed_password)
-        return jsonify({"message": "User created successfully"}), 201
-
-
-@app.route(ENDPOINT + '/login/', methods=['POST'])
-def login():
-    email = request.json.get("email")
-    password = request.json.get("password")
-
-    # Fetch user details using DataRepository
-    user = DataRepository.get_user_by_email(email)
-    # 1. Check if the user exists and the password is valid
-    if not user or not pwd_context.verify(password, user['hashed_password']):
-        return jsonify({"message": "Invalid credentials"}), 401
-
-    access_token = create_access_token(identity=str(user['id']))  # Create JWT token
-    return jsonify(access_token=access_token)
-
-
-@app.route(ENDPOINT +'/profile/', methods=['GET'])
-@jwt_required()
-def profile():
-    # Retrieve the user ID from the JWT token's 'sub' claim
-    current_user_id = get_jwt_identity()  # This returns the 'sub' claim (user's ID)
-    # Query the user by their ID
-    user = DataRepository.get_user_by_id(current_user_id)
-
-    if user:
-        return jsonify({
-            "id": user['id'],
-            "firstname": user['firstname'],
-            "lastname": user['lastname'],
-            "email": user['email']
-        }), 200
+# Helper functions
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
     else:
-        return jsonify({"message": "User not found"}), 404
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire.timestamp()})  # Convert to UNIX timestamp
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+# Models for request/response bodies
+class UserRegister(BaseModel):
+    firstname: str
+    lastname: str
+    email: str
+    password: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class Feedback(BaseModel):
+    user_id: int
+    room_id: int
+    feedback: str
+    rating: int
+
+class RoomCreate(BaseModel):
+    host_user_id: int
+    is_public: bool
+
+class JoinRoom(BaseModel):
+    room_code: str
+    user_id: int
+
+class DeleteRoom(BaseModel):
+    room_id: int
+    host_user_id: int
+
+class RemovePlayer(BaseModel):
+    user_id: int
+    host_user_id: int
+
+# get all users
+@app.get("/api/v1/users/")
+def get_all_users():
+    return DataRepository.get_all_users()
 
 
-# Main route to test if the app is running
-@app.route('/', methods=['GET'])
+# Routes
+@app.post("/api/v1/register/")
+def register_user(user: UserRegister):
+    if DataRepository.get_user_by_email(user.email):
+        raise HTTPException(status_code=400, detail="User already exists")
+    
+    #validate the input 
+    if not user.firstname or not user.lastname or not user.email or not user.password:
+        raise HTTPException(status_code=400, detail="All fields are required")
+
+    hashed_password = get_password_hash(user.password)
+    DataRepository.create_register(user.firstname, user.lastname, user.email, hashed_password)
+    return {"message": "User created successfully"}
+
+@app.post("/api/v1/login/")
+def login_user(user: UserLogin):
+    db_user = DataRepository.get_user_by_email(user.email)
+    if not db_user or not verify_password(user.password, db_user['hashed_password']):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    access_token = create_access_token(data={"sub": str(db_user['id'])})
+    return {"access_token": access_token}
+
+#make a route to update a user profile
+@app.put("/api/v1/profile/")
+def update_user_profile(id: int, email: Optional[str] = None, firstname: Optional[str] = None, lastname: Optional[str] = None, password: Optional[str] = None):
+    if not DataRepository.get_user_by_id(id):
+        raise HTTPException(status_code=404, detail="User not found")
+    #get current data 
+    current_user = DataRepository.get_user_by_id(id)
+    #check if all the fields are filled if not fill in with the current data 
+    if not email:
+        email = current_user['email']
+    if not firstname:   
+        firstname = current_user['firstname']
+    if not lastname:
+        lastname = current_user['lastname']
+    if not password:
+        password = current_user['hashed_password']
+    else:
+        password = get_password_hash(password)
+    
+    DataRepository.update_user_profile(id, firstname,lastname, email, password)
+
+    return {"message": "User profile updated successfully"}
+
+@app.get("/get_token/{user_id}/")
+def generate_user_access_token_without_login(user_id: int):
+    user = DataRepository.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    access_token = create_access_token(data={"sub": str(user['id'])})
+    return {"access_token": access_token}
+
+@app.get("/api/v1/profile/")
+def get_profile(current_user_id: int):
+    user = DataRepository.get_user_by_id(current_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {
+        "id": user['id'],
+        "firstname": user['firstname'],
+        "lastname": user['lastname'],
+        "email": user['email']
+    }
+
+@app.post("/api/v1/room/")
+def create_room(room: RoomCreate):
+    # Validate host_user_id exists
+    host_user = DataRepository.get_user_by_id(room.host_user_id)
+    if not host_user:
+        raise HTTPException(status_code=404, detail="Host user not found")
+
+    # Check if the host already has an active room
+    if DataRepository.get_active_room_by_host(room.host_user_id):
+        raise HTTPException(status_code=400, detail="Host already has an active room")
+
+    # Generate a unique room code
+    room_code = secrets.token_hex(3).upper()
+
+    # Create the room
+    try:
+        room_id = DataRepository.create_room(room_code, room.host_user_id, room.is_public)
+        if not room_id:
+            raise HTTPException(status_code=500, detail="Failed to create room")
+
+        # Add host to the room
+        DataRepository.add_player_to_room(room_id, room.host_user_id)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating room: {str(e)}")
+
+    return {"message": "Room created successfully", "room_code": room_code}
+
+
+@app.post("/api/v1/room/join/")
+def join_room(join_data: JoinRoom):
+    # Validate if the room exists
+    room = DataRepository.get_room_by_code(join_data.room_code)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    # Validate if the user exists
+    user = DataRepository.get_user_by_id(join_data.user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Check if room is full
+    if DataRepository.get_room_player_count(room['id']) >= 3:
+        raise HTTPException(status_code=400, detail="Room is full")
+
+    # Check if the user is already in the room
+    if DataRepository.get_player_in_room(room['id'], join_data.user_id):
+        raise HTTPException(status_code=400, detail="User is already in the room")
+
+    # Add the user to the room
+    DataRepository.add_player_to_room(room['id'], join_data.user_id)
+
+    return {"message": "Successfully joined the room!"}
+
+
+
+@app.delete("/api/v1/room/delete/")
+def delete_room(delete_data: DeleteRoom):
+    room = DataRepository.get_room_by_id(delete_data.room_id)
+    if not room or room['host_user_id'] != delete_data.host_user_id:
+        raise HTTPException(status_code=403, detail="Only the host can delete the room")
+
+    DataRepository.delete_room_with_teammates(delete_data.room_id)
+    return {"message": "Room and all its teammates have been deleted successfully"}
+
+@app.delete("/api/v1/room/{room_id}/leave/")
+def leave_room(room_id: int, user_id: int):
+    if not DataRepository.get_player_in_room(room_id, user_id):
+        raise HTTPException(status_code=404, detail="Player not found in this room")
+
+    DataRepository.delete_player_from_room(room_id, user_id)
+    return {"message": "Player has left the room successfully"}
+
+@app.delete("/api/v1/room/{room_id}/kick_player/")
+def remove_player_from_room(room_id: int, data: RemovePlayer):
+    room = DataRepository.get_room_by_id(room_id)
+    if not room or room['host_user_id'] != data.host_user_id:
+        raise HTTPException(status_code=403, detail="Only the host can remove players from the room")
+
+    if not DataRepository.get_player_in_room(room_id, data.user_id):
+        raise HTTPException(status_code=404, detail="Player not found in this room")
+
+    DataRepository.delete_player_from_room(room_id, data.user_id)
+    return {"message": "Player has been removed from the room successfully"}
+
+@app.post("/api/v1/game/feedback/")
+def post_feedback(feedback: Feedback):
+    DataRepository.post_feedback(feedback.user_id, feedback.room_id, feedback.feedback, feedback.rating)
+    return {"message": "Feedback posted successfully"}
+
+
+def verify_api_access():
+    # Add your authentication logic here (e.g., token check)
+    # Example: check for a hardcoded token
+    token = "my_secure_token"
+    if token != "my_secure_token":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access forbidden")
+
+# Custom Swagger UI route
+@app.get("/docs", include_in_schema=False)
+def custom_swagger_ui_html(current_user: str = Depends(verify_api_access)):
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="API Documentation")
+
+# @app.get("/api/v1/statistics/exercises/")
+# def get_statistics():
+#     return DataRepository.get_statistics()
+
+# @app.get("/api/v1/leaderboard/{room_id}")
+# def get_leaderboard(room_id: int):
+#     return DataRepository.get_leaderboard(room_id)
+
+# @app.get("/api/v1/leaderboard/")
+# def get_global_leaderboard():
+#     return DataRepository.get_global_leaderboard()
+
+@app.get("/")
 def home():
-    return jsonify(message="Welcome to the Flask App")
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return {"message": "Welcome to the FastAPI App"}

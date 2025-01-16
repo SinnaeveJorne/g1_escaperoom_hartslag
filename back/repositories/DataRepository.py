@@ -23,12 +23,144 @@ class DataRepository:
         sql = "SELECT id, firstname, lastname, email, hashed_password FROM user WHERE email = %s"
         params = [email]
         return Database.get_one_row(sql, params) 
-
+    
     @staticmethod
     def get_user_by_id(user_id):
-        """Fetch user details by ID."""
-        sql = "SELECT id, firstname, lastname, email FROM user WHERE id = %s"
+        """Fetch user details by ID including hashed password."""
+        sql = "SELECT id, firstname, lastname, email, hashed_password FROM user WHERE id = %s"
         params = [user_id]
-        return Database.get_one_row(sql, params)  
+        return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def get_all_users():
+        """Fetch all users."""
+        sql = "SELECT id, firstname, lastname, email FROM user"
+        return Database.get_rows(sql)
+    
+
+    # @staticmethod
+    # def get_user_by_id(user_id):
+    #     """Fetch user details by ID."""
+    #     sql = "SELECT id, firstname, lastname, email FROM user WHERE id = %s"
+    #     params = [user_id]
+    #     return Database.get_one_row(sql, params)  
+    
+
+
+    @staticmethod
+    def update_user_profile(id, firstname, lastname, email, password):
+        """Update user profile details."""
+        sql = "UPDATE user SET firstname = %s, lastname = %s, email = %s, hashed_password = %s WHERE id = %s"
+        params = [firstname, lastname, email, password, id]
+        return Database.execute_sql(sql, params)
+    
+
+    @staticmethod 
+    def create_room(room_code, host_user_id, is_public):
+        sql = 'INSERT INTO Rooms (room_code, host_user_id, is_public) VALUES (%s, %s, %s)'
+        params = [room_code, host_user_id, is_public]
+        return Database.execute_sql(sql, params)
+    
+    
+    @staticmethod
+    def add_player_to_room(room_id, user_id):
+        """Add a user to a room."""
+        sql = "INSERT INTO Teams (room_id, user_id) VALUES (%s, %s)"
+        params = [room_id, user_id]
+        return Database.execute_sql(sql, params)
+    
+    @staticmethod
+    def get_players_in_room(room_id):
+        """Get all players in a room."""
+        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN User u ON t.user_id = u.id WHERE t.room_id = %s"
+        params = [room_id]
+        return Database.get_rows(sql, params)
+    
+    @staticmethod
+    def get_player_in_room(room_id, user_id):
+        """Get a player in a room."""
+        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN User u ON t.user_id = u.id WHERE t.room_id = %s AND t.user_id = %s"
+        params = [room_id, user_id]
+        return Database.get_one_row(sql, params)
+
+    @staticmethod
+    def get_room_player_count(room_id):
+        """Get the number of players in a room."""
+        sql = "SELECT COUNT(*) as player_count FROM Teams WHERE room_id = %s"
+        params = [room_id]
+        return Database.get_one_row(sql, params)["player_count"]
+    
+    @staticmethod
+    def get_room_by_code(room_code):
+        """Get room details by room code."""
+        sql = "SELECT id, room_code, host_user_id, is_public FROM Rooms WHERE room_code = %s"
+        params = [room_code]
+        return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def get_room_by_id(room_id):
+        """Get room details by ID."""
+        sql = "SELECT * FROM Rooms WHERE id = %s"
+        params = [room_id]
+        return Database.get_one_row(sql, params)
+
+    
+    @staticmethod	
+    def get_rooms():
+        """Get all rooms."""
+        sql = "SELECT id, room_code, host_user_id, is_public FROM Rooms"
+        return Database.get_rows(sql)
+    
+    # @staticmethod
+    # def delete_room(room_id):
+    #     """Delete a room."""
+    #     sql = "DELETE FROM Rooms WHERE id = %s"
+    #     params = [room_id]
+    #     return Database.execute_sql(sql, params)
+    
+    @staticmethod
+    def delete_player_from_room(room_id, user_id):
+        """Delete a player from a room."""
+        sql = "DELETE FROM Teams WHERE room_id = %s AND user_id = %s"
+        params = [room_id, user_id]
+        return Database.execute_sql(sql, params)
+    
+    @staticmethod
+    def get_active_room_by_host(host_user_id):
+        """Check if the host already has an active room."""
+        sql = "SELECT id FROM Rooms WHERE host_user_id = %s"
+        params = [host_user_id]
+        return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def delete_room_with_teammates(room_id):
+        """Delete a room and its teammates."""
+        sql_teammates = "DELETE FROM Teams WHERE room_id = %s"
+        sql_room = "DELETE FROM Rooms WHERE id = %s"
+        params = [room_id]
+        Database.execute_sql(sql_teammates, params)  # First, delete all teammates
+        return Database.execute_sql(sql_room, params)  # Then, delete the room
+    
+
+    @staticmethod
+    def post_feedback(user_id, room_id, mood, review):
+        sql = "INSERT INTO Feedback (user_id, room_id, mood, review) VALUES (%s, %s, %s, %s)"
+        params = [user_id, room_id, mood, review]
+        return Database.execute_sql(sql, params)
+
+
+
+
+    # @staticmethod
+    # def update_user_password(user_id, hashed_password):
+    #     """Update user password."""
+    #     sql = "UPDATE user SET hashed_password = %s WHERE id = %s"
+    #     params = [hashed_password, user_id]
+    #     return Database.execute_sql(sql, params)
+
+
+    
+
+
 
  
