@@ -1,11 +1,10 @@
 # config.ini
-
 [connector_python]
-user = root
-host = 127.0.0.1
+user = ID396351_heartbeat
+host = ID396351_heartbeat.db.webhosting.be
 port = 3306
-password = root
-database = beatscape
+password = H3artB3at!
+database = ID396351_heartbeat
 
 [application_config]
 # You can add other configurations here if needed
