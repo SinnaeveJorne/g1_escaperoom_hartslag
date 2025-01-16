@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,11 +9,13 @@ from passlib.context import CryptContext
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from configparser import ConfigParser
 from repositories.DataRepository import DataRepository
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi import Depends, HTTPException, status
 import secrets
 from typing import Optional
+
 
 # FastAPI app instance
 app = FastAPI()
@@ -37,7 +40,23 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Configuratie lezen uit config.py
+config = ConfigParser()
+config.read('config.py')
+
+user = config['connector_python']['user']
+password = config['connector_python']['password']
+host = config['connector_python']['host']
+port = config['connector_python']['port']
+database = config['connector_python']['database']
+
+# Database configuratie instellen
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Dependency to get DB session
 def get_db():
@@ -101,7 +120,6 @@ class RemovePlayer(BaseModel):
 def get_all_users():
     return DataRepository.get_all_users()
 
-
 # Routes
 @app.post("/api/v1/register/")
 def register_user(user: UserRegister):
@@ -145,6 +163,7 @@ def update_user_profile(id: int, email: Optional[str] = None, firstname: Optiona
         password = get_password_hash(password)
     
     DataRepository.update_user_profile(id, firstname,lastname, email, password)
+
 
     return {"message": "User profile updated successfully"}
 
@@ -288,3 +307,4 @@ def custom_swagger_ui_html(current_user: str = Depends(verify_api_access)):
 @app.get("/")
 def home():
     return {"message": "Welcome to the FastAPI App"}
+

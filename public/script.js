@@ -104,12 +104,16 @@ function initRegisterForm() {
 }
 
 function initStartGameButton() {
-    const startGameButton = document.querySelector(".js-startgame");
-    if (startGameButton) {
+    const startGameButtons = document.querySelectorAll(".js-startgame");
+    if (startGameButtons) {
+        startGameButtons.forEach(startGameButton => {
         startGameButton.addEventListener("click", async () => {
-            // Attempt to reconnect
-            const isReconnected = await reconnectPolarHeartRateMonitor();
-          
+            
+          loadanimation();
+
+            const isReconnected = await reconnectPolarHeartRateMonitor(); // Perform the async operation
+            
+            removeanimation();   
             if (isReconnected) {
               // Show the next popup if reconnect works
               showPopup({
@@ -133,7 +137,9 @@ function initStartGameButton() {
                   {
                     text: "Connect",
                     action: async () => {
+                    
                       const isConnected = await connectPolarHeartRateMonitor();
+                       
                       if (isConnected) {
                         showPopup({
                           title: "Connection Successful",
@@ -157,8 +163,9 @@ function initStartGameButton() {
             }
           });
           
-            
+        });
         }
+        
     } 
 
 
@@ -324,13 +331,15 @@ function handleFocus(e) {
   
   // Reconnect function
   async function reconnectPolarHeartRateMonitor() {
-    const deviceId = sessionStorage.getItem("bluetoothDeviceId");
+    const deviceId = localStorage.getItem("bluetoothDeviceId");
+    // const deviceId ="39/5Qt9drL95/Se/Qx4FDg==";
     if (!deviceId) return false;
   
     const devices = await navigator.bluetooth.getDevices();
     const device = devices.find((d) => d.id === deviceId);
+   
     if (!device) return false;
-  
+    console.log("run ik hier ???");
     if (!device.watchAdvertisements) return false;
   
     return new Promise((resolve) => {
@@ -354,8 +363,10 @@ function handleFocus(e) {
         optionalServices: ["heart_rate"]
       });
   
-      sessionStorage.setItem("bluetoothDeviceId", device.id);
+      localStorage.setItem("bluetoothDeviceId", device.id);
+      loadanimation();
       await setupHeartRateNotifications(device);
+        removeanimation();
   
       return true;
     } catch (error) {
@@ -403,3 +414,75 @@ function parseHeartRate(value) {
     const flags = data.getUint8(0);
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
 }
+
+
+// Functie om een modal te tonen
+function showModal(button) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
+        <div class="modalroom__content">
+            <button class=" c-button modal__close">x</button>
+            <h2>Room is locked 🔒</h2>
+            <p>You need permission to join this room.</p>
+            <form id="passwordForm">
+                <input class="c-loginForm__inputdiv" type="password" id="passwordInput" placeholder="Enter password" required />
+                <button class="c-button c-mt" type="submit" class="modal__submit">Submit</button>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Sluitknop voor de modal
+    modal.querySelector('.modal__close').addEventListener('click', () => {
+        modal.remove();
+    });
+
+    // Handeling voor het verzenden van het wachtwoord
+    modal.querySelector('#passwordForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Voorkom standaard formulieractie
+        const pass = document.querySelector('#passwordInput').value;
+        if (pass === '1234') {
+            // Redirect naar de link van de knop
+            window.location = button.getAttribute('href');
+        } else {
+            alert('Incorrect password');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.js-room-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const isLocked = button.getAttribute('data-locked') === 'true';
+
+            if (isLocked) {
+                event.preventDefault(); // Voorkom de standaard linkactie
+                showModal(button); // Geef de knop door aan de modal
+            } else {
+                event.preventDefault(); // Zorg ervoor dat de standaard actie geblokkeerd wordt
+                window.location = button.getAttribute('href');
+            }
+        });
+    });
+});
+
+
+
+function loadanimation() {
+    const loadcontainer = document.createElement("div");
+    loadcontainer.className = "c-popup__container";     // Append the element to the body
+    const loader = document.createElement("div");
+    loader.className = "loader";
+    loadcontainer.appendChild(loader);
+    document.body.appendChild(loadcontainer);
+}
+
+function removeanimation() {
+    const loadcontainer = document.querySelector('.c-popup__container');
+    if(loadcontainer) {
+        loadcontainer.remove();
+    }
+}
+

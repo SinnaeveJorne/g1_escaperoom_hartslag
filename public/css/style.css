@@ -201,7 +201,9 @@ body{
    text-align: center;
    padding-top: 1rem;
 }
-
+.c-mt{
+    margin-top: var(--spacing-4);
+}
 .c-loginForm__inputdiv{
     width: 100%;
     display: flex;
@@ -644,6 +646,391 @@ width: 100%;
 }
 
 
+.c-roomsearch{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-6);
+}
+.c-roomsearch__search{
+border: 2px solid var(--neutral-400);
+border-radius: var(--radius-s);
+background-image: url("../img/searchglass.svg");
+background-repeat: no-repeat ;
+background-position:14px  ;
+/* padding:   0 12px 12px 2.5rem; */
+
+}
+.c-roomsearch__search {
+    /* width: calc(100%/3 - 1rem); */
+    /* padding: 10px; */
+    width: 100%;
+    font-size: 16px;
+    padding: 16px 0 16px 2.5rem ;
+}
+
+.c-roomsearch__labelzoeken{
+    position: relative;
+    display: flex;
+    width: fit-content;
+    /* width: calc(100%/2 - 1rem); */
+    flex-grow: 1;
+
+}
+
+.c-roomsearch__label {
+    position: absolute;
+    top: 50%;
+    left: 2.5rem;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+/* .c-roomsearch__search:focus + .c-roomsearch__label,
+.c-roomsearch__search:not(:placeholder-shown) + .c-roomsearch__label {
+    top: 5px;
+    left: 10px;
+    font-size: 12px;
+    color: #333;
+} */
+.c-roomsearch__search:focus + .c-roomsearch__label{
+    top: -7px;
+    
+
+}
+.c-roomsearch__search:not(:placeholder-shown) + .c-roomsearch__label {
+    top: -7px;
+}
+.c-roomsearch__select{
+    border: 2px solid var(--neutral-400);
+    border-radius: var(--radius-s);
+    padding: 16px 4px 16px 1rem;
+    font-size: 16px;
+    /* width: 100%; */
+}
+.c-roomsearch__btn{
+    width: calc(100%/3 - 1rem);
+}
+.c-room{
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    align-items: center;
+    padding: var(--spacing-2);
+    border-radius: var(--radius-l);
+    background-color: var(--blauw-blauw-accent-20);
+    box-shadow: 0 0 5px 0 var(--neutral-400);
+    transition: all 0.3s;
+
+}
+.c-room__img{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.c-room__info{
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+.c-room__svgs path{
+    stroke: var(--blauw-blauw-accent-20);
+}
+.c-room__btn{
+    background-color: var(--neutral-950) ;
+    width: fit-content;
+    gap: 0.5rem;
+}
+.c-room__btn:hover{
+    background-color: var(--neutral-800);
+}
+@media (max-width: 500px){
+    .c-roomsearch__search{
+        width: 100%;
+    }
+    .c-roomsearch__select{
+        width: 100%;
+        height: fit-content;
+    }
+    .c-roomsearch__btn{
+        width: fit-content;
+    }
+    .c-room__info{
+        flex-wrap: wrap;
+    }
+    .c-room + h4 {
+        font-size: 1.5rem;
+    }
+}
+/* Pagination Styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.pagination__list {
+    display: flex;
+    list-style: none;
+}
+
+.pagination__item {
+    margin: 0 5px;
+}
+
+.pagination__link {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 16px;
+    color: var(--neutral-950);
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.pagination__link:hover {
+   color: var(--blauw-blauw-accent-100);
+}
+
+.pagination__link.active {
+    color: var(--blauw-blauw-accent-100);
+}
+
+/* Modaal-overlay */
+.c-roommodal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+/* Modaal-content */
+.c-roommodal__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Titel in de modaal */
+.c-roommodal__title {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+/* Invoerveld voor wachtwoord */
+.c-roommodal__input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Knoppen in de modaal */
+.c-roommodal__button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.c-roommodal__button:hover {
+    background-color: #0056b3;
+}
+
+.c-roommodal__button--cancel {
+    background-color: #f44336;
+}
+
+.c-roommodal__button--cancel:hover {
+    background-color: #d32f2f;
+}
+.modalroom__content {
+    position: fixed;          /* Zorgt ervoor dat het element op een vaste positie staat */
+    top: 50%;                 /* Plaatst het element verticaal in het midden */
+    left: 50%;                /* Plaatst het element horizontaal in het midden */
+    transform: translate(-50%, -50%); /* Verplaatst het element precies naar het midden */
+    z-index: 1;               /* Zorgt ervoor dat het element boven andere elementen komt */
+    background-color: var(--blauw-blauw-accent-50);
+    padding: 5rem;
+    border-radius: var(--radius-l);
+}
+.modal__close{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 1rem;
+}
+
+.loader {
+    border: 8px solid var(--neutral-300); /* Light gray */
+    border-top: 8px solid var(--blauw-blauw-accent-90); /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+
+
+
+.radio-toggle {
+    display: flex;
+    border: 2px solid var(--neutral-700);
+    border-radius: 8px;
+    overflow: hidden;
+    /* width: 80px; */
+    /* height: 40px; */
+    background-color: #fff;
+  }
+
+  .radio-toggle input {
+    display: none;
+  }
+
+  .radio-toggle label {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .radio-toggle label svg {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  /* Standaard stijl */
+  .radio-toggle input:not(:checked) + label {
+    background-color: #fff;
+    color: var(--neutral-700);
+  }
+
+  /* Geactiveerde stijl */
+  .radio-toggle input:checked + label {
+    background-color: var(--neutral-700);
+    color: #fff;
+  }
+
+  /* Animatie om de focus aan te geven */
+  .radio-toggle input:checked + label svg {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  .c-lobbysearch{
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  
+    gap: var(--spacing-3);
+  }
+  .c-personcard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .c-white{
+    color: var(--text-white);
+  }
+  .c-lobbyprrsoon__card{
+    flex-grow: 1;
+  }
+  .c-lobbysearch__flex{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    align-items: center;
+  }
+  .c-w50{
+    width: 50%;
+  }
+  .displaynone{
+    display: none;
+  }
+  .oplipicbackground {
+    background-image: url("../img/olympischvuur_high_res.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+}
+
+.oplipicbackground::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(64, 64, 64, 0.375); /* Transparante overlay */
+    z-index: -1;
+}
+.oplipicbackground::before {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(64, 64, 64, 0.375); /* Transparante overlay */
+    z-index: -1;
+}
+
+  
+  .c-w90{
+    width: 90%;
+  }
+  .c-lobbyfix{
+    width: fit-content;
+}
+.c-lobby{
+    width: auto;
+}
+  @media (max-width: 768px){
+   
+    .c-w50{
+        width: 100%;
+    }
+   .c-lobbyperson{
+    font-size: 1.5rem;
+   }
+    .c-personcard{
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: var(--spacing-3);
+
+    }
+   
+  }
 /* Animation */
 @keyframes fadeIn {
     from {
