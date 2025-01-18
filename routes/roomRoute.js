@@ -36,6 +36,8 @@ router.get('/room/:roomId', (req, res) => {
   } else {
     // Anders, toon de standaard kamerpagina
     res.sendFile(path.join(__dirname, '../public/room.html'));
+    //if the room exist edit the users and set session id to it 
+
   }
 });
 

@@ -1,40 +1,55 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
+const db = require('../config/db'); // Import the database connection
+const router = express.Router();
 const path = require('path');
 
-const router = express.Router();
- 
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  // Validate required fields
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Missing parameters' });
+  }
+
+  try {
+    // Check if the user exists
+    const userQuery = 'SELECT id, firstname, lastname, hashed_password FROM user WHERE email = ?';
+    const users = await db.query(userQuery, [email]);
+
+    if (users.length === 0) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const user = users[0];
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.hashed_password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Store user information in the session
+    req.session.userId = user.id;
+    req.session.userName = `${user.firstname} ${user.lastname}`;
+
+    return res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        name: `${user.firstname} ${user.lastname}`,
+        email,
+      },
+    });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return res.status(500).json({ message: 'An error occurred. Please try again later.' });
+  }
+});
 
 router.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
-  }
-  );
-
-router.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  const users = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/users.json')));
-  const user = users.find(user => user.email === email);
-
-  if (user) {
-    if(user.wachtwoord === password) {
-      req.session.username = user.username, req.session.email = user.email, req.session.password = user.password, req.session.userid = user.id,req.session.isadmin = user.isadmin;
-      res.json({ success: true, message: 'Login successful' });
-    } else {
-      res.json({ success: false, message: 'Het ingevulde wachtwoord is niet correct' });
-    }
-  }
-  else{
-    res.json({ success: false, message: 'Dit account bestaat niet'});
-  }
-   
 });
-
-const crypto = require('crypto');
-
-function generateSessionId() {
-  return crypto.randomBytes(16).toString('hex'); // 32-character hex string
-}
-
 
 module.exports = router;

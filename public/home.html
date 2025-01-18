@@ -1,215 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polar Heart Rate Monitor versie 2</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <style>
-        #user-updates {
-            color: #666;
-            font-style: italic;
-            margin: 10px 0;
-        }
-        .other-users-heartrates {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-        .user-heartrate {
-            margin: 5px 0;
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-        .title {
-            font-size: 50px;
-            font-weight: bold;
-            text-align: center;
-            padding-top: 2rem;
-        }
-        .js-hartslag {
-            font-size: 40px;
-            font-weight: bold;
-            text-align: center;
-            padding-top: 2rem;
-        }
-        .hartje {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            flex-direction: column;
-        }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="script.js"></script>
 </head>
-<body>
-    <input type="text" name="username" placeholder="Enter your username">
-    <p id="user-updates"></p>
-    <p>
-        <button id="connectButton">Connect Heart Rate Monitor</button>
-    </p>
-    <p id="connect"></p>
-    <p id="message"></p>
+<nav class="c-nav">
+    <div class="container">
+    <div class="c-nav__flex">
+    <a>
+        <h2>Home</h2>
+    </a>
 
-    <!-- Section for other users' heart rates -->
-    <div class="other-users-heartrates">
-        <h3>Other Users' Heart Rates:</h3>
-        <div id="other-users"></div>
-    </div>
+    <a>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.552 14.8461C7.552 15.4921 7.80855 16.1117 8.26522 16.5685C8.72188 17.0253 9.34125 17.282 9.98706 17.282C10.6329 17.282 11.2523 17.0253 11.7089 16.5685C12.1656 16.1117 12.4221 15.4921 12.4221 14.8461" fill="#171717"/>
+            <path d="M4.5083 8.1474C4.5083 6.6938 5.08554 5.29975 6.11303 4.27191C7.14052 3.24406 8.5341 2.66663 9.98719 2.66663C11.4403 2.66663 12.8339 3.24406 13.8614 4.27191C14.8888 5.29975 15.4661 6.6938 15.4661 8.1474C15.4661 10.8741 16.0977 13.0649 16.5999 13.9327C16.6532 14.0251 16.6814 14.1299 16.6815 14.2366C16.6816 14.3433 16.6536 14.4482 16.6004 14.5407C16.5473 14.6332 16.4707 14.7101 16.3785 14.7637C16.2862 14.8173 16.1815 14.8457 16.0748 14.8461H3.89954C3.79299 14.8455 3.68847 14.8169 3.59644 14.7632C3.5044 14.7094 3.42807 14.6325 3.37508 14.54C3.32208 14.4476 3.29427 14.3428 3.29443 14.2362C3.2946 14.1296 3.32272 14.025 3.376 13.9327C3.87747 13.0649 4.5083 10.8733 4.5083 8.1474Z" fill="#171717"/>
+            </svg>            
+    </a>
+</div>
+</div>
+</nav>
 
-    <h1 class="title" id="vraagje"></h1>
-    <div class="hartje">
-        <svg width="80" height="80" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.75 26.5625H14.5625L17.6875 21.875L23.9375 31.25L27.0625 26.5625H31.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5.25195 18.75C5.54022 16.1716 6.76874 13.79 8.70259 12.0604C10.6364 10.3309 13.1399 9.37479 15.7344 9.375C20.1465 9.375 23.9258 11.7793 25.5 15.625C27.0742 11.7793 30.8535 9.375 35.2656 9.375C38.0628 9.375 40.7455 10.4862 42.7234 12.4641C44.7013 14.442 45.8125 17.1247 45.8125 19.9219C45.8125 32.8125 25.5 43.75 25.5 43.75C25.5 43.75 18.5938 40.0391 12.8359 34.375" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h2 class="js-hartslag"></h2>
-    </div>
+<div class="container">
+<h1>Welkom Alex</h1>
+<h3 class="c-home__subtitle">Vervolg je opdracht</h3>
+<div class="c-opdracht__maindiv">
+    <a class="c-opdracht__div" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/lopen.png" alt="heart">
+    <h5 class="c-opdracht__title">Lopen</h5>
+    </a>
 
-<script>
-    const socket = io(); // Initialize Socket.IO connection
-    const questions = [
-        { text: 'Hoeveel is 120  + 20 ?', target: 140 },
-        { text: 'Hoeveel is 120 - 0 ?', target: 120 }
-    ];
-    let heartRateCharacteristic;
-    let currentQuestionIndex = 0;
+<a class="c-opdracht__div c-uitdaging__div--shadow" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/situps.png" alt="heart1">
+    <h5 class="c-opdracht__title">Situps</h5>
+</a>
 
-    // Update the number of connected users
-    socket.on('userCount', (data) => {
-        document.getElementById('user-updates').textContent = data.message;
-    });
+<a class="c-opdracht__div c-uitdaging__div--shadow" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/situps.png" alt="heart2">
+    <h5 class="c-opdracht__title">Situps</h5>
+</a>
 
-    // Display other users' heart rates
-    socket.on('otherUserHeartRate', (data) => {
-        const otherUsersDiv = document.getElementById('other-users');
+</div>
 
-        // Create or update an entry for this user
-        let userDiv = document.getElementById(`user-${data.userId}`);
-        if (!userDiv) {
-            userDiv = document.createElement('div');
-            userDiv.id = `user-${data.userId}`;
-            userDiv.className = 'user-heartrate';
-            otherUsersDiv.appendChild(userDiv);
-        }
 
-        // Update the heart rate and device name
-        userDiv.textContent = `User ${data.username}: ${data.heartRate} bpm (${data.deviceName})`;
-    });
+<h3 class="c-home__subtitle">Dagelijkse oefeningen</h3>
+<div class="c-opdracht__maindiv">
 
-    // Remove a user's heart rate display when they disconnect
-    socket.on('userDisconnected', (data) => {
-        const userDiv = document.getElementById(`user-${data.userId}`);
-        if (userDiv) {
-            userDiv.remove();
-        }
-    });
+<a class="c-opdracht__div" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/lopen.png" alt="lopen1">
+    <h5 class="c-opdracht__title">Lopen</h5>
+</a>
+<a class="c-opdracht__div c-uitdaging__div--shadow" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/situps.png" alt="lopen2">
+    <h5 class="c-opdracht__title">Situps</h5>
+</a>
 
-    // Send the heart rate to the server when receiving updates from the Bluetooth device
-    function sendHeartRateToServer(heartRate) {
-        const data = {
-            heartRate: heartRate,
-            deviceName: heartRateCharacteristic.service.device.name,
-            timestamp: new Date().toISOString(),
-            username: document.querySelector('input[name="username"]').value
-        };
-        socket.emit('heartRateUpdate', data);
-    }
+<a class="c-opdracht__div c-uitdaging__div--shadow" href="opdracht.html">
+    <img class="c-opdracht__img" src="img/situps.png" alt="lopen3">
+    <h5 class="c-opdracht__title">Situps</h5>
+</a>
 
-    async function connectPolarHeartRateMonitor() {
-        try {
-            const device = await navigator.bluetooth.requestDevice({
-                filters: [{ services: ['heart_rate'] }],
-                optionalServices: ['heart_rate']
-            });
+</div>
 
-            sessionStorage.setItem('bluetoothDeviceId', device.id);
-            device.addEventListener('gattserverdisconnected', startAdvertisementWatching);
-            await setupHeartRateNotifications(device);
+<h3 class="c-home__subtitle">Uitdagingen</h3>
+<div class="c-opdracht__maindiv">
 
-        } catch (error) {
-            document.getElementById('connect').textContent = `Error: ${error.message}`;
-        }
-    }
+<a class="c-uitdaging__div c-uitdaging__div--shadow" href="/gamelobby">
+    <img class="c-uitdaging__img" src="img/olympischvuur.png" alt="vuurtje">
+    <h5 class="c-uitdaging__title">The olympics</h5>
+</a>
 
-    async function reconnectPolarHeartRateMonitor() {
-        const deviceId = sessionStorage.getItem('bluetoothDeviceId');
-        if (!deviceId) {
-            throw new Error('No previously connected device found.');
-        }
+<div class="c-uitdaging__div c-uitdaging__div--empty">
+    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 11C7.73478 11 7.48043 11.1054 7.29289 11.2929C7.10536 11.4804 7 11.7348 7 12V15C7 15.2652 7.10536 15.5196 7.29289 15.7071C7.48043 15.8946 7.73478 16 8 16C8.26522 16 8.51957 15.8946 8.70711 15.7071C8.89464 15.5196 9 15.2652 9 15V12C9 11.7348 8.89464 11.4804 8.70711 11.2929C8.51957 11.1054 8.26522 11 8 11ZM13 7V5C13 3.67392 12.4732 2.40215 11.5355 1.46447C10.5979 0.526784 9.32608 0 8 0C6.67392 0 5.40215 0.526784 4.46447 1.46447C3.52678 2.40215 3 3.67392 3 5V7C2.20435 7 1.44129 7.31607 0.87868 7.87868C0.316071 8.44129 0 9.20435 0 10V17C0 17.7956 0.316071 18.5587 0.87868 19.1213C1.44129 19.6839 2.20435 20 3 20H13C13.7956 20 14.5587 19.6839 15.1213 19.1213C15.6839 18.5587 16 17.7956 16 17V10C16 9.20435 15.6839 8.44129 15.1213 7.87868C14.5587 7.31607 13.7956 7 13 7ZM5 5C5 4.20435 5.31607 3.44129 5.87868 2.87868C6.44129 2.31607 7.20435 2 8 2C8.79565 2 9.55871 2.31607 10.1213 2.87868C10.6839 3.44129 11 4.20435 11 5V7H5V5ZM14 17C14 17.2652 13.8946 17.5196 13.7071 17.7071C13.5196 17.8946 13.2652 18 13 18H3C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V10C2 9.73478 2.10536 9.48043 2.29289 9.29289C2.48043 9.10536 2.73478 9 3 9H13C13.2652 9 13.5196 9.10536 13.7071 9.29289C13.8946 9.48043 14 9.73478 14 10V17Z" fill="#1B1B1B"/>
+        </svg>        
+</div>
+</div>
+</div>
 
-        const devices = await navigator.bluetooth.getDevices();
-        const device = devices.find((d) => d.id === deviceId);
+<footer class="c-footer">
+    <div class="container">
+    <ul class="c-footer__list">         
+        <li class="c-footer__listitem">
+            <a class="c-footer__listlink c-footer__listlink--active" data-link="home"> 
+            <span class="c-footer__listiconspan">
+            <svg class="c-footer__listicon" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.91675 20.7501V14.7501H14.4167V20.7501H20.4167V11.7501C20.4168 11.6516 20.3975 11.554 20.3599 11.463C20.3222 11.3719 20.267 11.2892 20.1974 11.2195L12.6974 3.71948C12.6277 3.64974 12.545 3.59443 12.454 3.55668C12.3629 3.51894 12.2653 3.49951 12.1667 3.49951C12.0682 3.49951 11.9706 3.51894 11.8795 3.55668C11.7885 3.59443 11.7058 3.64974 11.6361 3.71948L4.13612 11.2195C4.0665 11.2892 4.01129 11.3719 3.97365 11.463C3.936 11.554 3.91667 11.6516 3.91675 11.7501V20.7501H9.91675Z" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+            Home
+        </a>
+    </li>
 
-        if (!device) {
-            throw new Error('Device not found. Please reconnect manually.');
-        }
+    <li class="c-footer__listitem">
+        <a href="stats.html" class="c-footer__listlink" data-link="stats"> 
+        <span class="c-footer__listiconspan">
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.5 20H3.5V5" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21.5 9.5L15.5 14.75L9.5 10.25L3.5 15.5" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> 
+    </span>
+        Statestieken
+    </a>
+</li>
 
-        if (!device.watchAdvertisements) {
-            throw new Error('Device does not support advertisement watching.');
-        }
-
-        device.addEventListener('advertisementreceived', async () => {
-            await setupHeartRateNotifications(device);
-        });
-
-        await device.watchAdvertisements();
-        document.getElementById('connect').textContent = 'Watching for device advertisements...';
-    }
-
-    async function setupHeartRateNotifications(device) {
-        const server = await device.gatt.connect();
-        const service = await server.getPrimaryService('heart_rate');
-        heartRateCharacteristic = await service.getCharacteristic('heart_rate_measurement');
-        await heartRateCharacteristic.startNotifications();
-
-        heartRateCharacteristic.addEventListener('characteristicvaluechanged', handleHeartRateNotification);
-        askQuestion();
-        document.getElementById('connect').textContent = `Connected to ${device.name}`;
-    }
-
-    function handleHeartRateNotification(event) {
-        const heartRate = parseHeartRate(event.target.value);
-        document.querySelector('.js-hartslag').textContent = `Heart Rate: ${heartRate} bpm`;
-
-        // Send heart rate to the server
-        sendHeartRateToServer(heartRate);
-
-        const currentQuestion = questions[currentQuestionIndex];
-        if (heartRate === currentQuestion.target) {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                askQuestion();
-            } else {
-                document.getElementById('vraagje').textContent = 'All questions completed!';
-            }
-        }
-    }
-
-    function parseHeartRate(value) {
-        const data = new DataView(value.buffer);
-        const flags = data.getUint8(0);
-        return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
-    }
-
-    function askQuestion() {
-        const currentQuestion = questions[currentQuestionIndex];
-        document.getElementById('vraagje').textContent = currentQuestion.text;
-    }
-
-    async function startAdvertisementWatching() {
-        try {
-            await reconnectPolarHeartRateMonitor();
-        } catch (error) {
-            console.error('Reconnection failed:', error);
-            document.getElementById('connect').textContent = `${error.message}. Please reconnect manually.`;
-        }
-    }
-
-    document.querySelector("#connectButton").addEventListener("click", connectPolarHeartRateMonitor);
-    window.addEventListener('load', startAdvertisementWatching);
-</script>
+<li class="c-footer__listitem">
+    <a href="profile.html" class="c-footer__listlink" data-link="profile"> 
+    <span class="c-footer__listiconspan">
+        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.8335 15.5C16.1472 15.5 18.8335 12.8137 18.8335 9.5C18.8335 6.18629 16.1472 3.5 12.8335 3.5C9.51979 3.5 6.8335 6.18629 6.8335 9.5C6.8335 12.8137 9.51979 15.5 12.8335 15.5Z" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3.8335 20.75C5.64943 17.6122 8.94756 15.5 12.8335 15.5C16.7194 15.5 20.0176 17.6122 21.8335 20.75" stroke="#404040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>  
+</span>
+    Profiel
+</a>
+</li>
+</ul>
+</div>
+</footer>
 
 </body>
+
 </html>
