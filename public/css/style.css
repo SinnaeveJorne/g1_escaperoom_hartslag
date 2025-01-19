@@ -1110,23 +1110,21 @@ stroke: var(--background-background-color);
     border-radius: 15px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3);
     padding: 20px;
-    width: 250px;
+    height: fit-content;
+    width: 25rem;
     text-align: center;
     z-index: 1000;
     transition: left 0.5s ease; /* Smooth animation for sliding in */
 }
-
-/* Text bubble arrow */
-.c-modeltip::after {
-    content: '';
-    position: absolute;
-    bottom: 4rem;
-    left: 4rem;
-    transform: translateY(-50%);
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent transparent #fff8dc;
+.c-tipmodel__img--rome {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
+
+
 
 /* Overlay */
 .overlay {
@@ -1233,6 +1231,14 @@ body > div.container > div > div > div > svg  > line{
     background: #00000050;
     border-radius: var(--radius-l);
   }
+}
+.c-romequestion{
+  background: #723615;
+  border: 7px solid #3A1707;
+  width: fit-content;
+  text-align: center;
+  margin: 0 auto;
+  padding: .5rem 1rem;
 }
 /* Animation */
 @keyframes fadeIn {
