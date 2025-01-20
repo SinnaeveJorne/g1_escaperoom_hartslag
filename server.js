@@ -6,6 +6,7 @@ const loginRoute = require('./routes/loginRoute');
 const gamelobbyRoute = require('./routes/gamelobbyRoute');
 const roomsRoute = require('./routes/roomsRoute');
 const roomRoute = require('./routes/roomRoute');
+const homeRoute = require('./routes/homeRoute');
 const crypto = require('crypto');
 const secret = "jorne";
 const fs = require('fs');
@@ -14,6 +15,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const MemoryStore = require('memorystore')(session);
 const cookieParser = require('cookie-parser');
+const db = require('./config/db');
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -28,14 +30,21 @@ const s = session({
   store: new MemoryStore({
     checkPeriod: 86400000 // Prune expired entries every 24h
   }),
-  cookie: { secure: false } // Set to `true` if using HTTPS
+  cookie: {
+  secure: false ,   
+  maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
+   sameSite: 'strict',
+   httpOnly: true
+  } // Set to `true` if using HTTPS
+  
 });
+
 
 app.use(cookieParser());
 app.use(s);
 
 app.get('/*', (req, res, next) => {
-  if (req.session.username) {
+  if (req.session.userId) {
     // Check if the path is not a dynamic room path
     if (!req.path.startsWith('/room/')) {
       const roomsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/roomcodes.json')));
@@ -53,16 +62,24 @@ app.get('/*', (req, res, next) => {
         }
       }
 
-      console.log(`ik zit hier`);
-      console.log(`Room found: ${isRoomFound}`);
 
       if (isRoomFound) {
         return res.redirect(`/room/${userRoomName}`);
       }
+      else{
+        if (req.path.startsWith('/register') || req.path.startsWith('/login')){
+          return res.redirect('/homeroute');
+        }
+        else{
+          return next();
+        }
+      }
     }
-    // If no redirect is needed, proceed to the next middleware
     return next();
-  } else {
+  } 
+  
+  
+  else {
     // Allow access to login and register pages
     if (req.path === '/login' || req.path === '/register') {
       return next();
@@ -72,12 +89,14 @@ app.get('/*', (req, res, next) => {
   }
 });
 
+
 // Mount register and login routes
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(gamelobbyRoute);
 app.use(roomsRoute);
 app.use(roomRoute);
+app.use(homeRoute);
 
 // Create an HTTP server from the Express app
 const server = http.createServer(app);
@@ -88,10 +107,20 @@ initSocket(server, s);
 // Use environment variable for port or fallback to 3000
 const port = process.env.PORT || 3000;
 
+
+app.use((req, res) => {
+  res.redirect('/homeroute');
+  
+});
+
+
+
 // Start the server
 server.listen(port, () => {
   const address = server.address();
   const host = address.address === '::' ? 'localhost' : address.address;
   const serverUrl = `http://${host}:${address.port}`;
   console.log(`Server is running on ${serverUrl}`);
+  const deleteRoomQuery = 'DELETE FROM gameroom';
+  db.query(deleteRoomQuery);
 });

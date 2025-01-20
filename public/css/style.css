@@ -169,6 +169,13 @@ body{
     padding: var(--spacing-4) var(--spacing-6);
 }
 
+ .c-nav__flex{
+    display: 100%;
+    justify-content: space-between; 
+    align-items: center;
+    display: flex;
+ }
+
 .c-nav__return{
     display: flex;
     align-items: center;
@@ -190,7 +197,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 70dvh;
+    min-height: fit-content;
     gap: var(--spacing-6);
     width: 100%;
 }
@@ -262,6 +269,22 @@ body{
     animation: fadein 0.3s forwards;
 }
 
+.c-input__validIcon{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: var(--spacing-5);
+    animation: fadein 0.3s forwards;
+}
+
+.c-input--valid{
+    border-color: rgb(40, 192, 40);
+}
+
+.c-input__errorIcon--valid path{
+    fill: rgb(40, 192, 40);
+}
+
 .c-input--error{
     border-color: var(--rood-rood-accent-100);
 }
@@ -279,6 +302,11 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.c-button:hover{
+    background-color: var(--blauw-blauw-accent-70);
+    cursor: pointer;
 }
 
 .c-loginForm__subtitle{
@@ -325,11 +353,11 @@ body{
 
 
 .c-opdracht__div{
-    width: 15.625rem;
+    width: 30%;
     position: relative;
     flex-shrink: 0;
     border-radius: var(--radius-l);
-    height: 7.5rem;
+    height: 14rem;
 }
 
 .c-opdracht__title{
@@ -697,16 +725,16 @@ background-position:14px  ;
 
 .c-room{
     flex-wrap: wrap;
-    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
     gap: var(--spacing-3);
     align-items: center;
-    padding: var(--spacing-2);
-    border-radius: var(--radius-l);
+    padding: var(--spacing-4);
+    border-radius: var(--radius-m);
     background-color: var(--blauw-blauw-accent-20);
     box-shadow: 0 0 5px 0 var(--neutral-400);
     transition: all 0.3s;
+    animation: shake 0.3s forwards;
 
 }
 .c-room__img{
@@ -1088,5 +1116,20 @@ gap: var(--spacing-3);
     }
     to {
         opacity: 1;
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translate3d(0, 0, 0); /* Default position */
+    }
+    25% {
+        transform: translate3d(-1px, -1px, 0); /* Slight top-left */
+    }
+    50% {
+        transform: translate3d(1px, -1px, 0); /* Slight top-right */
+    }
+    75% {
+        transform: translate3d(-1px, 1px, 0); /* Slight bottom-left */
     }
 }

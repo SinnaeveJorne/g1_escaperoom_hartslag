@@ -1,90 +1,190 @@
+
+
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
     initLoginForm();
     initRegisterForm();
     initStartGameButton();
-    initrooms()
+    // initRooms();
+    initRoom();
 }
 
 
-function initrooms()
+function initRoom()
 {
-if(document.querySelector('.js-rooms'))
+if(document.querySelector('.js-room'))
 {
-    const makeroombutton = document.querySelector('.js-makeroom')
-    makeroombutton.addEventListener('click',function(){
-        showPopup({
-            title: "Kamer gegevens",
-            type: "start_game",
-            buttons: [
-              {
-                text: "Continue",
-                action: () => {
-                
-                }
-              }
-            ]
-          });
-    })
+//this is person_card
+//     <div class="c-room c-lobbyprrsoon__card">
+//     <div class="c-room__info">
+//         <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+//         <h3 class="c-room__title c-lobbyperson">PixelPhantom</h3>
+//     </div>
+//     <div class="c-room__info">
+//         <a href="./room/123" class="c-button c-room__btn">
+//             <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                 <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516 9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.32306C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.6098 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
+//                 </svg>
+//             verwijderen
+//         </a>
+//     </div>
+// </div>
 
-    const socket = io(""); // Replace with your server URL
-socket.on("connection", () => {
-    console.log("Connected to server");
+    const socket = io("/room"); // Connect to the namespace '/room'
+    const usersdiv =  document.querySelector('.js-room-users');
+
+    const roomid = window.location.pathname.split('/').pop();
+    socket.emit("joinroom", roomid); // Emit 'joinroom' with the room ID
+    
+    // Listen for messages
+    socket.on('loadusers', (users) => {
+        users.users.forEach(user => {
+        const userdiv = document.createElement('div');
+        userdiv.dataset.id = user.id;
+        userdiv.classList.add('c-room', 'c-lobbyperson__card');
+        userdiv.innerHTML = `
+            <div class="c-room__info">
+                <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+                <h3 class="c-room__title c-lobbyperson">${user.userName}</h3>
+            </div>
+            <div class="c-room__info">
+                <a href="./room/${roomid}" class="c-button c-room__btn">
+                    <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.
+9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516
+    9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.323
+    06C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.609
+    8 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
+                    </svg>
+                verwijderen
+            </a>
+        </div>
+    `;
+    usersdiv.appendChild(userdiv);
+    let playerspan = document.querySelector('.js-roomcount');
+    const aantalplayers = document.querySelectorAll('.c-room').length;
+    playerspan = aantalplayers;
 });
+    });
 
-console.log("gzegz");
+    socket.on('userjoined', (user) => {
+            
+        const userdiv = document.createElement('div');
+        userdiv.dataset.id = user.id;
+        userdiv.classList.add('c-room', 'c-lobbyperson__card');
+        userdiv.innerHTML = `
+            <div class="c-room__info">
+                <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+                <h3 class="c-room__title c-lobbyperson">${user.userName}</h3>
+            </div>
+            <div class="c-room__info">
+                <a href="./room/${roomid}" class="c-button c-room__btn">
+                    <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.
+9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516
+    9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.323
+    06C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.609
+    8 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
+                    </svg>
+                verwijderen
+            </a>
+        </div>
+    `;
+    usersdiv.appendChild(userdiv);
+    });
+
+    socket.on('userleft', (user) => {
+        console.log("dit is een test van de federale overheid");
+        const userdiv = document.querySelector(`.c-room[data-id="${user.id}"]`);
+        console.log(user);
+        userdiv.remove();
+    });
+
+   
 
 
-let xhrstatus = new XMLHttpRequest();
-xhrstatus.open("GET", "/getrooms", true);
-xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
 
-xhrstatus.onreadystatechange = function () {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        const response = JSON.parse(this.responseText);
-        if(response.success == true) {
-           const rooms = response.rooms;
-           document.querySelector('.js-rooms').innerHTML = '';
-           let roomlist = "";
-            rooms.forEach(room => {
-                const playerCount = room.users.length;
-                const roomHTML = `
-                <div class="c-room">
-                    <div class="c-room__info">
-                        <img src="img/profile_1.png" alt="profile" class="c-room__img">
-                        <h3 class="c-room__title">${room.roomname}</h3>
-                    </div>
-                    <div class="c-room__info">
-                        <h4 class="c-room__players">${playerCount}</h4>
-                        <a href="./room/${room.roomcode}" class="c-button c-room__btn">
-                            <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Join
-                        </a>
-                    </div>
-                </div>`;
-            roomlist += roomHTML;
-            });
-            document.querySelector('.js-rooms').innerHTML = roomlist;
-        }
-        else{
-            //go to /login
-            window.location.href = '/login';
-        }
-    }
-};
-
-xhrstatus.onerror = function () {
-    console.error('An error occurred during the AJAX request.');
-};
-xhrstatus.send();
 }
 }
+
+// function initRooms()
+// {
+// if(document.querySelector('.js-rooms'))
+// {
+//     const makeroombutton = document.querySelector('.js-makeroom')
+//     makeroombutton.addEventListener('click',function(){
+//         showPopup({
+//             title: "Kamer gegevens",
+//             type: "start_game",
+//             buttons: [
+//               {
+//                 text: "Continue",
+//                 action: () => {
+                
+//                 }
+//               }
+//             ]
+//           });
+//     })
+
+//     const socket = io("/room"); // Replace with your server URL
+// socket.on("connection", () => {
+//     console.log("Connected to server");
+// });
+
+
+
+// let xhrstatus = new XMLHttpRequest();
+// xhrstatus.open("GET", "/getrooms", true);
+// xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+// xhrstatus.onreadystatechange = function () {
+//     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+//         const response = JSON.parse(this.responseText);
+//         if(response.success == true) {
+//            const rooms = response.rooms;
+//            document.querySelector('.js-rooms').innerHTML = '';
+//            let roomlist = "";
+//             rooms.forEach(room => {
+//                 const playerCount = room.users.length;
+//                 const roomHTML = `
+//                 <div class="c-room">
+//                     <div class="c-room__info">
+//                         <img src="img/profile_1.png" alt="profile" class="c-room__img">
+//                         <h3 class="c-room__title">${room.roomname}</h3>
+//                     </div>
+//                     <div class="c-room__info">
+//                         <h4 class="c-room__players">${playerCount}</h4>
+//                         <a href="./room/${room.roomcode}" class="c-button c-room__btn">
+//                             <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                                 <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                             </svg>
+//                             Join
+//                         </a>
+//                     </div>
+//                 </div>`;
+//             roomlist += roomHTML;
+//             });
+//             document.querySelector('.js-rooms').innerHTML = roomlist;
+//         }
+//         else{
+//             //go to /login
+//             window.location.href = '/login';
+//         }
+//     }
+// };
+
+// xhrstatus.onerror = function () {
+//     console.error('An error occurred during the AJAX request.');
+// };
+// xhrstatus.send();
+// }
+// }
 
 
 function initLoginForm() {
@@ -117,11 +217,19 @@ function initLoginForm() {
                         body: JSON.stringify(data)
                     });
 
-                    if (response.ok) {
-                        window.location.href = '/dashboard.html';
-                    } else {
-                        const error = await response.text();
-                        alert(error);
+                    const jsonresponse = await response.json();;
+
+                    if (jsonresponse.type == 'succes')
+                    {
+                        window.location.href = '/dashboard';
+                       
+                    } 
+                    else {
+                        const input = document.querySelector(`.js-input[name="${jsonresponse.inputtype}"]`);
+                        input.classList.add('c-input--error');
+                        showerror(input.closest('.c-label').querySelector('.c-input__errorSpan'), jsonresponse.message);
+                        removeicon(input.parentElement);
+                        summonicon(input.parentElement, "invalid");
                     }
                 } catch (error) {
                     alert('Er is iets misgegaan. Probeer het later opnieuw.');
@@ -166,13 +274,22 @@ function initRegisterForm() {
                         body: JSON.stringify(data)
                     });
 
-                    if (response.ok) {
-                        window.location.href = '/login.html';
-                    } else {
-                        const error = await response.text();
-                        alert(error);
+                    const jsonresponse = await response.json();;
+
+                    if (jsonresponse.type == 'succes')
+                    {
+                        window.location.href = '/login';
+                       
+                    } 
+                    else {
+                        const input = document.querySelector(`.js-input[name="${jsonresponse.inputtype}"]`);
+                        input.classList.add('c-input--error');
+                        showerror(input.closest('.c-label').querySelector('.c-input__errorSpan'), jsonresponse.message);
+                        removeicon(input.parentElement);
+                        summonicon(input.parentElement, "invalid");
                     }
-                } catch (error) {
+                } 
+                catch (error) {
                     alert('Er is iets misgegaan. Probeer het later opnieuw.');
                 }
             }
@@ -200,7 +317,8 @@ function initStartGameButton() {
                   {
                     text: "Continue",
                     action: () => {
-                    
+                        //go to /rooms
+                        window.location.href = '/rooms';
                     }
                   }
                 ]
@@ -250,11 +368,13 @@ function initStartGameButton() {
 function validateInput(e) {
     const inputspan = e.target.parentElement;
     const error = e.target.closest('.c-label').querySelector('.c-input__errorSpan'); 
+    let isvalid = true;
     
     if(e.target.value === '') {
         e.target.classList.add('c-input--error');
         showerror(error,'Dit veld is verplicht');
-        summonicon(inputspan,error);
+        summonicon(inputspan,"invalid");
+        isvalid = false;
         return false;
     }
 
@@ -262,7 +382,8 @@ function validateInput(e) {
         if(!validateEmail(e.target.value)) {
             e.target.classList.add('c-input--error');
             showerror(error,'Dit is geen geldig emailadres');
-            summonicon(inputspan,error);
+            summonicon(inputspan,"invalid");
+            isvalid = false;
             return false;
         }
     }
@@ -273,7 +394,7 @@ function validateInput(e) {
             if(!re.test(e.target.value)) {
                 e.target.classList.add('c-input--error');
                 showerror(error,'Dit wachtwoord is niet veilig');
-                summonicon(inputspan,error);
+                summonicon(inputspan,"invalid");
                 return false;
             } else {
                 const passwordFields = document.querySelectorAll('input[type="password"]');
@@ -288,13 +409,20 @@ function validateInput(e) {
                     if(passwordFields[0].value !== passwordFields[1].value) {
                         document.querySelector('.js-repeatpassword').classList.add('c-input--error');
                         showerror(document.querySelector('.c-input__errorSpan--repeatpassword'),'Wachtwoorden komen niet overeen');
-                        summonicon(document.querySelector('.js-repeatpassword').parentElement, document.querySelector('.c-input__errorSpan--repeatpassword'));
+                        summonicon(document.querySelector('.js-repeatpassword').parentElement, "invalid");
                         return false;
                     }
                 }
             }
         }
     }
+
+    if(isvalid == true) {
+        e.target.classList.add('c-input--valid');
+        summonicon(inputspan,"valid");
+    }
+
+
     return true;
 }
 
@@ -303,7 +431,8 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-function summonicon(inputspan) {
+function summonicon(inputspan,status) {
+    if(status === "invalid") {
     if(!inputspan.querySelector('.c-input__errorIcon')) {
         inputspan.insertAdjacentHTML('beforeend', `
             <svg class="c-input__errorIcon" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -315,6 +444,16 @@ function summonicon(inputspan) {
             </svg>
         `);
     }
+}
+    if(status === "valid") {
+        if(!inputspan.querySelector('.c-input__errorIcon')) {
+            inputspan.insertAdjacentHTML('beforeend', `<svg class="c-input__errorIcon c-input__errorIcon--valid" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5 2.15625C9.65198 2.15625 7.84547 2.70425 6.30889 3.73096C4.77232 4.75766 3.57471 6.21695 2.8675 7.9243C2.1603 9.63165 1.97526 11.5104 2.33579 13.3229C2.69632 15.1354 3.58623 16.8003 4.89298 18.107C6.19972 19.4138 7.86462 20.3037 9.67713 20.6642C11.4896 21.0247 13.3684 20.8397 15.0757 20.1325C16.783 19.4253 18.2423 18.2277 19.269 16.6911C20.2958 15.1545 20.8438 13.348 20.8438 11.5C20.8411 9.02269 19.8559 6.64759 18.1041 4.89586C16.3524 3.14413 13.9773 2.15887 11.5 2.15625ZM15.6023 9.85227L10.571 14.8835C10.5043 14.9503 10.425 15.0034 10.3377 15.0395C10.2505 15.0757 10.157 15.0943 10.0625 15.0943C9.96805 15.0943 9.87452 15.0757 9.78727 15.0395C9.70001 15.0034 9.62074 14.9503 9.55399 14.8835L7.39774 12.7273C7.26287 12.5924 7.1871 12.4095 7.1871 12.2188C7.1871 12.028 7.26287 11.8451 7.39774 11.7102C7.5326 11.5754 7.71552 11.4996 7.90625 11.4996C8.09698 11.4996 8.2799 11.5754 8.41477 11.7102L10.0625 13.3589L14.5852 8.83523C14.652 8.76845 14.7313 8.71548 14.8185 8.67934C14.9058 8.6432 14.9993 8.6246 15.0938 8.6246C15.1882 8.6246 15.2817 8.6432 15.369 8.67934C15.4562 8.71548 15.5355 8.76845 15.6023 8.83523C15.669 8.90201 15.722 8.98129 15.7582 9.06854C15.7943 9.15579 15.8129 9.24931 15.8129 9.34375C15.8129 9.43819 15.7943 9.53171 15.7582 9.61896C15.722 9.70621 15.669 9.78549 15.6023 9.85227Z" fill="#AECA5A"/>
+</svg>
+`);
+        }
+    }
+                   
 }
 
 function removeicon(inputspan) {
@@ -339,8 +478,14 @@ function handleFocus(e) {
         e.target.classList.remove('c-input--error');
         const inputspan = e.target.parentElement;
         const error = e.target.closest('.c-label').querySelector('.c-input__errorSpan');
-        removeicon(inputspan);
+        removeicon(inputspan, "valid");
         clearerror(error);
+    }
+    else
+    {
+        e.target.classList.remove('c-input--valid');
+        const inputspan = e.target.parentElement;
+        removeicon(inputspan, "valid");
     }
 }
 
@@ -420,16 +565,27 @@ function handleFocus(e) {
     if (!device.watchAdvertisements) return false;
   
     return new Promise((resolve) => {
-      device.addEventListener("advertisementreceived", async () => {
-        try {
-          await setupHeartRateNotifications(device);
-          resolve(true);
-        } catch {
+        const timeout = setTimeout(() => {
+          resolve(false); // Resolve with false if it times out
+          console.log("oei");
+        }, 5000); // 5 seconds timeout
+      
+        device.addEventListener("advertisementreceived", async () => {
+          try {
+            clearTimeout(timeout); // Clear the timeout if the event fires
+            await setupHeartRateNotifications(device);
+            resolve(true);
+          } catch {
+            resolve(false);
+          }
+        });
+      
+        device.watchAdvertisements().catch(() => {
+          clearTimeout(timeout); // Clear the timeout if an error occurs
           resolve(false);
-        }
+        });
       });
-      device.watchAdvertisements().catch(() => resolve(false));
-    });
+      
   }
   
   // Connect function

@@ -1,40 +1,83 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
+const db = require('../config/db'); // Import the database connection
+const router = express.Router();
 const path = require('path');
 
-const router = express.Router();
- 
 
-router.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/login.html'));
-  }
-  );
-
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const users = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/users.json')));
-  const user = users.find(user => user.email === email);
 
-  if (user) {
-    if(user.wachtwoord === password) {
-      req.session.username = user.username, req.session.email = user.email, req.session.password = user.password, req.session.userid = user.id,req.session.isadmin = user.isadmin;
-      res.json({ success: true, message: 'Login successful' });
-    } else {
-      res.json({ success: false, message: 'Het ingevulde wachtwoord is niet correct' });
+  // Validate required fields
+  if (!email || !password) {
+    return res.json({ 
+      message: 'Vereiste parameters ontbreken', 
+      inputtype: !email ? 'email' : 'password'  // Specify which field is missing
+    });
+  }
+
+  try {
+    // Check if the user exists
+    const userQuery = 'SELECT * FROM user WHERE email = ?';
+    const users = await db.query(userQuery, [email]);
+
+    if (users.length === 0) {
+      return res.json({
+        type: 'error',
+        message: 'Ongeldige e-mail of wachtwoord',
+        inputtype: 'email'  // Specify the issue with the email
+      });
     }
+
+    const user = users[0];
+
+    console.log(user);
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.hashed_password);
+
+    if (!isPasswordValid) {
+      return res.json({
+        type: 'error',
+        message: 'Ongeldige e-mail of wachtwoord',
+        inputtype: 'password'  // Specify the issue with the password
+      });
+    }
+
+    // Store user information in the session
+    req.session.userId = user.id;
+    req.session.userName = user.username;
+
+    return res.json({
+      type: 'succes', // Dutch message
+    });
+  } catch (error) {
+    console.error('Fout bij inloggen:', error); // Dutch message
+    return res.json({ message: 'Er is een fout opgetreden. Probeer het later opnieuw.' }); // Dutch message
   }
-  else{
-    res.json({ success: false, message: 'Dit account bestaat niet'});
-  }
-   
 });
 
-const crypto = require('crypto');
+// Check if the user is already logged in (for session validation)
+router.get('/login', (req, res) => {
+  if (req.session.userId) {
+    return res.json({
+      message: 'Je bent al ingelogd', // Dutch message
+      userId: req.session.userId
+    });
+  }
+  res.sendFile(path.join(__dirname, '../public/login.html'));
+});
 
-function generateSessionId() {
-  return crypto.randomBytes(16).toString('hex'); // 32-character hex string
-}
-
+// Optional: Test route to check session info
+router.get('/test', (req, res) => {
+  if (req.session.userId) {
+    return res.json({
+      message: 'Je bent ingelogd', // Dutch message
+      user: {
+        id: req.session.userId
+      }
+    });
+  }
+  res.json({ message: 'Je bent niet ingelogd' }); // Dutch message
+});
 
 module.exports = router;
