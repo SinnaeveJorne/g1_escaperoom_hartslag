@@ -6,7 +6,7 @@ function init() {
     initLoginForm();
     initRegisterForm();
     initStartGameButton();
-    initRooms();
+    // initRooms();
     initRoom();
 }
 
@@ -39,9 +39,7 @@ if(document.querySelector('.js-room'))
     
     // Listen for messages
     socket.on('loadusers', (users) => {
-        console.log(users);
-        users.forEach(user => {
-            console.log(user);
+        users.users.forEach(user => {
         const userdiv = document.createElement('div');
         userdiv.dataset.id = user.id;
         userdiv.classList.add('c-room', 'c-lobbyperson__card');
@@ -110,82 +108,82 @@ if(document.querySelector('.js-room'))
 }
 }
 
-function initRooms()
-{
-if(document.querySelector('.js-rooms'))
-{
-    const makeroombutton = document.querySelector('.js-makeroom')
-    makeroombutton.addEventListener('click',function(){
-        showPopup({
-            title: "Kamer gegevens",
-            type: "start_game",
-            buttons: [
-              {
-                text: "Continue",
-                action: () => {
+// function initRooms()
+// {
+// if(document.querySelector('.js-rooms'))
+// {
+//     const makeroombutton = document.querySelector('.js-makeroom')
+//     makeroombutton.addEventListener('click',function(){
+//         showPopup({
+//             title: "Kamer gegevens",
+//             type: "start_game",
+//             buttons: [
+//               {
+//                 text: "Continue",
+//                 action: () => {
                 
-                }
-              }
-            ]
-          });
-    })
+//                 }
+//               }
+//             ]
+//           });
+//     })
 
-    const socket = io("/room"); // Replace with your server URL
-socket.on("connection", () => {
-    console.log("Connected to server");
-});
+//     const socket = io("/room"); // Replace with your server URL
+// socket.on("connection", () => {
+//     console.log("Connected to server");
+// });
 
 
 
-let xhrstatus = new XMLHttpRequest();
-xhrstatus.open("GET", "/getrooms", true);
-xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+// let xhrstatus = new XMLHttpRequest();
+// xhrstatus.open("GET", "/getrooms", true);
+// xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-xhrstatus.onreadystatechange = function () {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        const response = JSON.parse(this.responseText);
-        if(response.success == true) {
-           const rooms = response.rooms;
-           document.querySelector('.js-rooms').innerHTML = '';
-           let roomlist = "";
-            rooms.forEach(room => {
-                const playerCount = room.users.length;
-                const roomHTML = `
-                <div class="c-room">
-                    <div class="c-room__info">
-                        <img src="img/profile_1.png" alt="profile" class="c-room__img">
-                        <h3 class="c-room__title">${room.roomname}</h3>
-                    </div>
-                    <div class="c-room__info">
-                        <h4 class="c-room__players">${playerCount}</h4>
-                        <a href="./room/${room.roomcode}" class="c-button c-room__btn">
-                            <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Join
-                        </a>
-                    </div>
-                </div>`;
-            roomlist += roomHTML;
-            });
-            document.querySelector('.js-rooms').innerHTML = roomlist;
-        }
-        else{
-            //go to /login
-            window.location.href = '/login';
-        }
-    }
-};
+// xhrstatus.onreadystatechange = function () {
+//     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+//         const response = JSON.parse(this.responseText);
+//         if(response.success == true) {
+//            const rooms = response.rooms;
+//            document.querySelector('.js-rooms').innerHTML = '';
+//            let roomlist = "";
+//             rooms.forEach(room => {
+//                 const playerCount = room.users.length;
+//                 const roomHTML = `
+//                 <div class="c-room">
+//                     <div class="c-room__info">
+//                         <img src="img/profile_1.png" alt="profile" class="c-room__img">
+//                         <h3 class="c-room__title">${room.roomname}</h3>
+//                     </div>
+//                     <div class="c-room__info">
+//                         <h4 class="c-room__players">${playerCount}</h4>
+//                         <a href="./room/${room.roomcode}" class="c-button c-room__btn">
+//                             <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                                 <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                                 <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+//                             </svg>
+//                             Join
+//                         </a>
+//                     </div>
+//                 </div>`;
+//             roomlist += roomHTML;
+//             });
+//             document.querySelector('.js-rooms').innerHTML = roomlist;
+//         }
+//         else{
+//             //go to /login
+//             window.location.href = '/login';
+//         }
+//     }
+// };
 
-xhrstatus.onerror = function () {
-    console.error('An error occurred during the AJAX request.');
-};
-xhrstatus.send();
-}
-}
+// xhrstatus.onerror = function () {
+//     console.error('An error occurred during the AJAX request.');
+// };
+// xhrstatus.send();
+// }
+// }
 
 
 function initLoginForm() {
@@ -218,11 +216,19 @@ function initLoginForm() {
                         body: JSON.stringify(data)
                     });
 
-                    if (response.ok) {
-                        window.location.href = '/dashboard.html';
-                    } else {
-                        const error = await response.text();
-                        alert(error);
+                    const jsonresponse = await response.json();;
+
+                    if (jsonresponse.type == 'succes')
+                    {
+                        window.location.href = '/dashboard';
+                       
+                    } 
+                    else {
+                        const input = document.querySelector(`.js-input[name="${jsonresponse.inputtype}"]`);
+                        input.classList.add('c-input--error');
+                        showerror(input.closest('.c-label').querySelector('.c-input__errorSpan'), jsonresponse.message);
+                        removeicon(input.parentElement);
+                        summonicon(input.parentElement, "invalid");
                     }
                 } catch (error) {
                     alert('Er is iets misgegaan. Probeer het later opnieuw.');
@@ -267,13 +273,22 @@ function initRegisterForm() {
                         body: JSON.stringify(data)
                     });
 
-                    if (response.ok) {
-                        window.location.href = '/login.html';
-                    } else {
-                        const error = await response.text();
-                        alert(error);
+                    const jsonresponse = await response.json();;
+
+                    if (jsonresponse.type == 'succes')
+                    {
+                        window.location.href = '/login';
+                       
+                    } 
+                    else {
+                        const input = document.querySelector(`.js-input[name="${jsonresponse.inputtype}"]`);
+                        input.classList.add('c-input--error');
+                        showerror(input.closest('.c-label').querySelector('.c-input__errorSpan'), jsonresponse.message);
+                        removeicon(input.parentElement);
+                        summonicon(input.parentElement, "invalid");
                     }
-                } catch (error) {
+                } 
+                catch (error) {
                     alert('Er is iets misgegaan. Probeer het later opnieuw.');
                 }
             }
@@ -352,11 +367,13 @@ function initStartGameButton() {
 function validateInput(e) {
     const inputspan = e.target.parentElement;
     const error = e.target.closest('.c-label').querySelector('.c-input__errorSpan'); 
+    let isvalid = true;
     
     if(e.target.value === '') {
         e.target.classList.add('c-input--error');
         showerror(error,'Dit veld is verplicht');
-        summonicon(inputspan,error);
+        summonicon(inputspan,"invalid");
+        isvalid = false;
         return false;
     }
 
@@ -364,7 +381,8 @@ function validateInput(e) {
         if(!validateEmail(e.target.value)) {
             e.target.classList.add('c-input--error');
             showerror(error,'Dit is geen geldig emailadres');
-            summonicon(inputspan,error);
+            summonicon(inputspan,"invalid");
+            isvalid = false;
             return false;
         }
     }
@@ -375,7 +393,7 @@ function validateInput(e) {
             if(!re.test(e.target.value)) {
                 e.target.classList.add('c-input--error');
                 showerror(error,'Dit wachtwoord is niet veilig');
-                summonicon(inputspan,error);
+                summonicon(inputspan,"invalid");
                 return false;
             } else {
                 const passwordFields = document.querySelectorAll('input[type="password"]');
@@ -390,13 +408,20 @@ function validateInput(e) {
                     if(passwordFields[0].value !== passwordFields[1].value) {
                         document.querySelector('.js-repeatpassword').classList.add('c-input--error');
                         showerror(document.querySelector('.c-input__errorSpan--repeatpassword'),'Wachtwoorden komen niet overeen');
-                        summonicon(document.querySelector('.js-repeatpassword').parentElement, document.querySelector('.c-input__errorSpan--repeatpassword'));
+                        summonicon(document.querySelector('.js-repeatpassword').parentElement, "invalid");
                         return false;
                     }
                 }
             }
         }
     }
+
+    if(isvalid == true) {
+        e.target.classList.add('c-input--valid');
+        summonicon(inputspan,"valid");
+    }
+
+
     return true;
 }
 
@@ -405,7 +430,8 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-function summonicon(inputspan) {
+function summonicon(inputspan,status) {
+    if(status === "invalid") {
     if(!inputspan.querySelector('.c-input__errorIcon')) {
         inputspan.insertAdjacentHTML('beforeend', `
             <svg class="c-input__errorIcon" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -417,6 +443,16 @@ function summonicon(inputspan) {
             </svg>
         `);
     }
+}
+    if(status === "valid") {
+        if(!inputspan.querySelector('.c-input__errorIcon')) {
+            inputspan.insertAdjacentHTML('beforeend', `<svg class="c-input__errorIcon c-input__errorIcon--valid" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5 2.15625C9.65198 2.15625 7.84547 2.70425 6.30889 3.73096C4.77232 4.75766 3.57471 6.21695 2.8675 7.9243C2.1603 9.63165 1.97526 11.5104 2.33579 13.3229C2.69632 15.1354 3.58623 16.8003 4.89298 18.107C6.19972 19.4138 7.86462 20.3037 9.67713 20.6642C11.4896 21.0247 13.3684 20.8397 15.0757 20.1325C16.783 19.4253 18.2423 18.2277 19.269 16.6911C20.2958 15.1545 20.8438 13.348 20.8438 11.5C20.8411 9.02269 19.8559 6.64759 18.1041 4.89586C16.3524 3.14413 13.9773 2.15887 11.5 2.15625ZM15.6023 9.85227L10.571 14.8835C10.5043 14.9503 10.425 15.0034 10.3377 15.0395C10.2505 15.0757 10.157 15.0943 10.0625 15.0943C9.96805 15.0943 9.87452 15.0757 9.78727 15.0395C9.70001 15.0034 9.62074 14.9503 9.55399 14.8835L7.39774 12.7273C7.26287 12.5924 7.1871 12.4095 7.1871 12.2188C7.1871 12.028 7.26287 11.8451 7.39774 11.7102C7.5326 11.5754 7.71552 11.4996 7.90625 11.4996C8.09698 11.4996 8.2799 11.5754 8.41477 11.7102L10.0625 13.3589L14.5852 8.83523C14.652 8.76845 14.7313 8.71548 14.8185 8.67934C14.9058 8.6432 14.9993 8.6246 15.0938 8.6246C15.1882 8.6246 15.2817 8.6432 15.369 8.67934C15.4562 8.71548 15.5355 8.76845 15.6023 8.83523C15.669 8.90201 15.722 8.98129 15.7582 9.06854C15.7943 9.15579 15.8129 9.24931 15.8129 9.34375C15.8129 9.43819 15.7943 9.53171 15.7582 9.61896C15.722 9.70621 15.669 9.78549 15.6023 9.85227Z" fill="#AECA5A"/>
+</svg>
+`);
+        }
+    }
+                   
 }
 
 function removeicon(inputspan) {
@@ -441,8 +477,14 @@ function handleFocus(e) {
         e.target.classList.remove('c-input--error');
         const inputspan = e.target.parentElement;
         const error = e.target.closest('.c-label').querySelector('.c-input__errorSpan');
-        removeicon(inputspan);
+        removeicon(inputspan, "valid");
         clearerror(error);
+    }
+    else
+    {
+        e.target.classList.remove('c-input--valid');
+        const inputspan = e.target.parentElement;
+        removeicon(inputspan, "valid");
     }
 }
 

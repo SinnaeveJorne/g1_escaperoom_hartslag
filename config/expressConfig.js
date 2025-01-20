@@ -8,8 +8,12 @@ const app = express();
 app.use(cors({
   origin: '*', // Allow all origins for testing, adjust as needed
   methods: ['GET', 'POST'],
-  allowedHeaders: ['*']
+  allowedHeaders: ['*'],
 }));
+
+app.set('view engine', 'ejs');
+app.set('views', './views'); // Directory where your EJS templates will be
+
 
 // Serve static files from the 'public' folder
 const publicPath = path.join(__dirname, '../public');

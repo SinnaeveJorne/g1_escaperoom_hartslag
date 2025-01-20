@@ -1,5 +1,5 @@
 const cookieParser = require('cookie-parser');
-
+const db = require('./db');
 
 module.exports = (server, sessionMiddleware) => {
   const io = require('socket.io')(server, {
@@ -11,129 +11,85 @@ module.exports = (server, sessionMiddleware) => {
     },
   });
 
+  // Wrap middleware for socket connections
   const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
-  io.use(wrap(cookieParser()));
-  io.use(wrap(sessionMiddleware));
 
-  io.on('connection', (socket) => {
-    // console.log(socket.request.session.cookie);
-    // console.log(socket.request.session);
-    
-    if (socket.request.session && socket.request.session.userName) {
-      console.log(`User connected: ${socket.request.session.userName}`);
-    }
-    //why does here the session userName work
-    //and in /room it doesn't work
-   
-  
-    io.of('/room').on('connection', (roomSocket) => {
-      if (roomSocket.request.session && roomSocket.request.session.userName) {
-        console.log(`User connected to room: ${roomSocket.request.session.userName}`);
+  const roomNamespace = io.of('/room');
+  roomNamespace.use(wrap(cookieParser()));
+  roomNamespace.use(wrap(sessionMiddleware));
+
+  // Track active users by userId and their corresponding sockets
+  const userSockets = new Map();
+
+  roomNamespace.on('connection', (socket) => {
+    const userName = socket.request.session?.userName;
+    const userId = socket.request.session?.userId;
+    let currentRoom = null; // Track the room the user is currently in
+
+    if (userName && userId) {
+      console.log(`User connected: ${userName} (ID: ${userId})`);
+
+      // If the user is already connected, disconnect their previous socket
+      if (userSockets.has(userId)) {
+        const previousSocket = userSockets.get(userId);
+        previousSocket.disconnect(true);
+        console.log(`Disconnected previous socket for user ${userName} (ID: ${userId})`);
       }
-    });
-   
-  });
 
-  const roomsNamespace = io.of('/rooms');
-roomsNamespace.use(wrap(cookieParser()));
-roomsNamespace.use(wrap(sessionMiddleware));
+      // Store the current socket for the user
+      userSockets.set(userId, socket);
 
-roomsNamespace.on('connection', (roomSocket) => {
-  const users = new Set();
-    const userName = roomSocket.request.session?.userName;
+      socket.on('joinroom', async (roomName) => {
+        // Check if the user has permission to join the room
+        const userRoomQuery = `
+          SELECT * 
+          FROM gameroom g
+          JOIN gamerooms r ON g.roomId = r.roomId
+          WHERE g.userId = ? AND r.name = ?
+        `;
+        const userRoom = await db.query(userRoomQuery, [userId, roomName]);
 
-    if (userName && !users.has(userName)) {
-        users.add(userName);
-        console.log(`${userName} has connected`);
-    } else {
-        console.log(`Disconnecting user: ${userName || 'unknown user'}`);
-        roomSocket.disconnect(true); // Disconnect user if userName is already taken or undefined
-    }
-
-    roomSocket.on('disconnect', () => {
-        users.delete(userName);
-        console.log(`${userName} has disconnected`);
-    });
-
-  
-});
-
-
-const roomNamespace = io.of('/room');
-roomNamespace.use(wrap(cookieParser()));
-roomNamespace.use(wrap(sessionMiddleware));
- const users = new Map(); 
- roomNamespace.on('connection', (roomSocket) => {
-  let joinedroom = null;
-  // Map to store user ID and their socket
-  const userName = roomSocket.request.session?.userName;
-  const id = roomSocket.request.session?.userId;
-  
-  if (userName && id) {
-    console.log("User connected:", userName);
-
-    // Check if user already exists
-    if (users.has(id)) {
-      const oldSocket = users.get(id);
-      oldSocket.roomSocket.disconnect(true);
-    }
-
-    // Save the new connection
-    users.set(id, { roomid: null, userName: userName, roomSocket: roomSocket, id: id });
-
-    roomSocket.on('joinroom', (room) => {
-      console.log(`${userName} is joining room: ${room}`);
-      roomSocket.join(room);
-      users.get(id).roomid = room;
-      joinedroom = room;
-
-
-      const sendusers = [];
-      for (let [userId, user] of users.entries()) {
-        if (user.roomid === room) {
-          sendusers.push({
-            userName: user.userName,
-            id: user.id
-          });
+        if (userRoom.length === 0) {
+          console.log('User does not have permission to join this room');
+          socket.emit('error', { message: 'You do not have permission to join this room' });
+          return;
         }
-      }
-      
-      //this is to send to only the user that joined the room
-      roomSocket.join(id);
-      roomNamespace.in(id).emit('loadusers', sendusers);
 
-    
-      roomNamespace.in(room).except(id).emit('userjoined', { userName: userName, id: id });
+        // Join the room (since the user has permission)
+        currentRoom = roomName;
+        socket.join(roomName);
 
-    });
+        console.log(`User ${userName} joined room ${roomName}`);
 
+        // Notify other users in the room about the new user (except themselves)
+        roomNamespace.in(roomName).except(socket.id).emit('userjoined', { userName, userId });
 
+        // Send the updated list of users in the room
+        const roomUsers = await db.query(
+          'SELECT u.username as userName, u.id FROM gameroom g JOIN user u ON g.userId = u.id WHERE g.roomId = (SELECT roomId FROM gamerooms WHERE name = ?)',
+          [roomName]
+        );
 
-    roomSocket.on('disconnect', () => {
-    
-            roomNamespace.in(joinedroom).except(id).emit('userleft', {
-              userName: userName,
-              id: id
-            });
+        roomNamespace.in(roomName).emit('loadusers', { users: roomUsers });
+      });
 
-            users.delete(id);
-     
-    });
+      socket.on('disconnect', () => {
+        userSockets.delete(userId); // Remove the userId from the map
 
-    roomSocket.on("kickuser", (data) => {
-    });
-
-  } else {
-    roomSocket.disconnect(true);
-  }
-});
-
-
-
-
- 
-
-
-
-
+        setTimeout(async () => {
+          // If the userId is not back in the map, remove the user
+          if (!userSockets.has(userId)) {
+            if (currentRoom) {
+              // Delete the user from the DB
+              await db.query('DELETE FROM gameroom WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)', [userId, currentRoom]);
+              roomNamespace.in(currentRoom).emit('userleft', { userName, userId });
+              console.log(`${userName} has been removed from room ${currentRoom} due to disconnection`);
+            }
+          }
+        }, 3000); // 3 seconds timeout
+      });
+    } else {
+      socket.disconnect(true); // Disconnect the user if they don't have a valid session
+    }
+  });
 };

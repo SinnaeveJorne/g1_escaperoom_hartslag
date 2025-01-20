@@ -197,7 +197,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 70dvh;
+    min-height: fit-content;
     gap: var(--spacing-6);
     width: 100%;
 }
@@ -269,6 +269,22 @@ body{
     animation: fadein 0.3s forwards;
 }
 
+.c-input__validIcon{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: var(--spacing-5);
+    animation: fadein 0.3s forwards;
+}
+
+.c-input--valid{
+    border-color: rgb(40, 192, 40);
+}
+
+.c-input__errorIcon--valid path{
+    fill: rgb(40, 192, 40);
+}
+
 .c-input--error{
     border-color: var(--rood-rood-accent-100);
 }
@@ -286,6 +302,11 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.c-button:hover{
+    background-color: var(--blauw-blauw-accent-70);
+    cursor: pointer;
 }
 
 .c-loginForm__subtitle{
@@ -704,13 +725,12 @@ background-position:14px  ;
 
 .c-room{
     flex-wrap: wrap;
-    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
     gap: var(--spacing-3);
     align-items: center;
-    padding: var(--spacing-2);
-    border-radius: var(--radius-l);
+    padding: var(--spacing-4);
+    border-radius: var(--radius-m);
     background-color: var(--blauw-blauw-accent-20);
     box-shadow: 0 0 5px 0 var(--neutral-400);
     transition: all 0.3s;

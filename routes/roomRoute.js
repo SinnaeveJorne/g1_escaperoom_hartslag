@@ -2,42 +2,43 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
+const db = require('../config/db'); 
 
 
+router.get('/room/:roomId', async (req, res) => {
+  const requestedRoomId = req.params.roomId; // The requested room ID from the URL
 
-router.get('/room/:roomId', (req, res) => {
-  const requestedRoomId = req.params.roomId; // Haal het gevraagde kamer-ID op uit de URL
-
-  console.log(`Requested Room ID: ${requestedRoomId}`); // Log de ontvangen kamer-ID in de console
-
-  // Lees de kamerdata in en parseer het JSON-bestand
-  const roomsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/roomcodes.json')));
-  const currentUserId = req.session.userid;
+  // Check if the user has any existing rooms
+  const checkUserRoomsQuery = 'SELECT * FROM gameroom g JOIN gamerooms r ON g.roomId = r.roomId WHERE g.userId = ?';
+  const userRooms = await db.query(checkUserRoomsQuery, [req.session.userId]);
   
-  let isRoomFound = false;
-  let userRoomName = "";
+  if (userRooms.length === 0) {
+    console.log("User does not have any rooms");
 
-  // Zoek naar de kamer waarin de gebruiker zich bevindt
-  for (const room of roomsData) {
-    if (room.users.includes(currentUserId)) {
-      if (room.roomname !== requestedRoomId) {
-        isRoomFound = true;
-        userRoomName = room.roomname;
-        break; // Stop met zoeken als de kamer gevonden is
+    const checkRoomPasswordQuery = 'SELECT * FROM gamerooms WHERE name = ?';
+    const roomDetails = await db.query(checkRoomPasswordQuery, [requestedRoomId]);
+
+    if (roomDetails.length === 0) {
+      console.log("Room not found");
+      return res.status(404).json({ message: 'Room not found' });
+    } else {
+      if (roomDetails[0].password !== null) {
+        return res.status(401).json({ message: 'Room requires a password' });
+      } else {
+        const joinRoomQuery = 'INSERT INTO gameroom (userId, roomId) VALUES (?, ?)';
+        await db.query(joinRoomQuery, [req.session.userId, roomDetails[0].roomId]);
+        res.redirect('/room/' + requestedRoomId);
       }
     }
-  }
+  } 
+  else {
+     if(userRooms[0].name !== requestedRoomId) {
+       res.redirect('/room/' + userRooms[0].name);
+     }
 
-  console.log(`Room found: ${isRoomFound}`);
-
-  // Als de gebruiker al in een andere kamer zit, stuur ze daar naartoe
-  if (isRoomFound) {
-    res.redirect(`/room/${userRoomName}`);
-  } else {
-    // Anders, toon de standaard kamerpagina
-    res.sendFile(path.join(__dirname, '../public/room.html'));
-    //if the room exist edit the users and set session id to it 
-
+     else {
+      res.sendFile(path.join(__dirname, '../public/room.html'));
+     }
   }
 });
 

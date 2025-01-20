@@ -1,16 +1,11 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
- 
 
 router.get('/homeroute', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/home.html'));
-  }
-  );
-
-
-
+  const username = req.session.userName || 'Guest';  // Default to 'Guest' if no session username exists
+  res.render('home', { username });  // Renders home.ejs with dynamic username
+});
 
 module.exports = router;

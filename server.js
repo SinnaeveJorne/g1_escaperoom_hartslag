@@ -31,7 +31,9 @@ const s = session({
   }),
   cookie: {
   secure: false ,   
-  maxAge: 10 * 365 * 24 * 60 * 60 * 1000 // 10 years in milliseconds
+  maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
+   sameSite: 'strict',
+   httpOnly: true
   } // Set to `true` if using HTTPS
   
 });
@@ -59,8 +61,6 @@ app.get('/*', (req, res, next) => {
         }
       }
 
-      console.log(`ik zit hier`);
-      console.log(`Room found: ${isRoomFound}`);
 
       if (isRoomFound) {
         return res.redirect(`/room/${userRoomName}`);
@@ -109,7 +109,10 @@ const port = process.env.PORT || 3000;
 
 app.use((req, res) => {
   res.redirect('/homeroute');
+  
 });
+
+
 
 // Start the server
 server.listen(port, () => {
