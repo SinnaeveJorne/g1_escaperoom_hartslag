@@ -3,3 +3,5 @@ node_modules
 .vscode/settings.json
 api
 g1_escaperoom_hartslag.sln
+back\__pycache__
+back\repositories\__pycache__
