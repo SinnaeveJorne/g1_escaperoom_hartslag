@@ -72,16 +72,23 @@ class DataRepository:
     @staticmethod
     def get_players_in_room(room_id):
         """Get all players in a room."""
-        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN User u ON t.user_id = u.id WHERE t.room_id = %s"
+        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN `User` u ON t.user_id = u.id WHERE t.room_id = %s"
         params = [room_id]
         return Database.get_rows(sql, params)
     
     @staticmethod
     def get_player_in_room(room_id, user_id):
         """Get a player in a room."""
-        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN User u ON t.user_id = u.id WHERE t.room_id = %s AND t.user_id = %s"
+        sql = "SELECT u.id, u.firstname, u.lastname, u.email FROM Teams t JOIN `User` u ON t.user_id = u.id WHERE t.room_id = %s AND t.user_id = %s"
         params = [room_id, user_id]
         return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def get_amount_of_players_in_room(room_id):
+        """Get the number of players in a room."""
+        sql = "SELECT COUNT(*) as player_count FROM Teams WHERE room_id = %s"
+        params = [room_id]
+        return Database.get_one_row(sql, params)["player_count"]
 
     @staticmethod
     def get_room_player_count(room_id):
@@ -117,6 +124,13 @@ class DataRepository:
     #     sql = "DELETE FROM Rooms WHERE id = %s"
     #     params = [room_id]
     #     return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def update_room_host(room_id, new_host_user_id):
+        sql = "UPDATE Rooms SET host_user_id = %s WHERE id = %s"
+        params = [new_host_user_id, room_id]
+        return Database.execute_sql(sql, params)
+
     
     @staticmethod
     def delete_player_from_room(room_id, user_id):
@@ -149,6 +163,24 @@ class DataRepository:
         return Database.execute_sql(sql, params)
 
 
+    @staticmethod
+    def get_player_best_time(user_id, game_type):
+        # get best time and first last name of user and game_type
+        sql = "SELECT gl.best_time, u.firstname, u.lastname FROM GlobalLeaderboard gl JOIN `user` u ON gl.user_id = u.id WHERE gl.user_id = %s AND gl.game_type = %s"
+        params = [user_id, game_type]
+        return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def update_leaderboard(user_id, new_best_time,game_type):
+        sql =  "UPDATE GlobalLeaderboard SET best_time = %s WHERE user_id = %s  AND game_type = %s"
+        params = [new_best_time, user_id, game_type]
+        return Database.execute_sql(sql, params)
+    
+    @staticmethod
+    def add_leaderboard(user_id, best_time, game_type):
+        sql = "INSERT INTO GlobalLeaderboard (user_id, best_time, game_type) VALUES (%s, %s, %s)"
+        params = [user_id, best_time, game_type]
+        return Database.execute_sql(sql, params)
 
 
     # @staticmethod

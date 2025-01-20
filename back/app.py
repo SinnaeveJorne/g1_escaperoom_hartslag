@@ -15,6 +15,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi import Depends, HTTPException, status
 import secrets
 from typing import Optional
+import logging
 
 
 # FastAPI app instance
@@ -43,19 +44,19 @@ Base = declarative_base()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Configuratie lezen uit config.py
-config = ConfigParser()
-config.read('config.py')
+# # Configuratie lezen uit config.py
+# config = ConfigParser()
+# config.read('config.py')
 
-user = config['connector_python']['user']
-password = config['connector_python']['password']
-host = config['connector_python']['host']
-port = config['connector_python']['port']
-database = config['connector_python']['database']
+# user = config['connector_python']['user']
+# password = config['connector_python']['password']
+# host = config['connector_python']['host']
+# port = config['connector_python']['port']
+# database = config['connector_python']['database']
 
-# Database configuratie instellen
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# # Database configuratie instellen
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 # Dependency to get DB session
@@ -114,6 +115,12 @@ class DeleteRoom(BaseModel):
 class RemovePlayer(BaseModel):
     user_id: int
     host_user_id: int
+
+# Define a Pydantic model for the request body
+class LeaderboardUpdate(BaseModel):
+    user_id: int
+    completion_time: float
+    game_type: str
 
 # get all users
 @app.get("/api/v1/users/")
@@ -188,6 +195,11 @@ def get_profile(current_user_id: int):
         "lastname": user['lastname'],
         "email": user['email']
     }
+#get all rooms
+@app.get("/api/v1/rooms/")
+def get_rooms():
+    return DataRepository.get_rooms()
+
 
 @app.post("/api/v1/room/")
 def create_room(room: RoomCreate):
@@ -217,6 +229,25 @@ def create_room(room: RoomCreate):
 
     return {"message": "Room created successfully", "room_code": room_code}
 
+#get all players of a room 
+@app.get("/api/v1/room/{room_id}/players/")
+def get_room_players(room_id: int):
+    players = DataRepository.get_players_in_room(room_id)
+    if not players:
+        raise HTTPException(status_code=404, detail="No players found in this room")
+    
+    #if room doesnt exist 
+    room = DataRepository.get_room_by_id(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    return players
+
+#get amount of players in a room
+@app.get("/api/v1/room/{room_id}/player_count/")
+def get_amount_players_in_room(room_id: int):
+    player_count = DataRepository.get_amount_of_players_in_room(room_id)
+    return {"player_count": player_count}
 
 @app.post("/api/v1/room/join/")
 def join_room(join_data: JoinRoom):
@@ -231,7 +262,7 @@ def join_room(join_data: JoinRoom):
         raise HTTPException(status_code=404, detail="User not found")
 
     # Check if room is full
-    if DataRepository.get_room_player_count(room['id']) >= 3:
+    if DataRepository.get_room_player_count(room['id']) >= 8:
         raise HTTPException(status_code=400, detail="Room is full")
 
     # Check if the user is already in the room
@@ -254,13 +285,45 @@ def delete_room(delete_data: DeleteRoom):
     DataRepository.delete_room_with_teammates(delete_data.room_id)
     return {"message": "Room and all its teammates have been deleted successfully"}
 
+
+
+
+
+# @app.delete("/api/v1/room/{room_id}/leave/")
+# def leave_room(room_id: int, user_id: int):
+#     if not DataRepository.get_player_in_room(room_id, user_id):
+#         raise HTTPException(status_code=404, detail="Player not found in this room")
+
+#     DataRepository.delete_player_from_room(room_id, user_id)
+#     return {"message": "Player has left the room successfully"}
+
 @app.delete("/api/v1/room/{room_id}/leave/")
 def leave_room(room_id: int, user_id: int):
     if not DataRepository.get_player_in_room(room_id, user_id):
         raise HTTPException(status_code=404, detail="Player not found in this room")
 
+    room = DataRepository.get_room_by_id(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    if room['host_user_id'] == user_id:
+        players = DataRepository.get_players_in_room(room_id)
+        print(players)  # Debugging: Log the players' structure
+
+        # Adjust to use 'id' instead of 'user_id'
+        players = [p for p in players if p['id'] != user_id]
+
+        if players:
+            new_host_id = players[0]['id']
+            DataRepository.update_room_host(room_id, new_host_id)
+        else:
+            DataRepository.delete_room_with_teammates(room_id)
+            return {"message": "Room deleted as no players were left"}
+
     DataRepository.delete_player_from_room(room_id, user_id)
     return {"message": "Player has left the room successfully"}
+
+
 
 @app.delete("/api/v1/room/{room_id}/kick_player/")
 def remove_player_from_room(room_id: int, data: RemovePlayer):
@@ -286,11 +349,42 @@ def verify_api_access():
     token = "my_secure_token"
     if token != "my_secure_token":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access forbidden")
+    
+@app.get("/api/v1/game/leaderboard/{user_id}")
+def get_leaderboard(user_id: int, game_type: str):
+    try:
+        return DataRepository.get_player_best_time(user_id, game_type)
+    except Exception as e:
+        logging.error(f"Error getting leaderboard for user {user_id}: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error")
 
-# Custom Swagger UI route
-@app.get("/docs", include_in_schema=False)
-def custom_swagger_ui_html(current_user: str = Depends(verify_api_access)):
-    return get_swagger_ui_html(openapi_url="/openapi.json", title="API Documentation")
+@app.post("/api/v1/game/leaderboard/")
+def update_global_leaderboard(update: LeaderboardUpdate):
+    try:
+        user_id = update.user_id
+        completion_time = update.completion_time
+        game_type = update.game_type
+
+        # Check if the user already has a record in the global leaderboard for the given game type
+        best_time_record = DataRepository.get_player_best_time(user_id, game_type)
+
+        # If the user has no record yet, insert a new record
+        if not best_time_record:
+            DataRepository.add_leaderboard(user_id, completion_time, game_type)
+            return {"message": "User added to the leaderboard successfully"}
+        # If the user has a record and the new time is better, update the record
+        elif completion_time < best_time_record['best_time']:
+            DataRepository.update_leaderboard(user_id, completion_time, game_type)
+            return {"message": "Leaderboard updated successfully"}
+    except Exception as e:
+        logging.error(f"Error updating leaderboard for user {user_id}: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error")
+
+
+# # Custom Swagger UI route
+# @app.get("/docs", include_in_schema=False)
+# def custom_swagger_ui_html(current_user: str = Depends(verify_api_access)):
+#     return get_swagger_ui_html(openapi_url="/openapi.json", title="API Documentation")
 
 # @app.get("/api/v1/statistics/exercises/")
 # def get_statistics():
