@@ -673,6 +673,10 @@ width: 100%;
   width: 100%;
 }
 
+.c-popup__joinroom .c-label{
+align-items: start;
+}
+
 
 .c-roomsearch{
     display: grid;
@@ -723,6 +727,11 @@ background-position:14px  ;
     appearance: none;         /* Standard syntax */
 }
 
+.c-rooms{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
 .c-room{
     flex-wrap: wrap;
     display: flex;
