@@ -12,9 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.17.2",
+    "ini": "^5.0.0",
+    "memorystore": "^1.6.7",
+    "mysql2": "^3.12.0",
     "socket.io": "^4.8.1"
   }
 }

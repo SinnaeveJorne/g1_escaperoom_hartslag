@@ -143,8 +143,20 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 var(--spacing-6);
-}
+  padding: 0 var(--spacing-6);}
+
+ .c-nav__flex{
+    display: 100%;
+    justify-content: space-between; 
+    align-items: center;
+    display: flex;
+ }
+
+.c-nav__return{
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+
 
 .c-nav {
   display: flex;
@@ -184,13 +196,15 @@ body {
   margin: 0 auto;
 }
 
-.c-loginForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 70dvh;
-  gap: var(--spacing-6);
-  width: 100%;
+
+
+.c-loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: fit-content;
+    gap: var(--spacing-6);
+    width: 100%;
 }
 
 .c-loginForm__title {
@@ -257,8 +271,25 @@ body {
   animation: fadein 0.3s forwards;
 }
 
-.c-input--error {
-  border-color: var(--rood-rood-accent-100);
+
+.c-input__validIcon{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: var(--spacing-5);
+    animation: fadein 0.3s forwards;
+}
+
+.c-input--valid{
+    border-color: rgb(40, 192, 40);
+}
+
+.c-input__errorIcon--valid path{
+    fill: rgb(40, 192, 40);
+}
+
+.c-input--error{
+    border-color: var(--rood-rood-accent-100);
 }
 
 .c-button {
@@ -275,8 +306,14 @@ body {
   justify-content: center;
 }
 
-.c-loginForm__subtitle {
-  margin-bottom: var(--spacing-3);
+
+.c-button:hover{
+    background-color: var(--blauw-blauw-accent-70);
+    cursor: pointer;
+}
+
+.c-loginForm__subtitle{
+    margin-bottom: var(--spacing-3);
 }
 
 .c-loginForm__buttondiv {
@@ -311,6 +348,13 @@ body {
   height: fit-content;
   gap: var(--spacing-5);
   margin-bottom: var(--spacing-5);
+  }
+.c-opdracht__div{
+    width: 30%;
+    position: relative;
+    flex-shrink: 0;
+    border-radius: var(--radius-l);
+    height: 14rem;
 }
 
 .c-opdracht__div {
@@ -616,11 +660,13 @@ body:has(.c-footer) {
   width: 100%;
 }
 
-.c-roomsearch {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-3);
-  margin-bottom: var(--spacing-6);
+
+
+.c-roomsearch{
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-6);
 }
 .c-roomsearch__search {
   border: 2px solid var(--neutral-400);
@@ -644,6 +690,8 @@ body:has(.c-footer) {
   width: fit-content;
   /* width: calc(100%/2 - 1rem); */
   flex-grow: 1;
+
+
 }
 
 .c-roomsearch__label {
@@ -723,7 +771,49 @@ body:has(.c-footer) {
     width: 100%;
     height: fit-content;
   }
-  .c-roomsearch__btn {
+
+
+.c-roomsearch__select{
+    border: 2px solid var(--neutral-400);
+    border-radius: var(--radius-s);
+    padding: 16px 4px 16px 1rem;
+    font-size: 16px;
+    /* width: 100%; */
+    -webkit-appearance: none; /* For Chrome, Safari, and Opera */
+    -moz-appearance: none;    /* For Firefox */
+    appearance: none;         /* Standard syntax */
+}
+
+.c-room{
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3);
+    align-items: center;
+    padding: var(--spacing-4);
+    border-radius: var(--radius-m);
+    background-color: var(--blauw-blauw-accent-20);
+    box-shadow: 0 0 5px 0 var(--neutral-400);
+    transition: all 0.3s;
+    animation: shake 0.3s forwards;
+
+}
+.c-room__img{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.c-room__info{
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+}
+.c-room__svgs path{
+    stroke: var(--blauw-blauw-accent-20);
+}
+.c-room__btn{
+    background-color: var(--neutral-950) ;
     width: fit-content;
   }
   .c-room__info {
@@ -1616,3 +1706,27 @@ li.c-romedoor__item > h2{
   gap: var(--spacing-3);
   margin-top: 2rem;
 } 
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translate3d(0, 0, 0); /* Default position */
+    }
+    25% {
+        transform: translate3d(-1px, -1px, 0); /* Slight top-left */
+    }
+    50% {
+        transform: translate3d(1px, -1px, 0); /* Slight top-right */
+    }
+    75% {
+        transform: translate3d(-1px, 1px, 0); /* Slight bottom-left */
+    }
+}
