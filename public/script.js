@@ -6,7 +6,7 @@ function init() {
     initLoginForm();
     initRegisterForm();
     initStartGameButton();
-    // initRooms();
+    initRooms();
     initRoom();
 }
 
@@ -31,11 +31,19 @@ if(document.querySelector('.js-room'))
 //     </div>
 // </div>
 
-    const socket = io("/room"); // Connect to the namespace '/room'
-    const usersdiv =  document.querySelector('.js-room-users');
+const socket = io("/room"); // Connect to the namespace '/room'
+const socket2 = io("/rooms"); // Connect to the namespace '/rooms'
+const usersdiv = document.querySelector('.js-room-users');
 
-    const roomid = window.location.pathname.split('/').pop();
-    socket.emit("joinroom", roomid); // Emit 'joinroom' with the room ID
+const roomid = window.location.pathname.split('/').pop();
+socket.emit("joinroom", roomid); // Emit 'joinroom' with the room ID
+
+// Ensure /rooms socket is connected before emitting the event
+socket2.on('connect', () => {
+  console.log('Connected to /rooms');
+  socket.emit("joinroom", roomid);  // Emit after successful connection
+});
+
     
     // Listen for messages
     socket.on('loadusers', (users) => {
@@ -109,82 +117,53 @@ if(document.querySelector('.js-room'))
 }
 }
 
-// function initRooms()
-// {
-// if(document.querySelector('.js-rooms'))
-// {
-//     const makeroombutton = document.querySelector('.js-makeroom')
-//     makeroombutton.addEventListener('click',function(){
-//         showPopup({
-//             title: "Kamer gegevens",
-//             type: "start_game",
-//             buttons: [
-//               {
-//                 text: "Continue",
-//                 action: () => {
-                
-//                 }
-//               }
-//             ]
-//           });
-//     })
+function initRooms()
+{
+    if(document.querySelector('.js-rooms'))
+    {
+        document.querySelector('.js-makeroom').addEventListener('click', async () => {
+            showPopup({
+                title: "Reconnected!",
+                type: "join_room",
+                buttons: [
+                  {
+                    text: "Create Room",
+                    action: async() => {
+                        const formData = new FormData(document.querySelector('.js-createroomform'));
+                        const data = Object.fromEntries(formData);
+                        
+                      
+                            const response = await fetch('/createroom', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            });
+                            const jsonresponse = await response.json();;
+        
+                            if (jsonresponse.type == 'succes')
+                            {
+                                window.location.href = `/room/${jsonresponse.message}`;
+                               
+                            } 
+                            else {
+                                console.log(jsonresponse.message);
+                            }
+                        
+                       
+                    }
+                  }
+                ]
+              });
+              const socket = io("/rooms"); // Connect to the namespace '/room'
+                socket.on("test", (test) => {
+                    console.log(test);
+                });
+        });
 
-//     const socket = io("/room"); // Replace with your server URL
-// socket.on("connection", () => {
-//     console.log("Connected to server");
-// });
-
-
-
-// let xhrstatus = new XMLHttpRequest();
-// xhrstatus.open("GET", "/getrooms", true);
-// xhrstatus.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-// xhrstatus.onreadystatechange = function () {
-//     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-//         const response = JSON.parse(this.responseText);
-//         if(response.success == true) {
-//            const rooms = response.rooms;
-//            document.querySelector('.js-rooms').innerHTML = '';
-//            let roomlist = "";
-//             rooms.forEach(room => {
-//                 const playerCount = room.users.length;
-//                 const roomHTML = `
-//                 <div class="c-room">
-//                     <div class="c-room__info">
-//                         <img src="img/profile_1.png" alt="profile" class="c-room__img">
-//                         <h3 class="c-room__title">${room.roomname}</h3>
-//                     </div>
-//                     <div class="c-room__info">
-//                         <h4 class="c-room__players">${playerCount}</h4>
-//                         <a href="./room/${room.roomcode}" class="c-button c-room__btn">
-//                             <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-//                                 <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-//                                 <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-//                                 <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-//                                 <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-//                             </svg>
-//                             Join
-//                         </a>
-//                     </div>
-//                 </div>`;
-//             roomlist += roomHTML;
-//             });
-//             document.querySelector('.js-rooms').innerHTML = roomlist;
-//         }
-//         else{
-//             //go to /login
-//             window.location.href = '/login';
-//         }
-//     }
-// };
-
-// xhrstatus.onerror = function () {
-//     console.error('An error occurred during the AJAX request.');
-// };
-// xhrstatus.send();
-// }
-// }
+    }
+}
 
 
 function initLoginForm() {
@@ -516,6 +495,7 @@ function handleFocus(e) {
 </svg>
 `;
     }
+    
     else if(type == "connected") {
         popupType.classList.add("c-popup__showheartbeat");
         popupType.innerHTML = `
@@ -526,6 +506,34 @@ function handleFocus(e) {
 <p class="showheartbeat"></p>
 `;
         showheartBeat();
+    }
+
+    else if(type="join_room")
+    {
+        popupType.classList.add("c-popup__joinroom");
+        popupType.innerHTML = `
+        <form class="js-createroomform" method="POST">
+        <div class="c-loginForm__inputdiv">
+            <label class="c-label" for="roomname">
+                Kamer naam
+                <span class="c-input__span">
+                    <input class="c-input js-input" type="text" name="roomname" id="roomname" required="">
+                </span>
+                <span class="c-input__errorSpan"></span>
+            </label>
+
+            <label class="c-label" for="roompassword">
+                Kamer wachtwoord
+                <span class="c-input__span">
+                    <input class="c-input js-input" type="test" name="roompassword" id="roompassword" required="">
+                </span>
+                <span class="c-input__errorSpan"></span>
+            </label>
+        </div>
+    </form>
+        `;
+
+
     }
   
     const buttonContainer = document.createElement("div");
