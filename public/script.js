@@ -699,6 +699,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    const triggerDiv = document.querySelector('.js-tip--greece');
+const modal = document.querySelector('.c-modeltip');
+const overlay = document.querySelector('.overlay');
+const closeModalButton = modal.querySelector('.c-tipmodel-close');
+
+// Show the modal and overlay when the div is clicked
+triggerDiv.addEventListener('click', () => {
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+    
+    // Animate the modal sliding in from the left
+    setTimeout(() => {
+        modal.style.right = '80px'; // Adjust to position it fully visible
+    }, 10); // Small delay to ensure display:block is applied
+});
+
+// Hide the modal and overlay when the close button is clicked
+closeModalButton.addEventListener('click', () => {
+    modal.style.right = '-300px'; // Slide out to the left
+    overlay.style.display = 'none';
+    
+    // Hide the modal completely after the animation
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 500); // Match transition duration
+});
+
+// Hide the modal and overlay when the overlay is clicked
+overlay.addEventListener('click', () => {
+    modal.style.left = '-300px'; // Slide out to the left
+    overlay.style.display = 'none';
+
+    // Hide the modal completely after the animation
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 500); // Match transition duration
+});
+
+
 });
 
 

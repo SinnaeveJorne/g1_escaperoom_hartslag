@@ -6,6 +6,16 @@ const loginRoute = require('./routes/loginRoute');
 const gamelobbyRoute = require('./routes/gamelobbyRoute');
 const roomsRoute = require('./routes/roomsRoute');
 const roomRoute = require('./routes/roomRoute');
+const griekelandRoute = require('./routes/griekelandRoute');
+const griekelandgameRoute = require('./routes/griekelandgmeRoute');
+const romestoryRoute = require('./routes/romestoryRoute');
+const romegameRoute = require('./routes/romegameRoute');
+const zwitserlandstoryRoute = require('./routes/zwidserstory');
+const zwitserlandgameRoute = require('./routes/zwidGame');
+const duitsstory = require('./routes/duitsstoryRoute');
+const duitsgame = require('./routes/duitsgame');
+const belgstoryRoute = require('./routes/belgstoryRoute');
+
 const homeRoute = require('./routes/homeRoute');
 const crypto = require('crypto');
 const secret = "jorne";
@@ -89,6 +99,7 @@ app.get('/*', (req, res, next) => {
   }
 });
 
+ 
 
 // Mount register and login routes
 app.use(registerRoute);
@@ -96,7 +107,20 @@ app.use(loginRoute);
 app.use(gamelobbyRoute);
 app.use(roomsRoute);
 app.use(roomRoute);
+app.use(griekelandRoute);
+app.use(griekelandgameRoute);
+app.use(romestoryRoute);
+app.use(romegameRoute);
+app.use(zwitserlandstoryRoute);
+app.use(zwitserlandgameRoute);
+app.use(duitsstory);
+app.use(duitsgame);
+app.use(belgstoryRoute);
+
+
+
 app.use(homeRoute);
+ 
 
 // Create an HTTP server from the Express app
 const server = http.createServer(app);
