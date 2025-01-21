@@ -156,7 +156,7 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-4);
-
+}
 
 .c-nav {
   display: flex;
@@ -725,9 +725,11 @@ body:has(.c-footer) {
   font-size: 16px;
   /* width: 100%; */
 }
-.c-roomsearch__btn {
+/* .c-roomsearch__btn {
   width: calc(100% / 3 - 1rem);
-}
+} */
+ .text-center{
+    text-align: center;}
 .c-room {
   flex-wrap: wrap;
   margin-top: 1rem;
@@ -1114,6 +1116,33 @@ body:has(.c-footer) {
     border-radius: var(--radius-s);
 
 }
+.c-progress--zwid::after{
+  content: "";
+  display: block;
+  width: calc(100% / 6 * 3);
+  height: 100%;
+  background-color: var(--blauw-blauw-accent-70);
+  border-radius: var(--radius-s);
+
+}
+.c-progress--duits::after{
+  content: "";
+  display: block;
+  width: calc(100% / 6 * 4);
+  height: 100%;
+  background-color: var(--blauw-blauw-accent-70);
+  border-radius: var(--radius-s);
+
+}
+.c-progress--belg::after{
+  content: "";
+  display: block;
+  width: calc(100% / 6 * 5);
+  height: 100%;
+  background-color: var(--blauw-blauw-accent-70);
+  border-radius: var(--radius-s);
+
+}
 .c-body--greece{
     background-image: url("../img/greece.png");
     background-size: cover;
@@ -1167,6 +1196,7 @@ body:has(.c-footer) {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    overflow: hidden;
 }
 .c-body--duits::after{
   content: "";
