@@ -156,7 +156,7 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-4);
-
+}
 
 .c-nav {
   display: flex;
