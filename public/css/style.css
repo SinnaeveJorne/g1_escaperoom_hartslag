@@ -1088,6 +1088,22 @@ body:has(.c-footer) {
   background-color: rgba(64, 64, 64, 0.70); /* Transparante overlay */
   z-index: -1;
 }
+.c-body--belg{
+    background-image: url("../img/belg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.c-body--belg::after{
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(64, 64, 64, 0.70); /* Transparante overlay */
+  z-index: -1;
+}
 .c-footer--ingame{
     background: none;
     border: none;
@@ -1511,15 +1527,7 @@ li.c-romedoor__item > h2{
   }
 }
 
-.foam {
-  position: absolute;
-  bottom: 80%; /* Start position at the top of the beer */
-  width: 100%;
-  height: 20%;
-  background: #fff;
-  border-radius: 50%;
-  animation: foamBubble 4s linear forwards, foamMovement 2s ease-in-out infinite;
-}
+
 
 @keyframes foamBubble {
   0% {
@@ -1532,14 +1540,7 @@ li.c-romedoor__item > h2{
   }
 }
 
-@keyframes foamMovement {
-  0%, 100% {
-      transform: scale(1);
-  }
-  50% {
-      transform: scale(1.1);
-  }
-}
+
 
 .beer-glass {
   position: absolute;
@@ -1571,3 +1572,47 @@ li.c-romedoor__item > h2{
       transform: translateX(-50%) rotate(0deg);
   }
 }
+.foam-bubble {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: bubbleMove 2s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+/* Bubbelbeweging */
+@keyframes bubbleMove {
+  0% {
+      transform: scale(0.5);
+      bottom: 0%;
+      opacity: 0.6;
+  }
+  50% {
+      transform: scale(1.2);
+      bottom: 50%;
+      opacity: 0.8;
+  }
+  100% {
+      transform: scale(0.5);
+      bottom: 100%;
+      opacity: 0.6;
+  }
+}
+
+@keyframes foamBubble {
+  0% {
+      bottom: 100%;
+      opacity: 0;
+  }
+  100% {
+      bottom: 80%;
+      opacity: 1;
+  }
+}
+.c-container--duits{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin-top: 2rem;
+} 

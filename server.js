@@ -13,6 +13,8 @@ const romegameRoute = require('./routes/romegameRoute');
 const zwitserlandstoryRoute = require('./routes/zwidserstory');
 const zwitserlandgameRoute = require('./routes/zwidGame');
 const duitsstory = require('./routes/duitsstoryRoute');
+const duitsgame = require('./routes/duitsgame');
+const belgstoryRoute = require('./routes/belgstoryRoute');
 
 // Mount register and login routes
 app.use(registerRoute);
@@ -27,6 +29,10 @@ app.use(romegameRoute);
 app.use(zwitserlandstoryRoute);
 app.use(zwitserlandgameRoute);
 app.use(duitsstory);
+app.use(duitsgame);
+app.use(belgstoryRoute);
+
+
 
 // Create an HTTP server from the Express app
 const server = http.createServer(app);
