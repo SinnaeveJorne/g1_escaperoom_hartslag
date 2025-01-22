@@ -15,6 +15,8 @@ const zwitserlandgameRoute = require('./routes/zwidGame');
 const duitsstory = require('./routes/duitsstoryRoute');
 const duitsgame = require('./routes/duitsgame');
 const belgstoryRoute = require('./routes/belgstoryRoute');
+const parijsgame = require('./routes/parisgame');
+const parijsstory = require('./routes/parisstory');
 
 const homeRoute = require('./routes/homeRoute');
 const crypto = require('crypto');
@@ -116,6 +118,8 @@ app.use(zwitserlandgameRoute);
 app.use(duitsstory);
 app.use(duitsgame);
 app.use(belgstoryRoute);
+app.use(parijsgame);
+app.use(parijsstory);
 
 
 
