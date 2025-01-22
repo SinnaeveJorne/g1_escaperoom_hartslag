@@ -75,3 +75,40 @@ draggables.forEach((draggable) => {
     currentDraggable = null; // Release the current draggable
   });
 });
+
+
+const ftotalTime = 0.5 * 60; // Totale tijd in seconden (30 seconden)
+let fcurrentTime = ftotalTime;
+
+// Elementen selecteren
+const ftimerBar = document.getElementById("franstimer-bar");
+const ftimerLabel = document.getElementById("franstimer-label");
+
+// Functie om de tijd te formatteren als mm:ss
+function fformatTime(fseconds) {
+  const fminutes = Math.floor(fseconds / 60);
+  const fsecs = fseconds % 60;
+  return `${fminutes.toString().padStart(2, "0")}:${fsecs.toString().padStart(2, "0")}`;
+}
+
+// Functie om de timer te updaten
+function fupdateTimer() {
+  // Bereken breedte van de balk
+  const percentage = (fcurrentTime / ftotalTime) * 100;
+  ftimerBar.style.width = `${percentage}%`;
+
+  // Update de tijd onder de balk
+  ftimerLabel.textContent = fformatTime(fcurrentTime);
+
+  // Aftellen
+  if (fcurrentTime > 0) {
+    fcurrentTime--;
+    setTimeout(fupdateTimer, 1000); // Herhaal elke seconde
+  } else {
+    ftimerLabel.textContent = "Time's up!";
+    ftimerBar.style.background = "#ff0000"; // Balk wordt rood
+  }
+}
+
+// Start de timer
+fupdateTimer();

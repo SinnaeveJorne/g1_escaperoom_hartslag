@@ -1465,7 +1465,7 @@ li.c-romedoor__item > h2{
   margin-top: 2rem;
 }
 .o-hidden{
-  display: none;
+  display: none !important;
 }
 @media (max-width: 460px) {
  

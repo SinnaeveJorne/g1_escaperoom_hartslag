@@ -77,7 +77,6 @@
   border-radius: var(--radius-s);
 }
 .c-container--rings {
-  display: block;
   margin: 0 auto;
   max-width: fit-content;
   position: relative;
