@@ -1107,15 +1107,15 @@ align-items: start;
     background-color: var(--neutral-200);
     border-radius: var(--radius-s);
 }
-.c-progress--greece::after{
-    content: "";
-    display: block;
-    width: calc(100% / 6);
-    height: 100%;
-    background-color: var(--blauw-blauw-accent-70);
-    border-radius: var(--radius-s);
+  .c-progress--greece::after{
+      content: "";
+      display: block;
+      width: calc(100% / 6);
+      height: 100%;
+      background-color: var(--blauw-blauw-accent-70);
+      border-radius: var(--radius-s);
 
-}
+  }
 .c-progress--rome::after{
     content: "";
     display: block;
@@ -1416,6 +1416,7 @@ body > div.container > div > div > div > svg  > line{
     right: 1rem;
     background: #00000050;
     border-radius: var(--radius-l);
+    padding: 1rem;
   }
 }
 .c-romequestion{
