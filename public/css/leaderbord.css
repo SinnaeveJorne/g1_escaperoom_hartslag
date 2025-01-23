@@ -150,6 +150,42 @@
 .c-keuzeleaderbord--container{
     margin-top: 2rem;
 }
+.c-radio-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.c-textcenter{
+    text-align: center;
+}
+.c-radiohapines__input{
+    display: none;
+}
+.c-radiohapines__svg {
+    transition: transform 0.3s ease, border 0.3s ease;
+  }
+  .c-radiohapines__svg--active {
+    transform: scale(1.2);
+    outline: 3px solid #4a90e2;
+    border-radius: 50%;
+  }
+
+.c-feedbacktextearia{height: 10rem;
+width: 100%;
+border: 3px solid var(--blauw-blauw-accent-100);
+border-radius: var(--radius-m);
+}
+.c-feedbackform{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: end;
+}
+
+
+
+
 @media (max-width: 768px) {
     .c-afterstats__label {
         font-size: 12px;
