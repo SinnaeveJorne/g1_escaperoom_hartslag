@@ -17,7 +17,7 @@ const duitsgame = require('./routes/duitsgame');
 const belgstoryRoute = require('./routes/belgstoryRoute');
 const parijsgame = require('./routes/parisgame');
 const parijsstory = require('./routes/parisstory');
-
+const leaderbordRoute = require('./routes/leaderbordRoute');
 const homeRoute = require('./routes/homeRoute');
 const crypto = require('crypto');
 const secret = "jorne";
@@ -120,6 +120,7 @@ app.use(duitsgame);
 app.use(belgstoryRoute);
 app.use(parijsgame);
 app.use(parijsstory);
+app.use(leaderbordRoute);
 
 
 

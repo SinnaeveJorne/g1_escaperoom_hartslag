@@ -189,4 +189,7 @@
     left: calc(100px);
     top: 50%;
   }
+  .c-francecongresimg{
+    width: 300px;
+  }
 }

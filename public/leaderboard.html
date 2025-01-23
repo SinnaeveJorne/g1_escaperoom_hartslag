@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Draggable Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.1.0/lib/draggable.bundle.legacy.js"></script>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/leaderbord.css" />
+    <script src="script.js"></script>
+  </head>
+  <body class="c-body--france">
+    <nav class="c-nav">
+        <div class="c-afterstats">
+            <div class="c-afterstats__line">
+              <div class="c-afterstats__step c-afterstats__step--active">
+                <span class="c-afterstats__circle"></span>
+                <span class="c-afterstats__label">Leaderboard</span>
+              </div>
+              <div class="c-afterstats__step">
+                <span class="c-afterstats__circle"></span>
+                <span class="c-afterstats__label">Statistieken</span>
+              </div>
+              <div class="c-afterstats__step">
+                <span class="c-afterstats__circle"></span>
+                <span class="c-afterstats__label">Hoe voel je</span>
+              </div>
+              <div class="c-afterstats__step">
+                <span class="c-afterstats__circle"></span>
+                <span class="c-afterstats__label">Feedback</span>
+              </div>
+            </div>
+          </div>
+    </nav>
+
+    <div class="container">
+        <div class="c-podium-container">
+            <div class="c-podium c-podium-2">
+              <div class="c-podium__name">alex</div>
+              <div class="c-podium__block">
+                <div class="c-podium__position">2</div>
+                <div class="c-podium__time">11:20</div>
+              </div>
+            </div>
+            <div class="c-podium c-podium-1">
+              <div class="c-podium__name">shadow</div>
+              <div class="c-podium__block">
+                <div class="c-podium__position">1</div>
+                <div class="c-podium__time">10:20</div>
+              </div>
+            </div>
+            <div class="c-podium c-podium-3">
+              <div class="c-podium__name">Persi</div>
+              <div class="c-podium__block">
+                <div class="c-podium__position">3</div>
+                <div class="c-podium__time">11:23</div>
+              </div>
+            </div>
+          </div>
+          
+          
+    </div>
+    <div class="container c-keuzeleaderbord--container">
+        <main class="c-keuzeleaderbord">
+            <div class="c-keuzeleaderbord__button-group">
+              <button class="c-keuzeleaderbord__btn c-keuzeleaderbord__active">Uw team</button>
+              <button class="c-keuzeleaderbord__btn">Globaal</button>
+            </div>
+          </main>
+          
+    </div>
+  <div class="container">
+    <div class="c-room">
+        <div class="c-room__info">
+            <h2>04</h2>
+            <h3 class="c-room__title">PixelPhantom</h3>
+        </div>
+        <div class="c-room__info">
+            <h4 class="c-room__players">11:20</h4>
+            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.9978 9.71514C16.8588 11.331 16.2612 12.8736 15.2753 14.1614C14.2894 15.4491 12.9562 16.4286 11.4325 16.9844C9.90891 17.5402 8.25823 17.6493 6.6747 17.2988C5.09117 16.9484 3.64067 16.153 2.49386 15.0061C1.34704 13.8593 0.551611 12.4088 0.201158 10.8253C-0.149295 9.24177 -0.0401955 7.59108 0.515622 6.06745C1.07144 4.54382 2.05085 3.21063 3.33863 2.22472C4.62641 1.23882 6.16898 0.641214 7.78486 0.502223C7.87077 0.495135 7.95724 0.505038 8.03932 0.531367C8.12141 0.557696 8.1975 0.599935 8.26326 0.655672C8.32902 0.71141 8.38316 0.779554 8.42259 0.856214C8.46201 0.932874 8.48595 1.01655 8.49304 1.10246C8.50013 1.18837 8.49022 1.27484 8.46389 1.35692C8.43757 1.43901 8.39533 1.5151 8.33959 1.58087C8.28385 1.64663 8.21571 1.70077 8.13905 1.74019C8.06239 1.77962 7.97871 1.80356 7.8928 1.81064C6.52516 1.92815 5.21954 2.43383 4.12954 3.26819C3.03955 4.10256 2.21054 5.23088 1.74005 6.52041C1.26957 7.80994 1.17718 9.20702 1.47376 10.5473C1.77034 11.8875 2.44355 13.1152 3.41418 14.0858C4.38481 15.0565 5.61247 15.7297 6.95273 16.0262C8.29298 16.3228 9.69006 16.2304 10.9796 15.7599C12.2691 15.2895 13.3974 14.4604 14.2318 13.3705C15.0662 12.2805 15.5718 10.9748 15.6894 9.6072C15.7037 9.43369 15.7863 9.27297 15.9191 9.16041C16.0519 9.04784 16.224 8.99264 16.3975 9.00696C16.571 9.02127 16.7318 9.10393 16.8443 9.23674C16.9569 9.36955 17.0121 9.54163 16.9978 9.71514ZM7.83883 4.42749V9.00696C7.83883 9.18047 7.90775 9.34687 8.03044 9.46956C8.15313 9.59225 8.31953 9.66117 8.49304 9.66117H13.0725C13.246 9.66117 13.4124 9.59225 13.5351 9.46956C13.6578 9.34687 13.7267 9.18047 13.7267 9.00696C13.7267 8.83345 13.6578 8.66705 13.5351 8.54436C13.4124 8.42167 13.246 8.35275 13.0725 8.35275H9.14725V4.42749C9.14725 4.25398 9.07833 4.08758 8.95564 3.96489C8.83295 3.8422 8.66655 3.77328 8.49304 3.77328C8.31953 3.77328 8.15313 3.8422 8.03044 3.96489C7.90775 4.08758 7.83883 4.25398 7.83883 4.42749ZM11.1099 2.46485C11.304 2.46485 11.4937 2.4073 11.6551 2.29947C11.8164 2.19164 11.9422 2.03838 12.0165 1.85907C12.0908 1.67976 12.1102 1.48245 12.0723 1.29209C12.0345 1.10174 11.941 0.926883 11.8038 0.789643C11.6665 0.652404 11.4917 0.558943 11.3013 0.521078C11.111 0.483214 10.9137 0.502647 10.7343 0.576921C10.555 0.651194 10.4018 0.776972 10.2939 0.938348C10.1861 1.09973 10.1286 1.28945 10.1286 1.48354C10.1286 1.7438 10.232 1.9934 10.416 2.17743C10.6 2.36147 10.8496 2.46485 11.1099 2.46485ZM14.0538 4.42749C14.2479 4.42749 14.4376 4.36993 14.599 4.2621C14.7604 4.15428 14.8862 4.00102 14.9604 3.8217C15.0347 3.64239 15.0542 3.44508 15.0163 3.25472C14.9784 3.06437 14.885 2.88951 14.7477 2.75227C14.6105 2.61504 14.4356 2.52157 14.2453 2.48371C14.0549 2.44585 13.8576 2.46528 13.6783 2.53955C13.499 2.61383 13.3457 2.7396 13.2379 2.90098C13.1301 3.06236 13.0725 3.25208 13.0725 3.44617C13.0725 3.70643 13.1759 3.95603 13.3599 4.14006C13.544 4.3241 13.7936 4.42749 14.0538 4.42749ZM16.0165 7.37143C16.2105 7.37143 16.4003 7.31388 16.5616 7.20605C16.723 7.09822 16.8488 6.94496 16.9231 6.76565C16.9974 6.58634 17.0168 6.38903 16.9789 6.19867C16.9411 6.00832 16.8476 5.83346 16.7104 5.69622C16.5731 5.55898 16.3983 5.46552 16.2079 5.42766C16.0175 5.38979 15.8202 5.40923 15.6409 5.4835C15.4616 5.55777 15.3084 5.68355 15.2005 5.84493C15.0927 6.0063 15.0351 6.19603 15.0351 6.39012C15.0351 6.65038 15.1385 6.89998 15.3226 7.08401C15.5066 7.26804 15.7562 7.37143 16.0165 7.37143Z" fill="#0A0A0A"/>
+                </svg>
+                
+          
+        </div>
+    </div>
+  </div>
+   
+    <footer class="c-footer c-footer--ingame">
+      <a href="/fransgames" class="c-button c-btn--ingame"
+        >volgende</a
+      >
+    </footer>
+    </div>
+  </body>
+</html>
