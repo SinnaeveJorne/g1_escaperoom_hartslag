@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Template Loading</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/room.css" />
+    <script src="game.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <nav class="c-nav">
+        <div class="c-nav__container">
+        <a class="c-nav__return" href="/index">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M35.4375 21H6.5625" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18.375 9.1875L6.5625 21L18.375 32.8125" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+    
+            <h2>Keer Terug</h2>
+    
+        </a>
+    </div>
+    </nav>
+    
+    <div class="container">
+    <div class="c-opdrachtdetail">
+        <div class="c-opdrachtdetail__img__div">
+    <img class="c-opdrachtdetail__img" src="img/olympischvuur.png" alt="olympischvuur"></div>
+    <div class="c-opdrachtdetail__info">
+        <h1>The olympics</h1>
+    <hr class="c-opdrachtdetail__hr">
+    <div class="c-opdrachtdetail__spandiv">
+    <span class="c-opdrachtdetail__infospan">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.33333 1.33325C6.01479 1.33325 4.72586 1.72425 3.62953 2.45679C2.5332 3.18933 1.67872 4.23052 1.17414 5.4487C0.669552 6.66687 0.53753 8.00731 0.794765 9.30052C1.052 10.5937 1.68694 11.7816 2.61929 12.714C3.55164 13.6463 4.73952 14.2813 6.03273 14.5385C7.32594 14.7957 8.66638 14.6637 9.88456 14.1591C11.1027 13.6545 12.1439 12.8 12.8765 11.7037C13.609 10.6074 14 9.31846 14 7.99992C14 7.12444 13.8276 6.25753 13.4925 5.4487C13.1575 4.63986 12.6664 3.90493 12.0474 3.28587C11.4283 2.66682 10.6934 2.17575 9.88456 1.84072C9.07572 1.50569 8.20881 1.33325 7.33333 1.33325ZM7.33333 13.3333C6.2785 13.3333 5.24735 13.0205 4.37029 12.4344C3.49323 11.8484 2.80964 11.0154 2.40598 10.0409C2.00231 9.06636 1.89669 7.994 2.10248 6.95944C2.30827 5.92487 2.81622 4.97456 3.5621 4.22868C4.30798 3.4828 5.25829 2.97485 6.29285 2.76906C7.32742 2.56328 8.39977 2.66889 9.37431 3.07256C10.3489 3.47623 11.1818 4.15982 11.7678 5.03688C12.3539 5.91394 12.6667 6.94509 12.6667 7.99992C12.6667 9.41441 12.1048 10.771 11.1046 11.7712C10.1044 12.7713 8.74782 13.3333 7.33333 13.3333ZM7.33333 3.99992C7.15652 3.99992 6.98695 4.07016 6.86193 4.19518C6.73691 4.32021 6.66667 4.48977 6.66667 4.66659V7.61325L5.26667 8.41992C5.13824 8.49269 5.03759 8.60604 4.98052 8.74217C4.92345 8.87831 4.91317 9.02953 4.9513 9.17214C4.98943 9.31474 5.07381 9.44066 5.19121 9.53015C5.30861 9.61963 5.45239 9.66762 5.6 9.66659C5.71678 9.66739 5.83173 9.63751 5.93333 9.57992L7.66667 8.57992L7.72667 8.51992L7.83333 8.43325C7.8594 8.40025 7.88176 8.36448 7.9 8.32659C7.92173 8.2908 7.9396 8.25281 7.95333 8.21325C7.97147 8.17086 7.98272 8.12585 7.98667 8.07992L8 7.99992V4.66659C8 4.48977 7.92976 4.32021 7.80474 4.19518C7.67971 4.07016 7.51014 3.99992 7.33333 3.99992Z" fill="#1B1B1B"/>
+            </svg>
+        Duratie: 20 min
+    </span>
+    <span class="c-opdrachtdetail__infospan">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.0867 2.43338C13.0092 2.37072 12.9187 2.32623 12.8218 2.30315C12.7249 2.28008 12.624 2.27902 12.5267 2.30004C11.8143 2.44934 11.0789 2.45124 10.3658 2.30563C9.65262 2.16002 8.97683 1.86999 8.38 1.45338C8.2684 1.37596 8.13582 1.33447 8 1.33447C7.86418 1.33447 7.7316 1.37596 7.62 1.45338C7.02317 1.86999 6.34738 2.16002 5.63424 2.30563C4.92111 2.45124 4.18571 2.44934 3.47333 2.30004C3.37596 2.27902 3.27511 2.28008 3.1782 2.30315C3.08129 2.32623 2.99078 2.37072 2.91333 2.43338C2.83599 2.49612 2.77368 2.5754 2.73099 2.66539C2.68831 2.75537 2.66633 2.85378 2.66667 2.95338V7.92004C2.66607 8.87587 2.89385 9.81802 3.33102 10.668C3.7682 11.518 4.40212 12.2513 5.18 12.8067L7.61333 14.54C7.72624 14.6204 7.8614 14.6636 8 14.6636C8.1386 14.6636 8.27376 14.6204 8.38667 14.54L10.82 12.8067C11.5979 12.2513 12.2318 11.518 12.669 10.668C13.1062 9.81802 13.3339 8.87587 13.3333 7.92004V2.95338C13.3337 2.85378 13.3117 2.75537 13.269 2.66539C13.2263 2.5754 13.164 2.49612 13.0867 2.43338ZM12 7.92004C12.0005 8.66321 11.8235 9.39576 11.4838 10.0567C11.144 10.7177 10.6513 11.2879 10.0467 11.72L8 13.18L5.95333 11.72C5.34869 11.2879 4.85599 10.7177 4.51623 10.0567C4.17648 9.39576 3.99949 8.66321 4 7.92004V3.72004C5.39762 3.83966 6.79736 3.51539 8 2.79338C9.20264 3.51539 10.6024 3.83966 12 3.72004V7.92004Z" fill="#1B1B1B"/>
+            </svg>        
+        Moeilijkheidsgraad 3/5
+    </span>
+    </div>
+    <p class="c-opdrachtdetail__infotekst">
+         <span class="c-opdrachtdetail__infoteksttitle">Omschrijving:</span>
+        Het Olympisch vuur, symbool van verbondenheid, vrede en kracht, is onverwacht gedoofd in Olympia, Griekenland.  Het is aan jou, de gekozen drager, om het vuur opnieuw aan te steken en veilig naar Frankrijk te brengen, waar de volgende Olympische Spelen zullen plaatsvinden. Onderweg bezoek je verschillende landen, elk met hun unieke uitdagingen en gevaren. 
+        Het is een race tegen de klok! Overkom 
+        obstakels, en mentale puzzels oplossen 
+        om te voorkomen dat het vuur opnieuw dooft.
+    </p>
+    <a  class="c-button js-startgame c-opdrachtdetail__button">Start het spel</a>
+    </div>
+    </div>
+    
+    
+    </div>
+    
+    <div class="container">
+        <h2 div class="c-opdrachtdetail__beoordelingen__titel">Beoordelingen</h2>
+    
+        <div class="c-opdrachtdetail__beoordelingen">
+    
+            <div class="c-opdrachtdetail__beoordelingen__beoordeling">
+                <img class="c-opdrachtdetail__beoordelingen__img" src="img/profile_1.png" alt="avatar1">
+                    <h5 class="c-opdrachtdetail__beoordelingen__naam">Jorne</h3>
+                    <p class="c-opdrachtdetail__beoordelingen__tekst">Leuk spel, maar ik ben niet zo goed in wiskunde, dus ik zat vast bij iedere vraag eigenlijk sport ik ook niet graag
+                    </p>
+            </div>
+            <div class="c-opdrachtdetail__beoordelingen__beoordeling">
+                <img class="c-opdrachtdetail__beoordelingen__img" src="img/profile_1.png" alt="avatar1">
+                    <h5 class="c-opdrachtdetail__beoordelingen__naam">Amber</h3>
+                    <p class="c-opdrachtdetail__beoordelingen__tekst">Leuk spel, maar mijn hartslag is niet van de beste dus ik hit constant 100
+                    </p>
+            </div>
+    
+            <div class="c-opdrachtdetail__beoordelingen__beoordeling">
+                <img class="c-opdrachtdetail__beoordelingen__img" src="img/profile_1.png" alt="avatar1">
+                    <h5 class="c-opdrachtdetail__beoordelingen__naam">Alex</h3>
+                    <p class="c-opdrachtdetail__beoordelingen__tekst">Sinterklaas bestaat niet
+                    </p>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+        
+    
+    <footer class="c-footer c-footer--game">
+       <a  class="c-button js-startgame">Start spel</a>
+    </footer>
+</body>
+
+
+</html>

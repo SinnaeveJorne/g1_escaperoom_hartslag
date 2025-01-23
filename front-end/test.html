@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Reconnect Bluetooth</title>
+</head>
+<body>
+  <h1>Fast Reconnect to Bluetooth Devices</h1>
+  <p>Status: <span id="status">Not connected</span></p>
+  <button id="connectButton">Connect to a New Device</button>
+  <button id="reconnectButton" disabled>Reconnect to Previous Device</button>
+
+  <script>
+    let rememberedDeviceId = localStorage.getItem('rememberedDeviceId'); // Load the saved device ID, if any
+
+    // Update reconnect button state
+    const reconnectButton = document.getElementById('reconnectButton');
+    reconnectButton.disabled = !rememberedDeviceId;
+
+    // Function to request and connect to a new device
+    async function connectToNewDevice() {
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ['battery_service'] // Add your desired services
+        });
+
+        // Save the device ID for future reconnections
+        rememberedDeviceId = device.id;
+        localStorage.setItem('rememberedDeviceId', rememberedDeviceId);
+
+        // Connect to the GATT server
+        await connectToDevice(device);
+        reconnectButton.disabled = false; // Enable the reconnect button
+      } catch (error) {
+        console.error('Error during new device connection:', error);
+      }
+    }
+
+    // Function to reconnect to the saved device
+    async function reconnectToDevice() {
+      if (!rememberedDeviceId) {
+        console.error('No previously remembered device.');
+        return;
+      }
+
+      try {
+        const devices = await navigator.bluetooth.getDevices();
+        const device = devices.find(d => d.id === rememberedDeviceId);
+
+        if (!device) {
+          console.error('Previously remembered device not found.');
+          document.getElementById('status').textContent = 'Status: Device not found';
+          return;
+        }
+
+        // Connect to the GATT server
+        await connectToDevice(device);
+      } catch (error) {
+        console.error('Error during reconnection:', error);
+      }
+    }
+
+    // Function to handle connecting to a device and its GATT server
+    async function connectToDevice(device) {
+      document.getElementById('status').textContent = `Status: Connecting to ${device.name || 'Unknown Device'}...`;
+
+      try {
+        const server = await device.gatt.connect();
+        document.getElementById('status').textContent = `Status: Connected to ${device.name || 'Unknown Device'}`;
+        console.log(`Connected to device: ${device.name || 'Unknown Device'}`);
+      } catch (error) {
+        console.error('Error connecting to GATT server:', error);
+        document.getElementById('status').textContent = 'Status: Connection failed';
+      }
+    }
+
+    // Event listeners for buttons
+    document.getElementById('connectButton').addEventListener('click', connectToNewDevice);
+    document.getElementById('reconnectButton').addEventListener('click', reconnectToDevice);
+  </script>
+</body>
+</html>

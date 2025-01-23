@@ -1,6 +1,7 @@
 
 
 document.addEventListener('DOMContentLoaded', init);
+let socket = "";
 
 function init() {
     initLoginForm();
@@ -8,67 +9,102 @@ function init() {
     initStartGameButton();
     initRooms();
     initRoom();
+
+    if(document.querySelector('.js-jorneplsleerditgebruiken')){
+        document.querySelectorAll('.js-room-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const isLocked = button.getAttribute('data-locked') === 'true';
+    
+                if (isLocked) {
+                    event.preventDefault(); // Voorkom de standaard linkactie
+                    showModal(button); // Geef de knop door aan de modal
+                } else {
+                    event.preventDefault(); // Zorg ervoor dat de standaard actie geblokkeerd wordt
+                    window.location = button.getAttribute('href');
+                }
+            });
+        });
+        const triggerDiv = document.querySelector('.js-tip--greece');
+    const modal = document.querySelector('.c-modeltip');
+    const overlay = document.querySelector('.overlay');
+    const closeModalButton = modal.querySelector('.c-tipmodel-close');
+    
+    // Show the modal and overlay when the div is clicked
+    triggerDiv.addEventListener('click', () => {
+        modal.style.display = 'block';
+        overlay.style.display = 'block';
+        
+        // Animate the modal sliding in from the left
+        setTimeout(() => {
+            modal.style.right = '80px'; // Adjust to position it fully visible
+        }, 10); // Small delay to ensure display:block is applied
+    });
+    
+    // Hide the modal and overlay when the close button is clicked
+    closeModalButton.addEventListener('click', () => {
+        modal.style.right = '-300px'; // Slide out to the left
+        overlay.style.display = 'none';
+        
+        // Hide the modal completely after the animation
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 500); // Match transition duration
+    });
+    
+    // Hide the modal and overlay when the overlay is clicked
+    overlay.addEventListener('click', () => {
+        modal.style.left = '-300px'; // Slide out to the left
+        overlay.style.display = 'none';
+    
+        // Hide the modal completely after the animation
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 500); // Match transition duration
+    });
+    }
 }
 
 
-function initRoom()
+async function initRoom()
 {
 if(document.querySelector('.js-room'))
 {
-//this is person_card
-//     <div class="c-room c-lobbyprrsoon__card">
-//     <div class="c-room__info">
-//         <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
-//         <h3 class="c-room__title c-lobbyperson">PixelPhantom</h3>
-//     </div>
-//     <div class="c-room__info">
-//         <a href="./room/123" class="c-button c-room__btn">
-//             <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-//                 <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516 9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.32306C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.6098 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
-//                 </svg>
-//             verwijderen
-//         </a>
-//     </div>
-// </div>
 
-const socket = io("/room"); // Connect to the namespace '/room'
-const socket2 = io("/rooms"); // Connect to the namespace '/rooms'
 const usersdiv = document.querySelector('.js-room-users');
 
 const roomid = window.location.pathname.split('/').pop();
-socket.emit("joinroom", roomid); // Emit 'joinroom' with the room ID
+console.log(roomid);
+socket.emit("joinroom", roomid); 
 
-// Ensure /rooms socket is connected before emitting the event
-socket2.on('connect', () => {
-  console.log('Connected to /rooms');
-  socket.emit("joinroom", roomid);  // Emit after successful connection
-});
-
-    
-    // Listen for messages
     socket.on('loadusers', (users) => {
         users.users.forEach(user => {
         const userdiv = document.createElement('div');
         userdiv.dataset.id = user.id;
-        userdiv.classList.add('c-room', 'c-lobbyperson__card');
+        userdiv.classList.add('c-personcard');
         userdiv.innerHTML = `
-            <div class="c-room__info">
-                <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
-                <h3 class="c-room__title c-lobbyperson">${user.userName}</h3>
-            </div>
-            <div class="c-room__info">
-                <a href="./room/${roomid}" class="c-button c-room__btn">
-                    <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.
-9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516
-    9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.323
-    06C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.609
-    8 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
-                    </svg>
-                verwijderen
-            </a>
+        <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+        <div class="c-personcard__info">
+        <h4 class="c-personcard__title">${user.userName}</h3>
+        <div class="c-personcard__heartbeat">
+       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>50</p>
         </div>
-    `;
+        </div>
+         <a href="./room/${roomid}" class="c-removebutton">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M27 7H5" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M25 7V26C25 26.2652 24.8946 26.5196 24.7071 26.7071C24.5196 26.8946 24.2652 27 24 27H8C7.73478 27 7.48043 26.8946 7.29289 26.7071C7.10536 26.5196 7 26.2652 7 26V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 7V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H13C12.4696 3 11.9609 3.21071 11.5858 3.58579C11.2107 3.96086 11 4.46957 11 5V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </a>
+
+
+`;
     usersdiv.appendChild(userdiv);
     let playerspan = document.querySelector('.js-roomcount');
     const aantalplayers = document.querySelectorAll('.c-room').length;
@@ -77,92 +113,56 @@ socket2.on('connect', () => {
     });
 
     socket.on('userjoined', (user) => {
-            
+        console.log("test");
         const userdiv = document.createElement('div');
         userdiv.dataset.id = user.id;
-        userdiv.classList.add('c-room', 'c-lobbyperson__card');
+        userdiv.classList.add('c-personcard', 'c-lobbyperson__card');
         userdiv.innerHTML = `
-            <div class="c-room__info">
-                <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
-                <h3 class="c-room__title c-lobbyperson">${user.userName}</h3>
-            </div>
-            <div class="c-room__info">
-                <a href="./room/${roomid}" class="c-button c-room__btn">
-                    <svg width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.74408 8.22072C9.49798 7.69094 10.0703 6.91914 10.3765 6.01943C10.6827 5.11973 10.7065 4.1399 10.4443 3.22484C10.1821 2.30977 9.64795 1.50806 8.92073 0.938252C8.19351 0.368443 7.31187 0.060791 6.40619 0.060791C5.50051 0.060791 4.61888 0.368443 3.89166 0.938252C3.16444 1.50806 2.63024 2.30977 2.36807 3.22484C2.1059 4.1399 2.12966 5.11973 2.43586 6.01943C2.74205 6.91914 3.31441 7.69094 4.0683 8.22072C2.70459 8.75127 1.53994 9.73303 0.748146 11.0195C0.706533 11.0848 0.677627 11.1582 0.663111 11.2353C0.648595 11.3125 0.648758 11.392 0.66359 11.4691C0.678421 11.5462 0.707626 11.6194 0.749507 11.6845C0.791387 11.7496 0.845108 11.8053 0.907547 11.8483C0.969985 11.8913 1.0399 11.9207 1.11321 11.9349C1.18653 11.
-9492 1.2618 11.9479 1.33463 11.9311C1.40747 11.9143 1.47642 11.8825 1.53749 11.8373C1.59855 11.7922 1.65051 11.7347 1.69033 11.6682C2.20108 10.839 2.89996 10.1576 3.72352 9.68593C4.54707 9.21424 5.46921 8.96718 6.40619 8.96718C7.34317 8.96718 8.26531 9.21424 9.08887 9.68593C9.91243 10.1576 10.6113 10.839 11.1221 11.6682C11.2046 11.7976 11.332 11.8876 11.4768 11.9186C11.6217 11.9497 11.7723 11.9193 11.896 11.834C12.0198 11.7488 12.1069 11.6156 12.1383 11.4632C12.1698 11.3108 12.1432 11.1514 12.0642 11.0195C11.2724 9.73303 10.1078 8.75127 8.74408 8.22072ZM3.31244 4.51572C3.31244 3.86984 3.49389 3.23847 3.83383 2.70144C4.17378 2.16441 4.65696 1.74585 5.22227 1.49868C5.78758 1.25151 6.40963 1.18684 7.00975 1.31285C7.60988 1.43885 8.16114 1.74987 8.59381 2.20658C9.02647 2.66328 9.32112 3.24516
-    9.4405 3.87863C9.55987 4.5121 9.4986 5.16871 9.26445 5.76542C9.03029 6.36214 8.63375 6.87216 8.12499 7.23099C7.61622 7.58982 7.01808 7.78135 6.40619 7.78135C5.58597 7.78037 4.7996 7.43599 4.21961 6.82378C3.63962 6.21157 3.31337 5.38152 3.31244 4.51572ZM18.0879 11.8411C17.963 11.9271 17.8108 11.9572 17.6648 11.9248C17.5188 11.8924 17.3911 11.8001 17.3096 11.6682C16.7994 10.8385 16.1006 10.1568 15.2769 9.68534C14.4532 9.21384 13.5307 8.96752 12.5937 8.96885C12.4445 8.96885 12.3014 8.90629 12.1959 8.79494C12.0905 8.68359 12.0312 8.53257 12.0312 8.3751C12.0312 8.21763 12.0905 8.0666 12.1959 7.95525C12.3014 7.8439 12.4445 7.78135 12.5937 7.78135C13.0493 7.78089 13.4992 7.67423 13.9112 7.46897C14.3232 7.26371 14.6872 6.96493 14.9772 6.59398C15.2671 6.22302 15.4759 5.78904 15.5885 5.323
-    06C15.7011 4.85707 15.7149 4.37057 15.6287 3.89833C15.5426 3.42609 15.3587 2.97976 15.0902 2.59123C14.8217 2.2027 14.4752 1.88156 14.0755 1.65076C13.6758 1.41995 13.2328 1.28519 12.778 1.25608C12.3232 1.22698 11.868 1.30426 11.4448 1.4824C11.3758 1.51389 11.3015 1.53046 11.2263 1.53113C11.1512 1.5318 11.0766 1.51656 11.0071 1.48631C10.9376 1.45606 10.8746 1.41141 10.8217 1.35501C10.7689 1.2986 10.7272 1.23158 10.6993 1.15791C10.6714 1.08424 10.6578 1.00541 10.6592 0.926073C10.6606 0.846739 10.6771 0.768514 10.7077 0.696019C10.7382 0.623524 10.7822 0.55823 10.8371 0.503995C10.892 0.44976 10.9566 0.407684 11.0271 0.380254C11.9957 -0.0274659 13.0729 -0.042138 14.0511 0.339068C15.0293 0.720273 15.839 1.47035 16.3242 2.44459C16.8094 3.41883 16.9355 4.5482 16.6784 5.61484C16.4212 6.68148 15.7989 7.609
-    8 14.9316 8.22072C16.2953 8.75127 17.4599 9.73303 18.2517 11.0195C18.3332 11.1514 18.3617 11.312 18.331 11.4661C18.3003 11.6202 18.2128 11.7551 18.0879 11.8411Z" fill="#FAFAFA"/>
-                    </svg>
-                verwijderen
-            </a>
+        <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+        <div class="c-personcard__info">
+        <h4 class="c-personcard__title">${user.userName}</h3>
+        <div class="c-personcard__heartbeat">
+       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>50</p>
         </div>
-    `;
+        </div>
+        <a href="./room/${roomid}" class="c-removebutton">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M27 7H5" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M25 7V26C25 26.2652 24.8946 26.5196 24.7071 26.7071C24.5196 26.8946 24.2652 27 24 27H8C7.73478 27 7.48043 26.8946 7.29289 26.7071C7.10536 26.5196 7 26.2652 7 26V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 7V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H13C12.4696 3 11.9609 3.21071 11.5858 3.58579C11.2107 3.96086 11 4.46957 11 5V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </a>
+`;
+
     usersdiv.appendChild(userdiv);
     });
 
     socket.on('userleft', (user) => {
         console.log("dit is een test van de federale overheid");
-        const userdiv = document.querySelector(`.c-room[data-id="${user.id}"]`);
+        const userdiv = document.querySelector(`.c-personcard[data-id="${user.id}"]`);
         console.log(user);
         userdiv.remove();
     });
 
-   
-
-
+    socket.on('heartRate', (heartbeat) => {
+        const userdiv = document.querySelector(`.c-personcard[data-id="${heartbeat.id}"]`);
+        if(userdiv)
+        {
+            userdiv.querySelector('p').textContent = heartbeat.heartbeat;
+        }
     
-
+    });
 }
 }
 
 function initRooms()
 {
-    if(document.querySelector('.js-rooms'))
-    {
-        document.querySelector('.js-makeroom').addEventListener('click', async () => {
-            showPopup({
-                title: "Reconnected!",
-                type: "join_room",
-                buttons: [
-                  {
-                    text: "Create Room",
-                    action: async() => {
-                        const formData = new FormData(document.querySelector('.js-createroomform'));
-                        const data = Object.fromEntries(formData);
-                        
-                      
-                            const response = await fetch('/createroom', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(data)
-                            });
-                            const jsonresponse = await response.json();;
-        
-                            if (jsonresponse.type == 'succes')
-                            {
-                                window.location.href = `/room/${jsonresponse.message}`;
-                               
-                            } 
-                            else {
-                                console.log(jsonresponse.message);
-                            }
-                        
-                       
-                    }
-                  }
-                ]
-              });
-              const socket = io("/rooms"); // Connect to the namespace '/room'
-                socket.on("test", (test) => {
-                    console.log(test);
-                });
-        });
-
-    }
 }
 
 
@@ -559,41 +559,33 @@ function handleFocus(e) {
     document.body.appendChild(popupContainer);
   }
   
+  let heartRateCharacteristic = null;
+
   // Reconnect function
   async function reconnectPolarHeartRateMonitor() {
     const deviceId = localStorage.getItem("bluetoothDeviceId");
-    // const deviceId ="39/5Qt9drL95/Se/Qx4FDg==";
-    if (!deviceId) return false;
+    if (!deviceId) {
+      console.warn("No previously connected device found.");
+      return false;
+    }
   
-    const devices = await navigator.bluetooth.getDevices();
-    const device = devices.find((d) => d.id === deviceId);
-   
-    if (!device) return false;
-    console.log("run ik hier ???");
-    if (!device.watchAdvertisements) return false;
+    try {
+      const devices = await navigator.bluetooth.getDevices();
+      const device = devices.find(d => d.id === deviceId);
   
-    return new Promise((resolve) => {
-        const timeout = setTimeout(() => {
-          resolve(false); // Resolve with false if it times out
-          console.log("oei");
-        }, 5000); // 5 seconds timeout
-      
-        device.addEventListener("advertisementreceived", async () => {
-          try {
-            clearTimeout(timeout); // Clear the timeout if the event fires
-            await setupHeartRateNotifications(device);
-            resolve(true);
-          } catch {
-            resolve(false);
-          }
-        });
-      
-        device.watchAdvertisements().catch(() => {
-          clearTimeout(timeout); // Clear the timeout if an error occurs
-          resolve(false);
-        });
-      });
-      
+      if (!device) {
+        console.error("Previously remembered device not found.");
+        return false;
+      }
+  
+      // Connect to the device
+      await setupHeartRateNotifications(device);
+      console.log("Reconnected to device:", device.name || "Unknown Device");
+      return true;
+    } catch (error) {
+      console.error(`Reconnection error: ${error.message}`);
+      return false;
+    }
   }
   
   // Connect function
@@ -604,57 +596,83 @@ function handleFocus(e) {
         optionalServices: ["heart_rate"]
       });
   
+      // Save the device ID for future reconnections
       localStorage.setItem("bluetoothDeviceId", device.id);
-      loadanimation();
-      await setupHeartRateNotifications(device);
-        removeanimation();
   
+      // Show loading animation
+      loadanimation();
+  
+      // Set up heart rate notifications
+      await setupHeartRateNotifications(device);
+  
+      // Remove loading animation
+      removeanimation();
+  
+      console.log("Connected to device:", device.name || "Unknown Device");
       return true;
     } catch (error) {
       console.error(`Connection error: ${error.message}`);
       return false;
     }
-}
-
-async function setupHeartRateNotifications(device) {
-    const server = await device.gatt.connect();
-    const service = await server.getPrimaryService('heart_rate');
-    heartRateCharacteristic = await service.getCharacteristic('heart_rate_measurement');
-    await heartRateCharacteristic.startNotifications();
-
-    heartRateCharacteristic.addEventListener('characteristicvaluechanged', handleHeartRateNotification);
-}
-
-
-async function showheartBeat() {
-    if (!heartRateCharacteristic) {
-        console.error("Heart rate characteristic is not initialized.");
-        return;
-    }
-
+  }
+  
+  // Function to set up heart rate notifications
+  async function setupHeartRateNotifications(device) {
     try {
-        await heartRateCharacteristic.startNotifications();
-
-        heartRateCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
-            const heartRate = parseHeartRate(event.target.value);
-            document.querySelector('.showheartbeat').textContent = heartRate;
-        });
-
+      const server = await device.gatt.connect();
+      const service = await server.getPrimaryService("heart_rate");
+      heartRateCharacteristic = await service.getCharacteristic("heart_rate_measurement");
+  
+      // Start notifications and add event listener for characteristic changes
+      await heartRateCharacteristic.startNotifications();
+      heartRateCharacteristic.addEventListener("characteristicvaluechanged", handleHeartRateNotification);
+  
+      console.log("Heart rate notifications enabled.");
     } catch (error) {
-        console.error("Failed to show heart rate notifications:", error);
+      console.error("Failed to set up heart rate notifications:", error);
+      throw error;
     }
-}
-
-function handleHeartRateNotification(event) {
+  }
+  
+  // Show real-time heartbeat data
+  async function showheartBeat() {
+    if (!heartRateCharacteristic) {
+      console.error("Heart rate characteristic is not initialized.");
+      return;
+    }
+  
+    try {
+      await heartRateCharacteristic.startNotifications();
+  
+      heartRateCharacteristic.addEventListener("characteristicvaluechanged", (event) => {
+        const heartRate = parseHeartRate(event.target.value);
+        // document.querySelector(".showheartbeat").textContent = heartRate;
+      });
+  
+      console.log("Real-time heart rate monitoring started.");
+    } catch (error) {
+      console.error("Failed to show heart rate notifications:", error);
+    }
+  }
+  
+  // Handle heart rate notifications
+  function handleHeartRateNotification(event) {
     const heartRate = parseHeartRate(event.target.value);
     console.log(`Heart rate: ${heartRate}`);
-}
-
-function parseHeartRate(value) {
+  
+    // Emit heart rate via socket.io
+    if (socket !== "") {
+      socket.emit("heartRate", heartRate);
+    }
+  }
+  
+  // Parse heart rate value from the characteristic data
+  function parseHeartRate(value) {
     const data = new DataView(value.buffer);
     const flags = data.getUint8(0);
     return flags & 0x01 ? data.getUint16(1, true) : data.getUint8(1);
-}
+  }
+  
 
 
 // Functie om een modal te tonen
@@ -693,60 +711,7 @@ function showModal(button) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.js-room-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const isLocked = button.getAttribute('data-locked') === 'true';
 
-            if (isLocked) {
-                event.preventDefault(); // Voorkom de standaard linkactie
-                showModal(button); // Geef de knop door aan de modal
-            } else {
-                event.preventDefault(); // Zorg ervoor dat de standaard actie geblokkeerd wordt
-                window.location = button.getAttribute('href');
-            }
-        });
-    });
-    const triggerDiv = document.querySelector('.js-tip--greece');
-const modal = document.querySelector('.c-modeltip');
-const overlay = document.querySelector('.overlay');
-const closeModalButton = modal.querySelector('.c-tipmodel-close');
-
-// Show the modal and overlay when the div is clicked
-triggerDiv.addEventListener('click', () => {
-    modal.style.display = 'block';
-    overlay.style.display = 'block';
-    
-    // Animate the modal sliding in from the left
-    setTimeout(() => {
-        modal.style.right = '80px'; // Adjust to position it fully visible
-    }, 10); // Small delay to ensure display:block is applied
-});
-
-// Hide the modal and overlay when the close button is clicked
-closeModalButton.addEventListener('click', () => {
-    modal.style.right = '-300px'; // Slide out to the left
-    overlay.style.display = 'none';
-    
-    // Hide the modal completely after the animation
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 500); // Match transition duration
-});
-
-// Hide the modal and overlay when the overlay is clicked
-overlay.addEventListener('click', () => {
-    modal.style.left = '-300px'; // Slide out to the left
-    overlay.style.display = 'none';
-
-    // Hide the modal completely after the animation
-    setTimeout(() => {
-        modal.style.display = 'none';
-    }, 500); // Match transition duration
-});
-
-
-});
 
 
 
