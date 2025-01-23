@@ -1,0 +1,192 @@
+.c-cercle {
+  width: 4.6875rem;
+  height: 4.6875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  position: absolute;
+}
+.dropzone {
+  width: 4.6875rem;
+  height: 4.6875rem;
+  display: inline-block;
+  margin: 20px;
+  text-align: center;
+  line-height: 100px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+}
+.c-cercle--green {
+  border: 3px solid green;
+  left: calc(40% + 50px);
+  top: calc(100% - 25%);
+}
+.c-cercle--yellow {
+  border: 3px solid yellow;
+  left: calc(40% + 100px);
+  top: calc(100% - 25%);
+}
+.c-cercle--red {
+  border: 3px solid red;
+  left: calc(40% + 150px);
+  top: calc(100% - 25%);
+}
+.c-cercle--blue {
+  border: 3px solid blue;
+  left: calc(40% + 200px);
+  top: calc(100% - 25%);
+}
+.c-cercle--black {
+  border: 3px solid black;
+  left: calc(40% + 250px);
+  top: calc(100% - 25%);
+}
+.c-body--france {
+  background-image: url(../img/france.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+.c-body--france::after {
+  content: "";
+  /* position: absolute; */
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.c-progress--france::after {
+  content: "";
+  display: block;
+  width: calc(100%);
+  height: 100%;
+  background-color: var(--blauw-blauw-accent-70);
+  border-radius: var(--radius-s);
+}
+.c-container--rings {
+  margin: 0 auto;
+  max-width: fit-content;
+  position: relative;
+  height: 100px;
+  width: 400px;
+  padding: 0 150px;
+}
+.c-dropzonegreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.c-dropzonegeel {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+}
+.c-dropzonerood {
+  position: absolute;
+  left: 63%;
+}
+.c-dropzoneblauw {
+  position: absolute;
+  left: 5%;
+}
+.c-dropzonezwart {
+  position: absolute;
+  left: 35%;
+}
+.c-container--textfransopdracht {
+  margin-top: 3.75rem;
+  color: var(--text-white);
+}
+.c-franserace {
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+}
+.c-container--fransopdrachtdeeltwee{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+.c-congertscontainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+.c-francecongrestext {
+  margin-top: 5rem;
+  color: var(--text-white);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.c-francecongresimg {
+  width: 500px;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .c-cercle--green {
+    border: 3px solid green;
+    left: calc(20% + 50px);
+  }
+  .c-cercle--yellow {
+    border: 3px solid yellow;
+    left: calc(20% + 100px);
+  }
+  .c-cercle--red {
+    border: 3px solid red;
+    left: calc(20% + 150px);
+  }
+  .c-cercle--blue {
+    border: 3px solid blue;
+    left: calc(20% + 200px);
+  }
+  .c-cercle--black {
+    border: 3px solid black;
+    left: calc(20% + 250px);
+  }
+}
+@media (max-width: 460px) {
+  .c-cercle--green {
+    border: 3px solid green;
+    left: calc(50px);
+    top: 40%;
+  }
+  .c-cercle--yellow {
+    border: 3px solid yellow;
+    left: calc(100px);
+    top: 40%;
+  }
+  .c-cercle--red {
+    border: 3px solid red;
+    left: calc(150px);
+    top: 40%;
+  }
+  .c-cercle--blue {
+    border: 3px solid blue;
+    left: calc(50px);
+    top: 50%;
+  }
+  .c-cercle--black {
+    border: 3px solid black;
+    left: calc(100px);
+    top: 50%;
+  }
+}
