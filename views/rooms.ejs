@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="script.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-</head>
-<body>
-    <nav class="c-nav">
+  <nav class="c-nav">
         <div class="c-nav__container">
         <a class="c-nav__return" href="./gamelobby">
             <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,33 +9,32 @@
         </a>
     </div>
     </nav>
-    <main >
         <div class="container">
             <form class="c-roomsearch">
-            <label class="c-roomsearch__labelzoeken c-label" for="kamerzoeken">
-                <input class="c-input c-roomsearch__search" type="text" name="kamerzoeken" id="kamerzoeken" placeholder="Zoek kamer naam">
+            <label class="c-roomssearch__zoeklabel c-label" for="kamerzoeken">
+                <input class="c-input" type="text" name="kamerzoeken" id="kamerzoeken" placeholder="Zoek kamer naam">
+
             </label>
 
             
 
-            <select name="" id="filtersroom" class="c-roomsearch__select c-input">
+            <select name="" id="filtersroom" class=" c-input">
                 <option value="alfabetisch">Alfabetisch</option>
                 <option value="privé">Privé</option>
                 <option value="openbaar">Openbaar</option>
                 <option value="recentste">Recentste</option>
             </select>
-            <button type="button" class="c-button c-roomsearch__btn js-makeroom"> Maak een kamer aan</button>
+            <button type="button" class="c-button js-makeroom"> Maak een kamer aan</button>
         </form></div>
         <% if (rooms && rooms.length > 0) { %>
             <div class="container js-rooms c-rooms">
             <% rooms.forEach(room => { %>
                 <div class="c-room">
-                    <div class="c-room__info">
                         <h3 class="c-room__title"><%= room.name %></h3>
-                    </div>
                     <div class="c-room__info">
                         <h4 class="c-room__players"><%= room.aantalusers %>/8</h4>
-                        <a href="./room/123" class="c-button c-room__btn js-room-btn"  data-locked="true"false>
+                        <% if(room.password != null) { %>
+                        <a class="c-button c-room__btn js-joinroom" data-name="<%= room.name %>" data-locked="true">
                             <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,12 +43,16 @@
                                 </svg>
                             Join
                         </a>
+                        <% } else { %>
+                            <a class="c-button c-room__btn js-joinroom" data-name="<%= room.name %>">
+                                Join
+                            </a>
+                        <% } %>
                     </div>
                 </div>
                     <% }) %>
                 </div>
         <% } %>
-    </main>
     <footer class="c-footer pagination" aria-label="Pagination">
         <ul class="pagination__list list-reset">
             <li class="pagination__item">
@@ -81,5 +72,3 @@
             </li>
         </ul>
     </footer>
-</body>
-</html>

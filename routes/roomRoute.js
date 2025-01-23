@@ -6,25 +6,26 @@ const db = require('../config/db');
 const { get } = require('http');
 
 
-router.post('/joinroom'), async (req, res) => {
+router.post('/joinroom', async (req, res) => {
   const {roompassword, roomname } = req.body;
+   console.log(req.body);
+   console.log("kaasje");
   const checkRoomNameQuery = 'SELECT * FROM gamerooms WHERE name = ? and password = ?';
   const roomDetails = await db.query(checkRoomNameQuery, [roomname, roompassword]);
+  console.log("?");
   if(roomDetails.length === 0) {
-    return res.json({
-      type: 'error',
-      message: 'Deze kamer bestaat niet'
-    });
+    return res.json({ type: 'error', message: 'Kamernaam of wachtwoord is onjuist'});
+
   }
   else
   {
     const joinRoomQuery = 'INSERT INTO gameroom (userId, roomId) VALUES (?, ?)';
     await db.query(joinRoomQuery, [req.session.userId, roomDetails[0].roomId]);
-    res.redirect('/room/' + roomname);
+    return res.json({ type: 'succes', message: roomname});
   }
 
 
-}
+});
 
 router.post('/createroom', async (req, res) => {
   console.log("dit is de aller eerste test");
@@ -43,7 +44,6 @@ router.post('/createroom', async (req, res) => {
     });
   }
 
-  console.log("dit is test2");
   
 
   
@@ -89,7 +89,7 @@ router.get('/room/:roomId', async (req, res) => {
       return res.status(404).json({ message: 'Room not found' });
     } else {
       if (roomDetails[0].password !== null) {
-        return res.status(401).json({ message: 'Room requires a password' });
+        return res.status(403).json({ message: 'Room requires a password' });
       } else {
         const joinRoomQuery = 'INSERT INTO gameroom (userId, roomId) VALUES (?, ?)';
         await db.query(joinRoomQuery, [req.session.userId, roomDetails[0].roomId]);
@@ -103,7 +103,8 @@ router.get('/room/:roomId', async (req, res) => {
      }
 
      else {
-      res.sendFile(path.join(__dirname, '../public/room.html'));
+      res.render('room');
+
      }
   }
 });

@@ -7,7 +7,7 @@ const router = express.Router();
  
 
 router.get('/gamelobby', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/gamelobby.html'));
+  res.sendFile(path.join(__dirname, '../public/game.html'));
   }
   );
 

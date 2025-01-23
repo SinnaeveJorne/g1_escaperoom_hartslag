@@ -454,11 +454,6 @@ body {
   display: none;
 }
 
-body:has(.c-footer) {
-  margin-bottom: 4rem;
-  margin-top: calc(5rem + var(--spacing-6));
-  min-height: calc(100dvh - 10rem - var(--spacing-6));
-}
 
 .c-footer__list {
   display: grid;
@@ -731,6 +726,7 @@ align-items: start;
 }
 /* .c-roomsearch__btn {
   width: calc(100% / 3 - 1rem);
+
 } */
  .text-center{
     text-align: center;}
@@ -746,6 +742,7 @@ align-items: start;
   background-color: var(--blauw-blauw-accent-20);
   box-shadow: 0 0 5px 0 var(--neutral-400);
   transition: all 0.3s;
+
 }
 .c-room__img {
   width: 4rem;
@@ -807,7 +804,6 @@ align-items: start;
     box-shadow: 0 0 5px 0 var(--neutral-400);
     transition: all 0.3s;
     animation: shake 0.3s forwards;
-
 }
 .c-room__img{
     width: 4rem;
@@ -1238,9 +1234,7 @@ align-items: start;
     border: none;
     box-shadow: none;
 }
-body:has(.c-footer--ingame){
-    min-height: calc(100dvh - 9rem - var(--spacing-6));
-}
+
 .c-btn--ingame{
     width: 50%;
 }
