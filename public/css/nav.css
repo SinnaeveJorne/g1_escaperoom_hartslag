@@ -1,0 +1,152 @@
+.c-nav__mainside {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--blauw-blauw-accent-100);
+    color: var(--neutral-50);
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    z-index: 10;
+}
+.c-nav__mainside__links__link{
+    color: var(--neutral-50) !important;
+}
+
+.c-nav__mainside__logo{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.c-nav__mainside__logo__img{
+    width: 50px;
+    height: auto;
+}
+
+
+.c-nav__mainside__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.c-nav__mainside__hamburger span {
+    display: block;
+    height: 3px;
+    background-color: var(--neutral-50);
+    border-radius: 3px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Menu-overlay */
+.c-nav__mainside__menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 250px;
+    background-color: var(--blauw-blauw-accent-100);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.c-nav__mainside__menu__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.c-nav__mainside__links{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;  
+}
+
+.c-nav__mainside__links__link {
+    color: var(--neutral-50);
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Actief menu */
+.c-nav__mainside__menu--active {
+    left: 0;
+}
+
+/* Responsiveness */
+/* Responsiveness */
+@media (max-width: 768px) {
+    /* Verberg de links en het accountgedeelte voor mobiele schermen */
+    .c-nav__mainside__acount--hidden,
+    .c-nav__mainside__links--hidden {
+        display: none !important;
+    }
+    .c-nav__mainside__logo--profile{
+        border-bottom: 3px solid var(--neutral-50);
+padding-bottom: 5px;
+gap: 1rem;
+    }
+    .c-nav__mainside__logo__img--profile{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+    /* Toon het hamburger-menu */
+    .c-nav__mainside__hamburger {
+        display: flex;
+    }
+    
+    /* Menu-overlay styling */
+    .c-nav__mainside__menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100%;
+        width: 250px;
+        background-color: var(--blauw-blauw-accent-100);
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: left 0.3s ease;
+        z-index: 15;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    /* Content binnen het menu */
+    .c-nav__mainside__menu__content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    /* Links binnen het menu */
+    .c-nav__mainside__links {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    /* Links styling */
+    .c-nav__mainside__links__link {
+        color: var(--neutral-50);
+        text-decoration: none;
+        font-size: 18px;
+        gap: 1rem;
+    }
+
+    
+    /* Actief menu */
+    .c-nav__mainside__menu--active {
+        left: 0;
+    }
+    
+}
