@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/belgie.css" />
+    <script src="script.js"></script>
+  </head>
+  <body class="c-body--belg">
+    <nav class="c-nav">
+      <div class="c-nav__container c-nav__container--progressbar">
+        <div class="c-level">
+          <h3>5</h3>
+        </div>
+        <div class="c-progress c-progress--belg"></div>
+      </div>
+    </nav>
+
+    <main class="c-main__game">
+   <div class="container">
+    <p class="c-storytext">
+        Het ziet eruit dat het nacht is,maar dat zal ons niet tegenhouden om verder te gaan! Want zelfs in de donkerste uren brandt er altijd een vlam die ons vooruitduwt!
+    </p>
+   </div>
+   <div class="container c-container--belgpuzel">
+    <div class=""><!--c-belgpuzeelhidden -->
+      <img src="img/puzelbelg.png" class="c-puzelbelgrebus" alt="">
+      <input type="text" class="c-input" placeholder="Vul hier je antwoord in">
+    </div>
+   </div>
+   <div class="container c-belggameindication">
+    <img src="img/torch.png" alt="fakel" class="c-torchbelg">
+    <h3 class="c-white">110-130</h3>
+   </div>
+    <div class="c-gameinfo">
+      <div>
+        <svg
+          width="30"
+          height="30"
+          viewBox="0 0 30 30"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75"
+            stroke="#E63946"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625"
+            stroke="#E63946"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <p>120</p>
+      </div>
+      <button class="c-tipingame js-tip--greece">
+        <svg class="js-tip--greece"
+          width="21"
+          height="20"
+          viewBox="0 0 21 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            class="c-tipingame__svg"
+            d="M7.21875 18.125H13.7812"
+            stroke="#0A0A0A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            class="c-tipingame__svg"
+            d="M6.45596 13.0468C5.67582 12.4663 5.04393 11.7251 4.60775 10.8787C4.17157 10.0324 3.94245 9.10285 3.9376 8.16004C3.91791 4.77254 6.78573 1.95301 10.3418 1.87488C11.7199 1.84309 13.0736 2.22543 14.2107 2.96765C15.3478 3.70986 16.2106 4.77427 16.6767 6.00984C17.1428 7.24541 17.1885 8.5894 16.8074 9.85111C16.4262 11.1128 15.6375 12.2282 14.5533 13.0389C14.3141 13.2155 14.1203 13.4417 13.9866 13.7002C13.8528 13.9588 13.7826 14.2429 13.7814 14.5311V14.9999C13.7814 15.1656 13.7122 15.3246 13.5891 15.4418C13.4661 15.559 13.2991 15.6249 13.1251 15.6249H7.8751C7.70105 15.6249 7.53413 15.559 7.41106 15.4418C7.28799 15.3246 7.21885 15.1656 7.21885 14.9999V14.5311C7.21854 14.2448 7.14966 13.9622 7.01747 13.705C6.88527 13.4478 6.69324 13.2227 6.45596 13.0468Z"
+            stroke="#0A0A0A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            class="c-tipingame__svg"
+            d="M11.1562 4.375C12.7969 4.63828 14.1594 5.9375 14.4375 7.5"
+            stroke="#0A0A0A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="c-modeltip">
+      <div class="c-tipmodel-body">
+          Did you know? Greece is famous for its ancient culture and beautiful islands!
+      </div>
+      <button class="c-tipmodel-close">Close</button>
+  </div>
+  <div class="overlay"></div>
+  </main>
+    <footer class="c-footer c-footer--ingame">
+      <a href="/fransstory" class="c-button c-btn--ingame"
+        >Ga naar volgede uitdaging</a>
+    </footer>
+  </body>
+</html>

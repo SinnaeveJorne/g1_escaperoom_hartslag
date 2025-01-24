@@ -1764,3 +1764,7 @@ li.c-romedoor__item > h2{
         transform: translate3d(-1px, 1px, 0); /* Slight bottom-left */
     }
 }
+.c-main__game {
+margin-top: 8rem;
+height: auto;
+}
