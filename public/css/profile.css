@@ -1,0 +1,92 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+
+}
+
+
+
+.bold {
+    font-weight: bold;
+}
+
+.c-profilemain{
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.c-profielheader__imgcontainer {
+    position: relative;
+    z-index: 1000; 
+}
+
+.c-profielheader{
+      display: flex;
+      padding-top: 24px;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      text-align: center;
+}
+
+.c-profielheader__img{
+    border-radius: 50%;
+    object-fit: contain;
+    width: 120px;
+    border: 2px solid;
+    border-color: var(--neutral-50);
+    height: 120px;
+}
+
+.c-profielheader__icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.-c-profilemenu{
+    row-gap: 16px;
+}
+
+.c-profilemenu__item {
+    display: flex;
+    background-color: var(--neutral-50);
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: var(--radius-l);
+    margin-bottom: 16px;
+    cursor: pointer;
+    align-content: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.c-profilemenu__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.c-profilemenu__text {
+    color: var(--neutral-700);
+}
+
+.c-profilemenu__arrow {
+    margin-left: auto;
+}
+
+.e-mail{
+    background-color: var(--blauw-blauw-accent-20);
+    color: var(--blauw-blauw-accent-80);
+    padding: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: var(--radius-l);
+    margin-bottom: 32px;
+}
+
