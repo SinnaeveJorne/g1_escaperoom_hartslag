@@ -99,3 +99,49 @@ body:has(.c-footer)
 .c-footer{
         height: 5rem !important;
 }
+
+@media (max-width: 1024px) 
+{
+        .c-personcard
+        {
+               padding: var(--spacing-3);
+        }
+
+}
+
+@media (max-width: 768px) 
+{
+        .c-personcards
+        {
+                grid-template-columns: 1fr;
+                
+        }
+
+        .c-roomssearch
+        {
+                grid-template-columns: 1fr;
+        }
+
+        .c-roomssearch__zoeklabel
+        {
+                margin-bottom: var(--spacing-3);
+        }
+
+        .c-removebutton
+        {
+                margin-left: auto;
+        }
+
+        .c-removebutton svg
+        {
+                width: 1.5rem;
+                height: 1.5rem;
+        }
+
+        .c-personcard
+        {
+                padding: var(--spacing-3);
+        }
+
+}
+
