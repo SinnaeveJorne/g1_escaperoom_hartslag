@@ -6,6 +6,7 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/belgie.css" />
     <script src="script.js"></script>
   </head>
   <body class="c-body--belg">
@@ -18,15 +19,21 @@
       </div>
     </nav>
 
+    <main class="c-main__game">
    <div class="container">
     <p class="c-storytext">
-        Het ziet eruit dat het nacht is,maar dat zal ons niet tegenhouden om verder te gaan! Want zelfs in de donkerste uren brandt er altijd een vlam die ons vooruitduwt! 
+        Het ziet eruit dat het nacht is,maar dat zal ons niet tegenhouden om verder te gaan! Want zelfs in de donkerste uren brandt er altijd een vlam die ons vooruitduwt!
     </p>
    </div>
-   <div class="container">
-    <div>
-        <img src="" alt="">
+   <div class="container c-container--belgpuzel">
+    <div class=""><!--c-belgpuzeelhidden -->
+      <img src="img/puzelbelg.png" class="c-puzelbelgrebus" alt="">
+      <input type="text" class="c-input" placeholder="Vul hier je antwoord in">
     </div>
+   </div>
+   <div class="container c-belggameindication">
+    <img src="img/torch.png" alt="fakel" class="c-torchbelg">
+    <h3 class="c-white">110-130</h3>
    </div>
     <div class="c-gameinfo">
       <div>
@@ -96,10 +103,10 @@
       <button class="c-tipmodel-close">Close</button>
   </div>
   <div class="overlay"></div>
+  </main>
     <footer class="c-footer c-footer--ingame">
       <a href="/fransstory" class="c-button c-btn--ingame"
-        >Ga naar volgede uitdaging</a
-      >
+        >Ga naar volgede uitdaging</a>
     </footer>
   </body>
 </html>

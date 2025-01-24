@@ -1,0 +1,35 @@
+.c-container--belgpuzel{
+    display: flex;
+    justify-content: center;
+}
+.c-belgpuzeelhidden::after{
+    content: " ";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    position: relative;
+    top: -100%;
+    left: 0;
+    z-index: 0;
+}
+.c-torchbelg{
+   width: 200px;
+}
+
+.c-belggameindication{
+    display: flex;
+    align-items: center;
+    
+}
+.c-puzelbelgrebus{
+   width: 100%;
+}
+.c-container--belgpuzel{
+    margin-top: 2rem;
+}
+@media (max-width: 460px){
+    .c-belggameindication{
+        flex-direction: column-reverse;
+    }
+}
