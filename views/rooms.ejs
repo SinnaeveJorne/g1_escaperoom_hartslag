@@ -26,8 +26,9 @@
             </select>
             <button type="button" class="c-button js-makeroom"> Maak een kamer aan</button>
         </form></div>
+        <div class="container js-rooms c-rooms">
         <% if (rooms && rooms.length > 0) { %>
-            <div class="container js-rooms c-rooms">
+          
             <% rooms.forEach(room => { %>
                 <div class="c-room">
                         <h3 class="c-room__title"><%= room.name %></h3>
@@ -51,8 +52,8 @@
                     </div>
                 </div>
                     <% }) %>
-                </div>
         <% } %>
+    </div>
     <footer class="c-footer pagination" aria-label="Pagination">
         <ul class="pagination__list list-reset">
             <li class="pagination__item">

@@ -57,19 +57,15 @@ router.post('/createroom', async (req, res) => {
   const getRoomIdQuery = 'Select * from gamerooms where name = ?';
   const getId = await db.query(getRoomIdQuery, [roomname]);
 
-  const insertPlayerInRoomQuery = 'INSERT INTO gameroom (userId, roomId) VALUES (?, ?)';
-  await db.query(insertPlayerInRoomQuery, [req.session.userId, getId[0].roomId]);
+  const isadmin = 1;
+  const insertPlayerInRoomQuery = 'INSERT INTO gameroom (userId, roomId, isAdmin) VALUES (?, ?, ?)';
+  await db.query(insertPlayerInRoomQuery, [req.session.userId, getId[0].roomId , isadmin]);
 
-  // Respond with success
   res.json({
     type: 'succes',
     message: roomname
   });
 });
-
-
-
-
 
 router.get('/room/:roomId', async (req, res) => {
   const requestedRoomId = req.params.roomId; // The requested room ID from the URL
@@ -108,6 +104,19 @@ router.get('/room/:roomId', async (req, res) => {
      }
   }
 });
+
+router.post('/isUserInARoom', async (req, res) => {
+  const checkUserRoomsQuery = 'SELECT * FROM gameroom g JOIN gamerooms r ON g.roomId = r.roomId WHERE g.userId = ?';
+  const userRooms = await db.query(checkUserRoomsQuery, [req.session.userId]);
+
+  if (userRooms.length === 0) {
+    return res.json({ type: 'error', message: 'User is not in a room' });
+  } else {
+    return res.json({ type: 'succes', message: userRooms[0].name });
+  }
+});
+
+
 
 
 module.exports = router;

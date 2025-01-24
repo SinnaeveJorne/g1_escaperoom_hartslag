@@ -35,13 +35,12 @@ app.use(bodyParser.json());
 
 const s = session({
   secret: secret,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   store: new MemoryStore({
     checkPeriod: 86400000 // Prune expired entries every 24h
   }),
   cookie: {
-  secure: false ,   
   maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
    sameSite: 'strict',
    httpOnly: true

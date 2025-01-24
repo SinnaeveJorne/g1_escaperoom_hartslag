@@ -1,19 +1,38 @@
 
 
 let socket = "";
+let laagste;
 
 function init()
 {
-    initStartGameButton();
-    isUserInGame();
+    // initStartGameButton();
+    // isUserInGame();
+    nextroom('/rooms');
 
     
 }
 
 
-function isUserInGame()
+async function isUserInGame()
 {
-  nextroom()
+      const response = await fetch('/isUserInARoom', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify()
+      });
+      const jsonresponse = await response.json();;
+
+      if (jsonresponse.type == 'succes')
+      {
+          // socket = io("/room");
+          // socketevents();
+          // nextroom(`/room/${jsonresponse.message}`,jsonresponse.message);
+      } 
+      else {
+          console.log(jsonresponse.message);
+      }
 }
 
 
@@ -163,6 +182,7 @@ function initStartGameButton() {
           button.addEventListener("click", () => {
             action();
             popupContainer.remove(); // Close popup on button click
+            document.body.style.overflow = "auto";
           });
           buttonContainer.appendChild(button);
         });
@@ -173,6 +193,7 @@ function initStartGameButton() {
         popup.appendChild(buttonContainer);
         popupContainer.appendChild(popup);
         document.body.appendChild(popupContainer);
+        document.body.style.overflow = "hidden";
       }
       
       let heartRateCharacteristic = null;
@@ -274,11 +295,20 @@ function initStartGameButton() {
       // Handle heart rate notifications
       function handleHeartRateNotification(event) {
         const heartRate = parseHeartRate(event.target.value);
-        console.log(`Heart rate: ${heartRate}`);
+        
       
         // Emit heart rate via socket.io
         if (socket !== "") {
           socket.emit("heartRate", heartRate);
+        }
+
+        if(laagste == null)
+        {
+          laagste = heartRate;
+        }
+        else if(laagste > heartRate)
+        {
+          laagste = heartRate;
         }
       }
       
@@ -340,6 +370,7 @@ function initStartGameButton() {
               {
                 document.body.classList.add('oplipicbackground');
                   Room(roomname);
+                  returnarrow();
               }
             }
             
@@ -354,8 +385,9 @@ function initStartGameButton() {
 document.addEventListener('DOMContentLoaded', init);
 
 
-function rooms(){
-  socket = io("/room"); // Connect to the namespace '/room'
+function rooms(){ // Connect to the namespace '/room'
+  socket = io("/room");
+  socketevents();
 document.querySelector('.js-makeroom').addEventListener('click', async () => {
     showPopup({
         title: "Reconnected!",
@@ -440,41 +472,6 @@ document.querySelectorAll('.js-joinroom').forEach(joinroombutton => {
 });
 })
 
-socket.on('roomUpdate',(rooms) => {
-  document.querySelectorAll('.js-joinroom').forEach(room => {
-    if(room.dataset.name == rooms.name)
-    {
-      const roomcount = room.closest('.c-room').querySelector('.c-room__players');
-      roomcount.textContent = rooms.amount+'/8';
-    }
-  });
-})
-
-socket.on('deleteRoom',(room) => {
-  document.querySelectorAll('.js-joinroom').forEach(roombutton => {
-
-    if(roombutton.dataset.name == room.name)
-    {
-      roombutton.closest('.c-room').remove();
-    }
-  });
-})
-
-socket.on('roomcreated', (room) => {
-  if(document.querySelectorAll('.js-rooms'))
-  {
-
-  const roomdiv = document.createElement('div');
-  roomdiv.classList.add('c-room');
-  roomdiv.innerHTML = `
-  <h3 class="c-room__title">${room.data.name}</h3>
-  <p class="c-room__players">${0}/8</p>
-  <button class="c-button js-joinroom" data-name="${room.data.name}" data-locked="true">Join</button>
-  `;
-  document.querySelector('.js-rooms').appendChild(roomdiv);
-  }
-}
-);
 }
 
 
@@ -488,88 +485,156 @@ const usersdiv = document.querySelector('.js-room-users');
 const roomid = roomname;
 console.log(socket);
 socket.emit("joinroom", roomid); 
-
-    socket.on('loadusers', (users) => {
-        users.users.forEach(user => {
-        const userdiv = document.createElement('div');
-        userdiv.dataset.id = user.id;
-        userdiv.classList.add('c-personcard');
-        userdiv.innerHTML = `
-        <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
-        <div class="c-personcard__info">
-        <h4 class="c-personcard__title">${user.userName}</h3>
-        <div class="c-personcard__heartbeat">
-       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <p>50</p>
-        </div>
-        </div>
-         <a href="./room/${roomid}" class="c-removebutton">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M27 7H5" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M13 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M19 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M25 7V26C25 26.2652 24.8946 26.5196 24.7071 26.7071C24.5196 26.8946 24.2652 27 24 27H8C7.73478 27 7.48043 26.8946 7.29289 26.7071C7.10536 26.5196 7 26.2652 7 26V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 7V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H13C12.4696 3 11.9609 3.21071 11.5858 3.58579C11.2107 3.96086 11 4.46957 11 5V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        </a>
-
-
-`;
-    usersdiv.appendChild(userdiv);
-    let playerspan = document.querySelector('.js-roomcount');
-    const aantalplayers = document.querySelectorAll('.c-room').length;
-    playerspan = aantalplayers;
-});
-    });
-
-    socket.on('userjoined', (user) => {
-        console.log("test");
-        const userdiv = document.createElement('div');
-        userdiv.dataset.id = user.id;
-        userdiv.classList.add('c-personcard', 'c-lobbyperson__card');
-        userdiv.innerHTML = `
-        <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
-        <div class="c-personcard__info">
-        <h4 class="c-personcard__title">${user.userName}</h3>
-        <div class="c-personcard__heartbeat">
-       <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <p>50</p>
-        </div>
-        </div>
-        <a href="./room/${roomid}" class="c-removebutton">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M27 7H5" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M19 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M25 7V26C25 26.2652 24.8946 26.5196 24.7071 26.7071C24.5196 26.8946 24.2652 27 24 27H8C7.73478 27 7.48043 26.8946 7.29289 26.7071C7.10536 26.5196 7 26.2652 7 26V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M21 7V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H13C12.4696 3 11.9609 3.21071 11.5858 3.58579C11.2107 3.96086 11 4.46957 11 5V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        </a>
-`;
-
-    usersdiv.appendChild(userdiv);
-    });
-
-    socket.on('userleft', (user) => {
-        console.log("dit is een test van de federale overheid");
-        const userdiv = document.querySelector(`.c-personcard[data-id="${user.id}"]`);
-        console.log(user);
-        userdiv.remove();
-    });
-
-    socket.on('heartRate', (heartbeat) => {
-        const userdiv = document.querySelector(`.c-personcard[data-id="${heartbeat.id}"]`);
-        if(userdiv)
-        {
-            userdiv.querySelector('p').textContent = heartbeat.heartbeat;
-        }
-    
-    });
 }
+}
+
+
+function returnarrow()
+{
+  document.querySelector('.js-returnarrow').addEventListener('click', () => {
+    console.log("test");
+    socket.disconnect();
+    nextroom('/rooms');
+  });
+}
+
+function createRoom(user)
+{
+  const userslist = document.querySelector('.js-room-users')
+  if(userslist){
+
+  const userdiv = document.createElement('div');
+  userdiv.dataset.id = user.id;
+  userdiv.classList.add('c-personcard', 'c-lobbyperson__card');
+  userdiv.innerHTML = `
+  <img src="../img/profile_1.png" alt="profiel" class="c-room__img">
+  <div class="c-personcard__info">
+  <h4 class="c-personcard__title">${user.userName}</h3>
+  <div class="c-personcard__heartbeat">
+ <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <p>50</p>
+  </div>
+  </div>
+  <a href="#" class="c-removebutton js-kickuser">
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M27 7H5" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M19 13V21" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25 7V26C25 26.2652 24.8946 26.5196 24.7071 26.7071C24.5196 26.8946 24.2652 27 24 27H8C7.73478 27 7.48043 26.8946 7.29289 26.7071C7.10536 26.5196 7 26.2652 7 26V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M21 7V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H13C12.4696 3 11.9609 3.21071 11.5858 3.58579C11.2107 3.96086 11 4.46957 11 5V7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  </a>
+`;
+userslist.appendChild(userdiv);
+
+console.log("ik doe deze test");
+//select this js-kickuser button
+const kickuserbutton = document.querySelector('.c-personcard[data-id="'+user.id+'"] .js-kickuser');
+kickuserbutton.addEventListener('click', async () => {
+  console.log(user.id);
+  socket.emit("kickuser", user.id);
+});
+  }
+}
+
+
+function socketevents()
+{
+  socket.on('loadusers', (users) => {
+    users.users.forEach(user => {
+      createRoom(user);
+    });
+  });
+
+  socket.on('userjoined', (user) => {
+    createRoom(user);
+  });
+
+  socket.on('userleft', (user) => {
+      const userdiv = document.querySelector(`.c-personcard[data-id="${user.id}"]`);
+      console.log(user);
+      userdiv.remove();
+  });
+
+  socket.on('heartRate', (heartbeat) => {
+      const userdiv = document.querySelector(`.c-personcard[data-id="${heartbeat.id}"]`);
+      if(userdiv)
+      {
+          userdiv.querySelector('p').textContent = heartbeat.heartbeat;
+      }
+  
+  });
+
+  socket.on('kicked', async() => {
+    await nextroom('/rooms');
+    showPopup({
+      title: "Je bent verwijderd uit de kamer",
+      type: "melding",
+      buttons: [
+        {
+          text: "Begrepen",
+          action: async () => {
+          }
+        }
+      ]
+    });
+  })
+
+  socket.on('roomUpdate',(rooms) => {
+    document.querySelectorAll('.js-joinroom').forEach(room => {
+      if(room.dataset.name == rooms.name)
+      {
+        const roomcount = room.closest('.c-room').querySelector('.c-room__players');
+        roomcount.textContent = rooms.amount+'/8';
+      }
+    });
+  })
+  
+  socket.on('deleteRoom',(room) => {
+    document.querySelectorAll('.js-joinroom').forEach(roombutton => {
+  
+      if(roombutton.dataset.name == room.name)
+      {
+        roombutton.closest('.c-room').remove();
+      }
+    });
+  })
+  
+  socket.on('roomcreated', (room) => {
+    console.log("biep boop melding");
+    if(document.querySelector('.js-rooms'))
+    {
+  
+    const roomdiv = document.createElement('div');
+    roomdiv.classList.add('c-room');
+    roomdiv.innerHTML = `
+    <h3 class="c-room__title">${room.data.name}</h3>
+    <p class="c-room__players">${0}/8</p>
+    <button class="c-button js-joinroom" data-name="${room.data.name}" data-locked="true">Join</button>
+    `;
+    document.querySelector('.js-rooms').appendChild(roomdiv);
+    }
+  }
+  );
+
+  socket.on('disconnected', async(message) => {
+    await nextroom('/rooms');
+    showPopup({
+      title: message,
+      type: "melding",
+      buttons: [
+        {
+          text: "Begrepen",
+          action: async () => {
+          }
+        }
+      ]
+    });
+  });
+
+
+
 }
