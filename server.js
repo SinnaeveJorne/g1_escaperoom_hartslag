@@ -54,37 +54,16 @@ const s = session({
 app.use(cookieParser());
 app.use(s);
 
-app.get('/*', (req, res, next) => {
+
+
+
+app.get('*', (req, res, next) => {
   if (req.session.userId) {
-    // Check if the path is not a dynamic room path
-    if (!req.path.startsWith('/room/')) {
-      const roomsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/roomcodes.json')));
-      const currentUserId = req.session.userid;
-
-      let isRoomFound = false;
-      let userRoomName = "";
-
-      // Find the room where the user is present
-      for (const room of roomsData) {
-        if (room.users.includes(currentUserId)) {
-          isRoomFound = true;
-          userRoomName = room.roomname;
-          break;
-        }
-      }
-
-
-      if (isRoomFound) {
-        return res.redirect(`/room/${userRoomName}`);
-      }
-      else{
-        if (req.path.startsWith('/register') || req.path.startsWith('/login')){
-          return res.redirect('/homeroute');
-        }
-        else{
-          return next();
-        }
-      }
+    console.log(req.session.firstlogin);
+    if(req.session.firstlogin == true){
+      console.log("dit is een test van de federale overheid");
+      req.session.firstlogin = false;
+      return res.redirect('/info');
     }
     return next();
   } 
@@ -137,8 +116,8 @@ const port = process.env.PORT || 3000;
 
 
 app.use((req, res) => {
-  res.redirect('/homeroute');
-  
+  res.redirect('/home');
+  //if i have an index.html this file will auto show index why?
 });
 
 

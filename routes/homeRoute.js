@@ -3,9 +3,12 @@ const path = require('path');
 
 const router = express.Router();
 
-router.get('/homeroute', (req, res) => {
-  const username = req.session.userName || 'Guest';  // Default to 'Guest' if no session username exists
-  res.render('home', { username });  // Renders home.ejs with dynamic username
+router.get('/home', (req, res) => {
+  res.render('home');  // Renders home.ejs with dynamic username
+});
+
+router.get('/info', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/info.html'));
 });
 
 module.exports = router;

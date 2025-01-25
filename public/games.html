@@ -7,97 +7,60 @@
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <link rel="stylesheet" type="text/css" href="../css/room.css">
+    <link rel="stylesheet" type="text/css" href="css/escapeselector.css" />
+
     <script src="../script.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-
-        /* Default width: 50% */
-        .swiper-container {
-            width: 50%;
-            height: 500px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-
-        /* Add styling for the navigation arrows */
-        .swiper-button-next, .swiper-button-prev {
-            color: #333; /* Set color for arrows */
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            font-size: 2rem;
-        }
-
-        .swiper-button-next {
-            right: 10px; /* Position the next button on the right */
-        }
-
-        .swiper-button-prev {
-            left: 10px; /* Position the previous button on the left */
-        }
-
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-            border-radius: 1rem;
-        }
-
-        /* For screens up to 480px, set width to 90% */
-        @media (max-width: 480px) {
-            .swiper-container {
-                width: 90%;
-            }
-        }
-
-        /* For screens between 480px and 720px, set width to 80% */
-        @media (min-width: 481px) and (max-width: 720px) {
-            .swiper-container {
-                width: 80%;
-            }
-        }
-
-        /* Hide arrows on smaller screens (optional) */
-        @media (max-width: 720px) {
-            .swiper-button-next, .swiper-button-prev {
-                display: none;
-            }
-        }
-
-        .swiper-slide {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
-    </style>
 </head>
 <body>
 
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <a class="c-uitdaging__div c-uitdaging__div--shadow" href="/gamelobby">
-                    <img class="c-uitdaging__img" src="img/olympischvuur.png" alt="vuurtje">
-                    <h3 class="c-uitdaging__title">The olympics</h3>
-                </a>
+                <div class="c-escaperooms__room">
+                    <img src="img/olympischvuur.png" alt="escape room" class="c-escaperooms__room__img">
+                    <div class="c-escaperooms__room__info">
+                      <h2 class="c-escaperooms__room__info__title">the olympics: rekindle the fire</h2>
+                      <p class="c-escaperooms__room__info__text">
+                          Escape room
+                      </p>
+                    </div>
+                  </div>
             </div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-            <div class="swiper-slide">Slide 4</div>
+            <div class="swiper-slide">
+                <div class="c-escaperooms__room">
+                    <img src="img/avontuur.png" alt="escape room" class="c-escaperooms__room__img">
+                    <div class="c-escaperooms__room__info">
+                      <h2 class="c-escaperooms__room__info__title">Het Avontuur: Bergtocht naar Narnia</h2>
+                      <p class="c-escaperooms__room__info__text">
+                          Escape room
+                      </p>
+                    </div>
+                  </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="c-escaperooms__room">
+                    <img src="img/verloren.png" alt="escape room" class="c-escaperooms__room__img">
+                    <div class="c-escaperooms__room__info">
+                      <h2 class="c-escaperooms__room__info__title">Het Avontuur: Verloren in Narnia</h2>
+                      <p class="c-escaperooms__room__info__text">
+                          Escape room
+                      </p>
+                    </div>
+                  </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="c-escaperooms__room">
+                    <img src="img/ontvoerd.png" alt="escape room" class="c-escaperooms__room__img">
+                    <div class="c-escaperooms__room__info">
+                      <h3 class="c-escaperooms__room__info__title">Het Avontuur: Onvoerd in Narnia</h3>
+                      <p class="c-escaperooms__room__info__text">
+                          Escape room
+                      </p>
+                    </div>
+                  </div>
+            </div>
         </div>
         <!-- Add Pagination if needed -->
         <div class="swiper-pagination"></div>
@@ -107,7 +70,7 @@
         <div class="swiper-button-next"></div>
     </div>
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="swiper.js"></script>
     <script>
         let swiper;
 
@@ -144,10 +107,10 @@
                 },
                 // Dynamic breakpoints logic to adjust slidesPerView
                 breakpoints: {
-                    480: {
+                    300: {
                         slidesPerView: 1, // Show 1 slide for smaller screens
                     },
-                    720: {
+                    1200: {
                         slidesPerView: 3, // Show 3 slides for screens larger than 720px
                     },
                 }
