@@ -81,6 +81,10 @@
 .c-nav__mainside__menu--active {
     left: 0;
 }
+.c-nav__mainside__acount{
+    display: flex;
+    gap: 20px;
+}
 
 /* Responsiveness */
 /* Responsiveness */
@@ -119,6 +123,7 @@ gap: 1rem;
         display: flex;
         flex-direction: column;
         padding: 20px;
+        justify-content: space-between;
     }
     
     /* Content binnen het menu */
@@ -132,7 +137,7 @@ gap: 1rem;
     .c-nav__mainside__links {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 2rem;
     }
     
     /* Links styling */
@@ -148,5 +153,10 @@ gap: 1rem;
     .c-nav__mainside__menu--active {
         left: 0;
     }
-    
+    .c-nav__mainside__menu__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 20px;
+    }
 }
