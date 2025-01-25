@@ -1,0 +1,52 @@
+/* Algemene styling */
+
+  .c-escaperooms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  .c-escaperooms__room {
+    background-color: var(--blauw-blauw-accent-100);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .c-escaperooms__room:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .c-escaperooms__room__img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .c-escaperooms__room__info {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .c-escaperooms__room__info__title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+    color: var(--neutral-50);
+  }
+  
+  .c-escaperooms__room__info__text {
+    font-size: 1rem;
+    color: var(--neutral-100);
+    margin: 0;
+  }
+  @media (max-width: 460px) {
+    .c-escaperooms__room {
+      width: 100%;
+    }
+  }
