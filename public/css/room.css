@@ -30,6 +30,30 @@ padding: 1rem 0;
 padding-top: .1rem;
 }
 
+.c-personcard__imgdiv
+{
+ height: fit-content;
+ position: relative;
+}
+
+.c-personcard__img
+{
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 5px 0 var(--blauw-blauw-accent-70);
+}
+
+.c-personcard__admincrown{
+        position: absolute;
+        transform: rotate(21deg);
+        top: -.9rem;
+        height: 2rem;
+        right: -1rem;
+}
+
+
 .c-removebutton
 {
 margin-left: auto;
