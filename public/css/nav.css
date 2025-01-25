@@ -13,7 +13,10 @@
 .c-nav__mainside__links__link{
     color: var(--neutral-50) !important;
 }
-
+.c-nav__mainside__links__link--active{
+    border-bottom: 1px solid var(--neutral-50);
+    padding-bottom: 5px;
+}
 .c-nav__mainside__logo{
     display: flex;
     align-items: center;
