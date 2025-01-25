@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/nav.css" />
     <link rel="stylesheet" href="css/leaderbord.css" />
     <script src="script.js"></script>
+    <script src="nav.js"></script>
   </head>
   <body class="c-body--france">
     <nav class="c-nav c-nav__mainside">
@@ -45,7 +46,11 @@
             />
           </svg>
   
-          <a href="" class="c-nav__mainside__links__link">mijn account</a>
+          <div class="c-nav__mainside__links__trigger" id="menu-trigger">mijn account</div>
+          <div class="c-menu__popup-menu" id="popup-menu">
+            <a href="/settings">Settings</a>
+            <a href="/logout">Uitloggen</a>
+        </div>
         </div>
         <div class="c-nav__mainside__hamburger">
           <span></span>
@@ -231,4 +236,5 @@
     </footer>
     </div>
   </body>
+  
 </html>
