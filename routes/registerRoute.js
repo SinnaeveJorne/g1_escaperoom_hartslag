@@ -9,11 +9,23 @@ router.post('/register', async (req, res) => {
 
   // Validate required fields
   if (!username|| !email || !password) {
-    return res.status(400).json({ message: 'Missing parameters' });
+    return res.json({ 
+      type: 'error',
+      message: 'Vul alle velden in',
+      inputtype: 'all'
+     });
   }
 
 
   try {
+
+    if(username.length < 3 || username.length > 16) {
+      return res.json({
+        type: 'error',
+        message: 'Gebruikersnaam moet tussen de 3 en 20 karakters zijn',
+        inputtype: 'username'
+      });
+    }
 
     const usernameExists = "Select id From user WHERE username = ?";
     const usernameExistsResult = await db.query(usernameExists, [username]);

@@ -4,13 +4,19 @@ const path = require('path');
 const router = express.Router();
 const db = require('../config/db'); 
 const { get } = require('http');
+const { isSet } = require('util/types');
 
 
 router.post('/joinroom', async (req, res) => {
   const {roompassword, roomname } = req.body;
-   console.log(req.body);
-   console.log("kaasje");
-  const checkRoomNameQuery = 'SELECT * FROM gamerooms WHERE name = ? and password = ?';
+  //trim the roomname and roompassword
+  roomname.trim();
+  roompassword.trim();
+//if roompassword and roomname existst if nog return error roomname cannot be empty
+if(roompassword == undefined || roomname == undefined || roomname === '') {
+    return res.json({ type: 'error', message: 'Kamernaam of wachtwoord is onjuist'});
+  }
+  const checkRoomNameQuery = 'SELECT * FROM gamerooms WHERE name = ? and password = ? and isActive IS NULL';
   const roomDetails = await db.query(checkRoomNameQuery, [roomname, roompassword]);
   console.log("?");
   if(roomDetails.length === 0) {
@@ -28,11 +34,13 @@ router.post('/joinroom', async (req, res) => {
 });
 
 router.post('/createroom', async (req, res) => {
-  console.log("dit is de aller eerste test");
   
   let { roompassword, roomname } = req.body;
-  console.log(req.body);
 
+  if(roompassword == undefined || roomname == undefined || roomname === '') {
+    return res.json({ type: 'error', message: 'Kamernaam of wachtwoord is onjuist'});
+  }
+  console.log("verder ?");
   // Check if the room name already exists
   const checkRoomNameQuery = 'SELECT * FROM gamerooms WHERE name = ?';
   const roomDetails = await db.query(checkRoomNameQuery, [roomname]);

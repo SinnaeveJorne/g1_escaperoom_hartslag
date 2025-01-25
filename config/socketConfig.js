@@ -1,5 +1,6 @@
 const cookieParser = require('cookie-parser');
 const db = require('./db');
+const { use } = require('../routes/roomRoute');
 
 module.exports = (server, sessionMiddleware) => {
   const io = require('socket.io')(server, {
@@ -70,6 +71,7 @@ module.exports = (server, sessionMiddleware) => {
           rooms.set(roomName);
           const roomData = await db.query('SELECT * FROM gamerooms WHERE name = ?', [roomName]);
           gameNamespace.emit('roomcreated', { data: roomData[0] });
+          showadmin();
         }
         else
         {
@@ -90,6 +92,8 @@ module.exports = (server, sessionMiddleware) => {
       });
 
       socket.on('kickuser', async (targetUser) => {
+        //make targetuser a number
+        targetUser = parseInt(targetUser);
           //check if the person is admin then kick the user also disconnect the user from the room and delete the user from the room
           const checkAdminQuery = 'SELECT * FROM gameroom WHERE userId = ? AND isAdmin = 1 AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
           const isAdmin = await db.query(checkAdminQuery, [userId, currentRoom]);
@@ -99,15 +103,27 @@ module.exports = (server, sessionMiddleware) => {
           }
 
           console.log(targetUser);
-          console.log("dit lukt zeer goed");
           const deleteUserQuery  = 'DELETE FROM gameroom WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
           await db.query(deleteUserQuery, [targetUser, currentRoom]);
 
-          gameNamespace.in(currentRoom).emit('userleft', { userName, id: targetUser });
+          // gameNamespace.in(currentRoom).emit('userleft', { userName, id: targetUser });
           console.log(`${userName} has been removed from room ${currentRoom}`);
+          console.log(targetUser);
           userdisconnect(targetUser);
       
       });
+
+      socket.on('startgame', async () => {
+        const checkAdminQuery = 'SELECT * FROM gameroom WHERE userId = ? AND isAdmin = 1 AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+        const isAdmin = await db.query(checkAdminQuery, [userId, currentRoom]);
+        if(isAdmin.length === 0){
+          console.log('User is not admin');
+          return;
+        }
+
+        gameNamespace.in(currentRoom).emit('startgame');
+      }
+      );
 
 
     async function userdisconnect(targetUser,importUser = false)
@@ -115,6 +131,7 @@ module.exports = (server, sessionMiddleware) => {
         if(userSockets.has(targetUser)){
           const previousSocket = userSockets.get(targetUser);
           gameNamespace.to(previousSocket.id).emit('kicked');
+          console.log("ik ga naar deze stap");
           previousSocket.disconnect(true);
 
           //if imporuser is true add this user in the database room
@@ -127,9 +144,24 @@ module.exports = (server, sessionMiddleware) => {
 
       }
 
+
+      async function showadmin(){
+        const checkAdminQuery = 'SELECT * FROM gameroom WHERE isAdmin = 1 AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+        const isAdmin = await db.query(checkAdminQuery, [currentRoom]);
+        console.log(isAdmin);
+        if(isAdmin.length === 0){
+          console.log('No admin found');
+          return;
+        }
+        const admin = userSockets.get(isAdmin[0].userId);
+        ///get userid from admin
+        isadmin = isAdmin[0].userId;
+        gameNamespace.to(admin.id).emit('showadmin',isadmin);
+      }
+
       socket.on('disconnect', async() => {
+        console.log('User disconnected');
         userSockets.delete(userId);
-        console.log('biep boop ik disconnect');
         socket.emit("disconnected", {message: "You have been disconnected"});
         if (!userSockets.has(userId)) {
             if (currentRoom) {
@@ -175,7 +207,7 @@ module.exports = (server, sessionMiddleware) => {
                     // Check if the disconnected user was an admin
                     const checkAdminQuery = `
                         SELECT * FROM gameroom where roomId = (SELECT roomId FROM gamerooms WHERE name = ?) AND isAdmin = 1`;
-                    const isAdmin = await db.query(checkAdminQuery, [userId, currentRoom]);
+                    const isAdmin = await db.query(checkAdminQuery, [currentRoom]);
 
                     if (isAdmin.length === 0) {
                         // Assign a new admin if the current admin left
@@ -196,6 +228,7 @@ module.exports = (server, sessionMiddleware) => {
                             await db.query(updateAdminQuery, [newAdmin[0].userId, currentRoom]);
 
                             console.log(`New admin has been selected: User ID ${newAdmin[0].userId}`);
+                            showadmin();
                         } else {
                             console.log('No users left to assign as admin');
                         }

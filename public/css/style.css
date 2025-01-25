@@ -1355,7 +1355,7 @@ background-size: contain;
     justify-content: center;
     align-items: center;
 }
-div.c-greecegrid-item--active > svg{
+/* div.c-greecegrid-item--active > svg{
     background-color: var(--blauw-blauw-accent-70);
 }
 
@@ -1368,7 +1368,7 @@ body > div.container > div > div > div > svg  > line{
   stroke: var(--neutral-50);
   stroke-width: 9;
 
-}
+} */
 @media (max-width: 768px) {
   .c-greeceionlegende > svg {
     width: 30px;
