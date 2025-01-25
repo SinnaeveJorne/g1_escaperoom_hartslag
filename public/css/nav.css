@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px ;
     background-color: var(--blauw-blauw-accent-100);
     color: var(--neutral-50);
     font-size: 18px;
