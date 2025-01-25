@@ -124,6 +124,42 @@ body:has(.c-footer)
         height: 5rem !important;
 }
 
+.c-uitdaging__div
+{
+width: 100%;
+position: relative;
+height: 100%;
+border-radius: var(--radius-l);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.c-uitdaging__div--shadow::before {
+        content: "";
+        display: block;
+        width: 100%;
+        border-radius: var(--radius-l);
+        position: absolute;
+        background-color: #00000050;
+        z-index: 1;
+        height: 100%;
+        top: 0;
+    }
+
+.c-uitdaging__img {
+width: 100%;
+border-radius: var(--radius-l);
+height: 100%;
+object-fit: cover;
+}
+
+.c-uitdaging__title {
+        position: absolute;
+        z-index: 2;
+        color: var(--text-white);
+    }
+
 @media (max-width: 1024px) 
 {
         .c-personcard
