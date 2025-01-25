@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px ;
+    padding: 20px 10px;
     background-color: var(--blauw-blauw-accent-100);
     color: var(--neutral-50);
     font-size: 18px;
@@ -187,5 +187,11 @@ gap: 1rem;
         flex-direction: column;
         justify-content: space-evenly;
         gap: 20px;
+    }
+    .c-nav__mainside__menu--active {
+        left: 0;
+    }
+    .c-nav__mainside{
+        padding: 30px 20px;
     }
 }
