@@ -60,10 +60,23 @@ router.post('/register', async (req, res) => {
       VALUES ( ?, ?, ?)
     `;
     await db.query(insertUserQuery, [username, email, hashedPassword]);
+
+    const userQuery = 'SELECT * FROM user WHERE email = ?';
+    const users = await db.query(userQuery, [email]);
+    const user = users[0];
+    req.session.userId = user.id;
+    req.session.userName = user.username;
+    req.session.firstlogin = user.isFirstLogin;
+    //set firstlogin to false
+    const updateQuery = 'UPDATE user SET isFirstLogin = 0 WHERE id = ?';
+    await db.query(updateQuery, [user.id]);
+    
+
+
      return res.json({
       type: 'succes'
     });
-    // can i make session melding a json object?
+
     req.session.melding = {
       type: 'succes',
       message: 'Uw account is aangemaakt'

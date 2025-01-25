@@ -1,47 +1,97 @@
 /* Algemene styling */
 
-  .c-escaperooms {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+     /* Default width: 50% */
+     .swiper-container {
+      width: 100%;
+      height: 500px;
+      box-sizing: border-box;
+      overflow: hidden;
   }
-  
+
+  /* Add styling for the navigation arrows */
+  .swiper-button-next, .swiper-button-prev {
+      color: #333; /* Set color for arrows */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      font-size: 2rem;
+  }
+
+
+  .swiper-button-next {
+      right: 10px; /* Position the next button on the right */
+  }
+
+  .swiper-button-prev {
+      left: 10px; /* Position the previous button on the left */
+  }
+
+  .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      border-radius: 1rem;
+  }
+
+
+  @media (max-width: 1200px) {
+      .swiper-container {
+          width: 60%;
+      }
+      .swiper-button-next, .swiper-button-prev {
+          display: none;
+      }
+  }
+
+
+
+
+.c-escaperooms{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  margin-top: 10vh;
+}
   .c-escaperooms__room {
-    background-color: var(--blauw-blauw-accent-100);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .c-escaperooms__room:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-l);
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
   
   .c-escaperooms__room__img {
     width: 100%;
-    height: auto;
+    border-radius: var(--radius-l);
+    height: 100%;
     object-fit: cover;
   }
   
   .c-escaperooms__room__info {
     padding: 1rem;
     text-align: center;
+    position: absolute;
+    background-color: var(--blauw-blauw-accent-100);
+    height: fit-content;
+    bottom: 0;
+    border-radius:  0 0 var(--radius-l) var(--radius-l);
+    width: 100%;
   }
   
   .c-escaperooms__room__info__title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     margin: 0 0 0.5rem;
     color: var(--neutral-50);
   }
   
   .c-escaperooms__room__info__text {
-    font-size: 1rem;
+    font-size: .75rem;
     color: var(--neutral-100);
     margin: 0;
   }
