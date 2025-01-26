@@ -30,6 +30,7 @@ module.exports = (server, sessionMiddleware) => {
     const userName = socket.request.session?.userName;
     const userId = socket.request.session?.userId;
     let currentRoom = null;
+    let gameStrarted = false;
     
 
     if (userName && userId) {
@@ -65,6 +66,9 @@ module.exports = (server, sessionMiddleware) => {
         }
 
         userSockets.set(userId, socket);
+        //set 
+        socket.request.session.socketid = socket.id;
+        console.log(socket.request.session.socketid);
         socket.join(roomName);
 
        if(!rooms.has(roomName)){
@@ -121,9 +125,23 @@ module.exports = (server, sessionMiddleware) => {
           return;
         }
 
+        const setGameLevelto1 = 'UPDATE gameroom SET userLevel = 1 WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+        await db.query(setGameLevelto1, [currentRoom]);
+
+        //set room to active
+        const setRoomActive = 'UPDATE gamerooms SET isActive = 1 WHERE name = ?';
+        await db.query(setRoomActive, [currentRoom]);
+
         gameNamespace.in(currentRoom).emit('startgame');
       }
       );
+
+
+    async function newlevel(){
+      const setGameLevelto1 = 'UPDATE gameroom SET userLevel = userLevel + 1 where userId = ?';
+      await db.query(setGameLevelto1, [userId]);
+      socket.emit('nextlevel');
+    }
 
 
     async function userdisconnect(targetUser,importUser = false)
@@ -163,6 +181,7 @@ module.exports = (server, sessionMiddleware) => {
         console.log('User disconnected');
         userSockets.delete(userId);
         socket.emit("disconnected", {message: "You have been disconnected"});
+        if(gameStrarted === false){
         if (!userSockets.has(userId)) {
             if (currentRoom) {
                 // Delete the user from the room
@@ -235,6 +254,7 @@ module.exports = (server, sessionMiddleware) => {
                     }
                 }
             }
+        }
         }
       });
     }

@@ -6,9 +6,11 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/game.css" />
+    <link rel="stylesheet" type="text/css" href="css/greecegame.css" />
     <script src="script.js"></script>
   </head>
-  <body class="c-body--greece">
+  <body class="c-body--greece c-body__game">
     <nav class="c-nav c-navgreece">
       <div class="c-nav__container c-nav__container--progressbar">
         <div class="c-level">
@@ -20,367 +22,12 @@
 
 
 
-    <div class="container c-main__game--greece">
+    <div class="container c-game-container">
       <div class="c-game">
-        <h1 class="c-game__title text-white">Vind de juiste icons</h1>
-        <div class="c-greecegrid">
+        <h1 class="c-game__title">Vind de juiste icons</h1>
+        <div class="js-greeceplayfield c-greece__playfield">
+        </div>
         
-
-          <div class="c-greecegrid-item c-greecegrid-item--active">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.27754 53.0359L31.1696 3.48658L59.0617 53.0359H3.27754Z" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.27754 53.0359L31.1696 3.48658L59.0617 53.0359H3.27754Z" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.27754 53.0359L31.1696 3.48658L59.0617 53.0359H3.27754Z" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="72"
-              height="73"
-              viewBox="0 0 72 73"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z"
-                stroke="white"
-                stroke-width="3"
-              />
-              <line
-                x1="24.2678"
-                y1="29.5894"
-                x2="49.5178"
-                y2="29.5894"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.27754 53.0359L31.1696 3.48658L59.0617 53.0359H3.27754Z" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-<line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-</svg>
-
-          </div>
-          <div class="c-greecegrid-item">
-              <svg
-            width="62"
-            height="55"
-            viewBox="0 0 62 55"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-              stroke="white"
-              stroke-width="3"
-            />
-          </svg>
-        </div>
-          <div class="c-greecegrid-item">
-            <svg
-              width="62"
-              height="55"
-              viewBox="0 0 62 55"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z"
-                stroke="white"
-                stroke-width="3"
-              />
-            </svg>
-          </div>
-        </div>
-        <ul class="c-greeceionlegende--container">
-          <li class="c-greeceionlegende">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
-              <line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
-              </svg>
-            <h4 class="text-white">120</h4>              
-          </li>
-          <li class="c-greeceionlegende">
-            <svg width="72" height="73" viewBox="0 0 72 73" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.09895 53.0359L35.9911 3.48658L63.8832 53.0359H8.09895Z" stroke="white" stroke-width="3"/>
-              <line x1="24.2678" y1="29.5894" x2="49.5178" y2="29.5894" stroke="white" stroke-width="3"/>
-              </svg>
-                          <h4 class="text-white">100</h4>              
-          </li>
-          <li class="c-greeceionlegende">
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3.27754 53.0359L31.1696 3.48658L59.0617 53.0359H3.27754Z" stroke="white" stroke-width="3"/>
-              </svg>
-                          <h4 class="text-white">110</h4>              
-          </li>
-          <li class="c-greeceionlegende">
-            <svg width="62" height="55" viewBox="0 0 62 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M59.1565 1.55832L31.4154 51.1923L3.37259 1.72819L59.1565 1.55832Z" stroke="white" stroke-width="3"/>
-              </svg>
-              
-            <h4 class="text-white">90</h4>              
-          </li>
-        </ul>
       </div>
     </div>
     <div class="c-gameinfo">
@@ -407,7 +54,7 @@
             stroke-linejoin="round"
           />
         </svg>
-        <p>120</p>
+        <p class="js-currentheartbeat">120</p>
       </div>
       <button class="c-tipingame js-tip--greece">
         <svg class="js-tip--greece"
@@ -451,10 +98,86 @@
       <button class="c-tipmodel-close">Close</button>
   </div>
   <div class="overlay"></div>
-    <footer class="c-footer c-footer--ingame">
-      <a href="/RomeStory" class="c-button c-btn--ingame"
-        >Ga naar volgede uitdaging</a
-      >
-    </footer>
   </body>
 </html>
+
+<script>
+  const playfield = document.querySelector('.js-greeceplayfield');
+  const totalTiles = 20;
+  const correctTiles = 4;
+
+  // Generate Random Tile Indices for the Correct SVG
+  function getRandomIndices(count, max) {
+    const indices = new Set();
+    while (indices.size < count) {
+      indices.add(Math.floor(Math.random() * max));
+    }
+    return [...indices];
+  }
+
+  function setupGame() {
+    playfield.innerHTML = ''; // Clear the playfield
+    const correctIndices = getRandomIndices(correctTiles, totalTiles);
+
+    for (let i = 0; i < totalTiles; i++) {
+      const tile = document.createElement('div');
+      tile.classList.add('c-greece__playfield__tile');
+      tile.setAttribute('data-index', i);
+      tile.setAttribute('alt', `tile${i + 1}`);
+
+      const img = document.createElement('img');
+      img.classList.add('c-greece__playfield__tile__img');
+      img.src = 'img/GreekSymbolsbackground.png';
+      img.alt = `tile${i + 1}`;
+      tile.appendChild(img);
+
+      // Add SVG to correct tiles
+      if (correctIndices.includes(i)) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '72');
+        svg.setAttribute('height', '73');
+        svg.setAttribute('viewBox', '0 0 72 73');
+        svg.innerHTML = `
+          <path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
+          <line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
+        `;
+        tile.appendChild(svg);
+        tile.classList.add('correct');
+      }
+
+      playfield.appendChild(tile);
+    }
+
+    addTileListeners();
+  }
+
+  function addTileListeners() {
+    const tiles = document.querySelectorAll('.c-greece__playfield__tile');
+    let correctCount = 0;
+
+    tiles.forEach(tile => {
+      tile.addEventListener('click', () => {
+        if (tile.classList.contains('correct')) {
+          tile.querySelector('img').style.display = 'none';
+            correctCount++;
+          if (correctCount === correctTiles) {
+            console.log("feestje");
+          }
+        } else {
+          tile.querySelector('img').style.display = 'none';
+          //wait 1 second and then show all tiles
+          setTimeout(() => {
+            tiles.forEach(t => t.querySelector('img').style.display = 'block');
+            correctCount = 0;
+          }, 200);
+        }
+      });
+    });
+  }
+
+  // Initialize Game
+  setupGame();
+  let getal = 0;
+</script>
+
+

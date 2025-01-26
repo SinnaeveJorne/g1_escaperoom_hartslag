@@ -136,7 +136,6 @@ body {
   line-height: var(--line-height-s);
   background-color: var(--background-background-color);
   font-family: inter, sans-serif;
-  min-height: 100dvh;
 }
 
 .container {

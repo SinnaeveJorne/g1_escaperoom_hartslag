@@ -1,0 +1,85 @@
+/* <div class="c-greece__playfield">
+<div class="c-greece__playfield__tile">
+  <img class="c-greece__playfield__tile__img" src="img/GreekSymbolsbackground.png"/>
+</div>
+</div> */
+
+
+.c-game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.c-body__game{
+   height: calc(100dvh - 5rem - var(--spacing-6));
+}
+.c-game__title{
+    margin-bottom: var(--spacing-6);
+    color: var(--text-white);
+}
+
+.c-game-container
+{
+margin-top: calc(var(--spacing-6) + 5rem);
+}
+
+.c-greece__playfield {
+  display: grid;    
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  width: calc(1.258 * 25rem);
+  height: 25rem;
+  gap: 2px ;
+}
+
+
+
+.c-greece__playfield__tile {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-greece__playfield__tile__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.c-greece__iconlegend
+{
+    display: flex;
+    gap: var(--spacing-3);
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.c-greece__iconlegend__item
+{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) 
+{
+    .c-greece__playfield {
+        width: calc(1.258 * 20rem);
+        height: 20rem;
+    }
+}
+
+@media (max-width: 460px) 
+{
+    .c-greece__playfield {
+        width: calc(1.258 * 15rem);
+        height: 15rem;
+    }
+}

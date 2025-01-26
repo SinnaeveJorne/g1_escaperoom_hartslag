@@ -5,6 +5,20 @@ grid-template-columns: repeat(2,1fr);
 gap: var(--spacing-3);
 padding: 1rem 0;
 }
+
+.c-popup {
+        background-color: var(--neutral-50);
+        padding: var(--spacing-6);
+        border-radius: var(--radius-m);
+        text-align: center;
+        box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.3s ease-in-out;
+        display: flex;
+        gap: var(--spacing-4);
+        flex-direction: column;
+        align-items: center;
+        width: 25rem;
+    }
 .c-personcard{
         flex-wrap: wrap;
         display: flex;
