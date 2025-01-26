@@ -1,3 +1,10 @@
+.c-nav__mainside--blue {
+    background-color: var(--blauw-blauw-accent-100);
+    color: var(--neutral-50);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .c-nav__mainside {
     display: flex;
     justify-content: space-between;
@@ -192,6 +199,6 @@ gap: 1rem;
         left: 0;
     }
     .c-nav__mainside{
-        padding: 30px 20px;
+        padding: 1rem 20px;
     }
 }
