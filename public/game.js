@@ -7,6 +7,7 @@ let isadmin = false;
 function init()
 {
     // initStartGameButton();
+
     // isUserInGame();
     nextroom('/rooms');
 
@@ -174,9 +175,13 @@ function initStartGameButton() {
         const buttonContainer = document.createElement("div");
         buttonContainer.className = "c-popup__buttons";
       
-        buttons.forEach(({ text, action }) => {
+        buttons.forEach(({ text, action, classlist}) => {
           const button = document.createElement("button");
           button.textContent = text;
+          if(classlist)
+          {
+          button.classList.add(classlist);
+          }
           button.classList.add("c-button");
           button.classList.add("c-popup__button");
           button.addEventListener("click", () => {
@@ -283,8 +288,8 @@ function initStartGameButton() {
       
           heartRateCharacteristic.addEventListener("characteristicvaluechanged", (event) => {
             const heartRate = parseHeartRate(event.target.value);
-            // document.querySelector(".showheartbeat").textContent = heartRate;
           });
+
       
           console.log("Real-time heart rate monitoring started.");
         } catch (error) {
@@ -296,20 +301,16 @@ function initStartGameButton() {
       function handleHeartRateNotification(event) {
         const heartRate = parseHeartRate(event.target.value);
         
+        if(document.querySelector('.js-currentheartbeat'))
+          {
+            document.querySelector('.js-currentheartbeat').textContent = heartRate;
+          }
       
         // Emit heart rate via socket.io
         if (socket !== "") {
           socket.emit("heartRate", heartRate);
         }
 
-        if(laagste == null)
-        {
-          laagste = heartRate;
-        }
-        else if(laagste > heartRate)
-        {
-          laagste = heartRate;
-        }
       }
       
       // Parse heart rate value from the characteristic data
@@ -371,6 +372,11 @@ function initStartGameButton() {
                 document.body.classList.add('oplipicbackground');
                   Room(roomname);
                   returnarrow();
+              }
+
+              if(room = '/getgame')
+              {
+                startgame();
               }
               
             }
@@ -483,6 +489,7 @@ if(document.querySelector('.js-room'))
 {
 const roomid = roomname;
 console.log(socket);
+console.log(socket.id);
 socket.emit("joinroom", roomid); 
 
 const startgamebutton = document.querySelector('.js-startgame');
@@ -500,9 +507,27 @@ if(startgamebutton)
 function returnarrow()
 {
   document.querySelector('.js-returnarrow').addEventListener('click', () => {
-    console.log("test");
-    socket.disconnect();
-    nextroom('/rooms');
+    showPopup({
+      title: "Ben je het zeker dat je deze kamer wilt verlaten?",
+      type: "confirm",
+      buttons: [
+        {
+          text: "Ja",
+          action: () => {
+            socket.disconnect();
+            nextroom('/rooms');
+          },
+          classlist: "c-button--red",
+        },
+        {
+          text: "Nee",
+          action: () => {
+            // Do nothing
+          },
+          classlist: "c-button--green",
+        }
+      ]
+    });
   });
 }
 
@@ -525,7 +550,7 @@ function createRoom(user)
   <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
-  <p>50</p>
+  <p>--</p>
   </div>
   </div>
   `;
@@ -654,9 +679,8 @@ function socketevents()
   });
 
   socket.on('startgame', async() => {
-    await nextroom('/greecegame');
+    await nextroom('/getgame');
   });
-
   socket.on('showadmin', async (adminid) => {
     isadmin = true;
     //add buttons to the users
@@ -683,6 +707,89 @@ kickuserbutton.addEventListener('click', async () => {
 
 
 
+}
+
+
+function startgame()
+{
+  if(document.querySelector('.js-greeceplayfield'))
+  {
+  const playfield = document.querySelector('.js-greeceplayfield');
+  const totalTiles = 20;
+  const correctTiles = 4;
+
+  // Generate Random Tile Indices for the Correct SVG
+  function getRandomIndices(count, max) {
+    const indices = new Set();
+    while (indices.size < count) {
+      indices.add(Math.floor(Math.random() * max));
+    }
+    return [...indices];
+  }
+
+  function setupGame() {
+    playfield.innerHTML = ''; // Clear the playfield
+    const correctIndices = getRandomIndices(correctTiles, totalTiles);
+
+    for (let i = 0; i < totalTiles; i++) {
+      const tile = document.createElement('div');
+      tile.classList.add('c-greece__playfield__tile');
+      tile.setAttribute('data-index', i);
+      tile.setAttribute('alt', `tile${i + 1}`);
+
+      const img = document.createElement('img');
+      img.classList.add('c-greece__playfield__tile__img');
+      img.src = 'img/GreekSymbolsbackground.png';
+      img.alt = `tile${i + 1}`;
+      tile.appendChild(img);
+
+      // Add SVG to correct tiles
+      if (correctIndices.includes(i)) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '72');
+        svg.setAttribute('height', '73');
+        svg.setAttribute('viewBox', '0 0 72 73');
+        svg.innerHTML = `
+          <path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"/>
+          <line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"/>
+        `;
+        tile.appendChild(svg);
+        tile.classList.add('correct');
+      }
+
+      playfield.appendChild(tile);
+    }
+
+    addTileListeners();
+  }
+
+  function addTileListeners() {
+    const tiles = document.querySelectorAll('.c-greece__playfield__tile');
+    let correctCount = 0;
+
+    tiles.forEach(tile => {
+      tile.addEventListener('click', () => {
+        if (tile.classList.contains('correct')) {
+          tile.querySelector('img').style.display = 'none';
+            correctCount++;
+          if (correctCount === correctTiles) {
+            console.log("feestje");
+          }
+        } else {
+          tile.querySelector('img').style.display = 'none';
+          //wait 1 second and then show all tiles
+          setTimeout(() => {
+            tiles.forEach(t => t.querySelector('img').style.display = 'block');
+            correctCount = 0;
+          }, 200);
+        }
+      });
+    });
+  }
+
+  // Initialize Game
+  setupGame();
+}
 }
 
 

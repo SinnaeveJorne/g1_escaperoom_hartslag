@@ -10,7 +10,7 @@
 
   /* Add styling for the navigation arrows */
   .swiper-button-next, .swiper-button-prev {
-      color: #333; /* Set color for arrows */
+      color: var(--blauw-blauw-accent-100); /* Set color for arrows */
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -33,9 +33,17 @@
       align-items: center;
       font-size: 2rem;
       font-weight: bold;
-      color: #333;
+      color: var(--blauw-blauw-accent-100);
       border-radius: 1rem;
   }
+
+  .swiper-slide-shadow-right, .swiper-slide-shadow-left, .swiper-slide-shadow-top, .swiper-slide-shadow-bottom{
+    border-radius: var(--radius-l);
+}
+
+.swiper-wrapper{
+    height: 90%;
+}
 
 
   @media (max-width: 1200px) {
@@ -47,6 +55,21 @@
       }
   }
 
+  @media (max-width: 768px) {
+      .swiper-container {
+          width: 80%;
+      }
+      .swiper-button-next, .swiper-button-prev {
+          display: none;
+      }
+  }
+
+  @media (max-width: 460px) {
+      .swiper-container {
+          width: 100%;
+      }
+    }
+
 
 
 
@@ -56,7 +79,7 @@
   justify-content: center;
   flex-direction: column;
   gap: var(--spacing-6);
-  margin-top: 10vh;
+  margin-top: var(--spacing-6);
 }
   .c-escaperooms__room {
     border-radius: var(--radius-l);
