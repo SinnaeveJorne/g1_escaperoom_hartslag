@@ -1,0 +1,417 @@
+/* Reset styles */
+
+
+/* General body styling */
+.c-body--settings {
+    background-color: var(--neutral-50); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 400px) {
+    .c-body--settings {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* Container for settings sections */
+.settings-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+/* Section titles */
+.section-title {
+    color: var(--neutral-500); /* Neutral text color */
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+@media (min-width: 600px) {
+    .section-title {
+        font-size: 1rem;  
+    }
+    .item-value {
+        font-size: 1rem; 
+    }
+}
+
+@media (max-width: 400px) {
+    .settings-section--notifications {
+        display: none; /* Hide notification section */
+    }
+}
+
+/* Individual settings item */
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-l);
+    background-color: var(--neutral-50); /* Neutral background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-item--delete {
+    height: 3.5rem;
+}
+
+/* Label and value styling */
+.item-label {
+    color: var(--neutral-700);
+}
+
+.item-value {
+    font-family: 'Inter', sans-serif;
+    color: var(--neutral-400);
+    margin-left: auto;
+    padding-right: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* For smaller screens */
+@media (max-width: 600px) {
+    .item-value {
+        padding-left: 2rem; /* Adjust left padding for smaller screens */
+        
+    }
+}
+
+/* Arrow icon */
+.item-icon {
+    color: var( --neutral-400);
+}
+
+@media (min-width: 600px) {
+    .item-icon svg {
+        /* make svg icon bigger  */
+        width: 35px;
+        height: 33px;
+    }
+}
+
+.red {
+    color: var(--rood-rood-accent-100);
+}
+
+/* Modal styling for the delete account pop up */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: flex-start;
+}
+.modal-text {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+.strong {
+    font-weight: bold;
+}
+  
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-button {
+    flex: 1;
+    padding:0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal-button.delete {
+    background-color: var(--rood-rood-accent-100);
+    color: var(--neutral-50);
+}
+
+.modal-button.cancel {
+    background-color: var(--neutral-200);
+    color: var(--neutral-700);
+}
+
+/* Max width the inputs should go */
+.c-input {
+    max-width: 600px;
+}
+
+.c-label {
+    max-width: 600px; 
+}
+
+
+.c-delete__buttondiv {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 280px;
+    margin-top: 1.5rem;
+}
+
+/* Terug naar instellingen button */
+.back-to-settings {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: var(--neutral-50);
+    color: var(--neutral-700);
+    text-decoration: none;
+    cursor: pointer;
+    align-self: flex-start; /* Align to the left */
+    margin-left: 160px;
+}
+
+.back-to-settings--notifications {
+    margin-left: 3rem;
+}
+
+/* Hide the back to settings button on smaller screens */
+@media (max-width: 400px) {
+    .back-to-settings {
+        display: none;
+    }
+}
+
+.back-to-settings svg {
+    fill: var(--neutral-700);
+    transition: fill 0.3s ease;
+}
+
+
+.notification-wrapper {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+.othersettings__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align content to the top */
+    margin-top: 4.5rem; /* Increased offset to avoid overlap (adjust if needed) */
+    height: calc(100vh - 74px); /* Adjust height to fill screen minus navbar height */
+    padding: 1rem; /* Optional padding for spacing */
+    box-sizing: border-box; /* Include padding in height/width calculations */
+}
+
+@media (max-width: 400px) {
+    .othersettings__container--space {
+        margin-top: 7rem; /* Adjusted offset for smaller screens */
+    }
+}
+/* Wachtwoord text */
+.c-textwachtwoord{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 400px) {
+    .c-textwachtwoord {
+        display: none;
+    }
+}
+
+
+.c-loginForm__buttondiv {
+    display: flex;
+    justify-content: flex-start; 
+    max-width: 600px; 
+    margin-top: 1.5rem;
+} 
+
+/* Terug naar instellingen button*/
+.back-to-settings {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: var(--neutral-50);
+    color: var(--neutral-700);
+    text-decoration: none;
+    cursor: pointer;
+    align-self: flex-start; /* Align to the left */
+}
+@media (max-width: 400px) {
+    .back-to-settings {
+        display: none;
+    }
+}
+.back-to-settings svg {
+    fill: var(--neutral-700);
+    transition: fill 0.3s ease;
+}
+
+/* notifications Page */
+/* ----------------------------------------------------------------------- */
+.notification-setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 900px;
+    padding: 1rem;
+    border-radius: var(--radius-l);
+    background-color: var(--neutral-50);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.notification-setting label {
+    margin-right: auto;
+    color: var(--neutral-700);
+}
+
+/* General toggle button styles */
+.notification-setting input[type="checkbox"] {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var( --blauw-blauw-accent-100);
+    border-radius: var(--radius-l);
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Change background color when unchecked */
+.notification-setting input[type="checkbox"]:not(:checked) {
+    background-color: var(--neutral-300); /* Add a neutral or gray color for the off state */
+}
+
+.notification-setting input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 3.5px;
+    left: 3.5px;
+    width: 23px;
+    height: 23px;
+    background-color: var(--neutral-100);
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.notification-setting input[type="checkbox"]:checked::before {
+    left: 33.5px;
+    top: 3.5px;
+}
+
+/* Adjust styles for smaller screens */
+@media (max-width: 600px) {
+    .notification-setting input[type="checkbox"] {
+        width: 50px; /* Smaller width */
+        height: 25px; /* Smaller height */
+    }
+
+    .notification-setting input[type="checkbox"]::before {
+        top: 2.5px; /* Adjust position */
+        left: 2.5px;
+        width: 20px; /* Smaller circle */
+        height: 20px;
+    }
+
+    .notification-setting input[type="checkbox"]:checked::before {
+        left: 27.5px; /* Adjust for smaller size */
+        top: 2.5px;
+    }
+}
+
+/* ----------------------------------------------------------------------- */
+/* Delete Account page */
+.warning__container{
+    padding: 1.5rem;
+  }
+  
+  .c-body--verwijderenAccount {
+      --background-warning: #FFFBF2;
+      --icon-warning: #CB9E3A;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: var(--neutral-50);
+      color: var(--neutral-700);
+    }
+  
+    .warning-box {
+      display: flex;
+      align-items: center;
+      background-color: var(--background-warning);
+      border: 1px solid var(--icon-warning);
+      padding: 1.5rem 2rem;
+      width: 700px;
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+    }
+  
+    .warning-icon {
+      margin-right: 3rem;
+      width: 6.5rem;
+      height: 6.5rem;
+      fill: var(--icon-warning); /* Sets the fill color for all shapes in the icon */
+      flex-shrink: 0;
+    }
+  
+    .warning-title {
+      color: var(--neutral-700);
+    }
+  
+    .warning-text {
+      color: var(--neutral-600);
+    }
+  
+    .checkbox-container {
+      color: var(--neutral-700);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+  
+    .checkbox-container input[type="checkbox"] {
+      width: 2rem;
+      height: 2rem;
+    }
+  
+    .checkbox-container label {
+      font-size: 1rem;
+      color: var(--neutral-700);
+    }
+  
+  

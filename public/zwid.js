@@ -33,29 +33,39 @@ function updateTimer() {
 }
 
 // Start de timer
-const init = function(){
-    // Functie om de wijzer aan te passen
-function setNeedle(value) {
-    // Converteer de waarde naar een hoek (90 = links, 100 = midden, 110 = rechts)
-    const angle = ((value - 90) / 20) * 40 - 20; // 40 graden tussen labels
+const init = function () {
+  // Functie om de wijzer aan te passen
+  function setNeedle(value) {
+    // Bereken de hoek (90 = -90°, 100 = 0°, 110 = +90°)
+    const minValue = 90;
+    const maxValue = 110;
+    const minAngle = -90;
+    const maxAngle = 90;
+
+    // Lineaire transformatie van waarde naar hoek
+    const angle = ((value - minValue) / (maxValue - minValue)) * (maxAngle - minAngle) + minAngle;
+
+    // Pas de rotatie van de wijzer aan
     const needle = document.getElementById('c-zwiderland__needle');
-    needle.style.transform = `rotate(${angle}deg)`;
+    if (needle) {
+      needle.style.transform = `rotate(${angle}deg)`;
+    }
   }
   
-  // Voorbeeld: zet de wijzer op 100
-  setNeedle(110);
-  
+  setNeedle(100);
+
   // Voeg een slider toe voor interactie (optioneel)
   document.body.insertAdjacentHTML(
     'beforeend',
-    '<input type="range" min="90" max="110" value="100" id="slider" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">'
+    '<input type="range" min="80" max="120" value="100" id="slider" style="">'
   );
-  
+
+  // Event listener voor slider
   document.getElementById('slider').addEventListener('input', (e) => {
     setNeedle(Number(e.target.value));
   });
-  
-    updateTimer();
-}
 
-document.addEventListener('DOMContentLoaded',init);
+  updateTimer();
+};
+
+document.addEventListener('DOMContentLoaded', init);
