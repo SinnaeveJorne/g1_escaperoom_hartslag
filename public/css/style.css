@@ -1163,6 +1163,11 @@ align-items: start;
 }
 .c-storytext{
     color: var(--text-white);
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto;
 }
 .c-nav__container--progressbar{
     display: flex;

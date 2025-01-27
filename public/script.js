@@ -523,7 +523,7 @@ function handleFocus(e) {
             </label>
 
             <label class="c-label" for="roompassword">
-                Kamer wachtwoord
+                Kamer wachtwoord (optioneel)
                 <span class="c-input__span">
                     <input class="c-input js-input" type="test" name="roompassword" id="roompassword" required="">
                 </span>
