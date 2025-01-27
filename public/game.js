@@ -3,6 +3,8 @@
 let socket = "";
 let isadmin = false;
 let kicked = false;
+let gameroom = false;
+let closepopup = true;
 
 
 function init()
@@ -82,7 +84,7 @@ function initStartGameButton() {
         
     } 
 
-    function showPopup({ title, type, buttons,extra=null }) {
+   async function showPopup({ title, type, buttons,extra=null }) {
         // Remove existing popup if any
         const existingPopup = document.querySelector(".c-popup__container");
         if (existingPopup) existingPopup.remove();
@@ -136,7 +138,7 @@ function initStartGameButton() {
                 </label>
     
                 <label class="c-label" for="roompassword">
-                    Kamer wachtwoord
+                    Kamer wachtwoord (optioneel)
                     <span class="c-input__span">
                         <input class="c-input js-input" type="test" name="roompassword" id="roompassword" required="">
                     </span>
@@ -185,21 +187,43 @@ function initStartGameButton() {
           }
           button.classList.add("c-button");
           button.classList.add("c-popup__button");
-          button.addEventListener("click", () => {
-            action();
-            popupContainer.remove(); // Close popup on button click
-            document.body.style.overflow = "auto";
+          button.addEventListener("click", async () => {
+           await action();
+            if(closepopup)
+            {
+              popupContainer.remove(); // Close popup on button click
+            document.body.style.overflow = "auto"; 
+            }
+            else
+            {
+              closepopup = true;
+            }
+           
           });
           buttonContainer.appendChild(button);
         });
       
-        // Append elements to the DOM
+        const popupclose = `
+        <button class="c-popup__close" onclick="document.querySelector('.c-popup__container').remove();document.body.style.overflow = 'auto';">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 7L7 25" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M25 25L7 7" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      `;
+        popup.innerHTML += popupclose;
         popup.appendChild(popupTitle);
         popup.appendChild(popupType);
         popup.appendChild(buttonContainer);
         popupContainer.appendChild(popup);
         document.body.appendChild(popupContainer);
         document.body.style.overflow = "hidden";
+        popupContainer.addEventListener("click", (event) => {
+          if (event.target === popupContainer) {
+            popupContainer.remove(); // Close popup on outside click
+            document.body.style.overflow = "auto"; 
+          }
+        });
       }
       
       let heartRateCharacteristic = null;
@@ -357,6 +381,12 @@ function initStartGameButton() {
             else
             {
               const html = await response.text();
+              //check if html includes c-login
+              if(html.includes('c-login'))
+              {
+                window.location.href = '/login';
+                return;
+              }
 
               console.log("test");
               console.log(response);
@@ -371,13 +401,15 @@ function initStartGameButton() {
               else if(room.includes('/room/'))
               {
                 document.body.classList.add('oplipicbackground');
+                document.body.classList.add('c-body__game');
                   Room(roomname);
-                  returnarrow();
+                  returnarrow("leaveroom");
               }
 
-              if(room = '/getgame')
+              else if(room == '/getgame')
               {
                 startgame();
+                gameroom = true;
               }
               
             }
@@ -396,7 +428,9 @@ document.addEventListener('DOMContentLoaded', init);
 function rooms(){ // Connect to the namespace '/room'
   socket = io("/room");
   isadmin = false;
+  gameroom = false;
   socketevents();
+  returnarrow("leavegame");
   const searchInput = document.querySelector('.js-roomssearch');
   searchInput.addEventListener('input', () => {
     const filter = searchInput.value.toLowerCase();
@@ -415,7 +449,7 @@ function rooms(){ // Connect to the namespace '/room'
   
 document.querySelector('.js-makeroom').addEventListener('click', async () => {
     showPopup({
-        title: "Reconnected!",
+        title: "Maak een kamer",
         type: "create_room",
         buttons: [
           {
@@ -439,6 +473,23 @@ document.querySelector('.js-makeroom').addEventListener('click', async () => {
                         nextroom(`/room/${jsonresponse.message}`,jsonresponse.message);
                     } 
                     else {
+                       closepopup = false;
+                       if(jsonresponse.input == "roomname")
+                       {
+                        // select input with name roomname then select his errorspan
+                        let roomnameinput = document.querySelector('input[name="roomname"]')
+                        console.log(roomnameinput);
+                        let errorspan = roomnameinput.closest('.c-label').querySelector('.c-input__errorSpan');
+                        errorspan.textContent = jsonresponse.message;
+                        errorspan.style.opacity = 1;
+                        roomnameinput.classList.add('c-input--error');
+                        
+                        roomnameinput.addEventListener('input', () => {
+                          errorspan.style.opacity = 0;
+                          roomnameinput.classList.remove('c-input--error');
+                        });
+                        
+                       }
                         console.log(jsonresponse.message);
                     }
                 
@@ -521,8 +572,10 @@ if(startgamebutton)
 }
 
 
-function returnarrow()
+function returnarrow(action)
 {
+  if(action == "leaveroom")
+  {
   document.querySelector('.js-returnarrow').addEventListener('click', () => {
     showPopup({
       title: "Ben je het zeker dat je deze kamer wilt verlaten?",
@@ -551,6 +604,35 @@ function returnarrow()
       ]
     });
   });
+}
+
+else if(action == "leavegame")
+{
+  document.querySelector('.js-returnarrow').addEventListener('click', () => {
+    showPopup({
+      title: "Ben je zeker dat je wilt terug keren naar het startscherm?",
+      type: "confirm",
+      buttons: [
+        {
+          text: "Ja",
+          action: () => {
+            window.location.href = '/home';
+          },
+          classlist: "c-button--red",
+        },
+        {
+          text: "Nee",
+          action: () => {
+            // Do nothing
+          },
+          classlist: "c-button--green",
+        }
+      ]
+    });
+    return;
+  });
+}
+
 }
 
 function createRoom(user)
@@ -595,8 +677,26 @@ userslist.appendChild(userdiv);
 if(isadmin){
 const kickuserbutton = document.querySelector('.c-personcard[data-id="'+user.id+'"] .js-kickuser');
 kickuserbutton.addEventListener('click', async () => {
-  console.log(user.id);
-  socket.emit("kickuser", user.id);
+  showPopup({
+    title: "Ben je zeker dat je deze user wil verwijderen?",
+    type: "confirm",
+    buttons: [
+      {
+        text: "Ja",
+        action: () => {
+          socket.emit("kickuser", user.id);
+        },
+        classlist: "c-button--red",
+      },
+      {
+        text: "Nee",
+        action: () => {
+          // Do nothing
+        },
+        classlist: "c-button--green",
+      }
+    ]
+  });
 });
   }
 }
@@ -861,8 +961,26 @@ function socketevents()
   `;
   const kickuserbutton = document.querySelector('.c-personcard[data-id="'+user.dataset.id+'"] .js-kickuser');
 kickuserbutton.addEventListener('click', async () => {
-  console.log(user.dataset.id);
-  socket.emit("kickuser", user.dataset.id);
+  showPopup({
+    title: "Ben je zeker dat je deze user wil verwijderen?",
+    type: "confirm",
+    buttons: [
+      {
+        text: "Ja",
+        action: () => {
+          socket.emit("kickuser", user.dataset.id);
+        },
+        classlist: "c-button--red",
+      },
+      {
+        text: "Nee",
+        action: () => {
+          // Do nothing
+        },
+        classlist: "c-button--green",
+      }
+    ]
+  });
 });  
     });
   });
@@ -875,8 +993,27 @@ kickuserbutton.addEventListener('click', async () => {
 
 function startgame()
 {
+  // <div class="c-nav__container c-nav__container--progressbar">
+  //       <div class="c-level">
+  //         <h3>1</h3>
+  //       </div>
+  //       <div class="c-progress c-progress--greece"></div>
+  //     </div>
+  //add the code above into my page as first element 
+  const progressbar = document.createElement('div');
+  progressbar.classList.add('c-nav__container', 'c-nav__container--progressbar');
+  progressbar.innerHTML = `
+  <div class="c-level">
+    <h3>1</h3>
+  </div>
+  <div class="c-progress c-progress--greece"></div>
+  `;
+  document.body.insertBefore(progressbar, document.body.firstChild);
+  
+  hidegame();
   if(document.querySelector('.js-greeceplayfield'))
   {
+  document.body.classList.add('c-body--greece');
   const playfield = document.querySelector('.js-greeceplayfield');
   const totalTiles = 20;
   const correctTiles = 4;
@@ -956,6 +1093,9 @@ function startgame()
 }
 
 
+function hidegame(){
+  document.querySelector('.c-game').style.display = 'none';
+}
 
 // const admindiv = document.querySelector('.c-personcard[data-id="'+adminid+'"]').querySelector('.c-personcard__imgdiv');
 // console.log(admindiv);

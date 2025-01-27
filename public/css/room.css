@@ -18,6 +18,61 @@ padding: 1rem 0;
         flex-direction: column;
         align-items: center;
         width: 25rem;
+        position: relative;
+        padding-top: 2.5rem;
+    }
+
+    .c-popup input
+    {
+        width: 100%;
+    }
+
+    .c-popup__joinroom *{
+        width: 100%;
+    }
+
+    .c-popup__close{
+        background-color: transparent;
+        position: absolute;
+        right: var(--spacing-4);
+        top: var(--spacing-4);
+        cursor: pointer;
+    }
+
+        .c-popup__close svg{
+                width: 1.5rem;
+                height: 1.5rem;
+        }
+
+        .c-popup__close svg path{
+                fill: var(--neutral-500);
+                stroke: var(--neutral-500);
+        }
+        
+
+
+    .c-popup__joinroom{
+        width: 100%;
+    }
+
+    .c-input__errorSpan{
+        word-break: break-word;
+    }
+
+    .c-button--green
+    {   
+        background-color: rgb(70 153 70);
+    }
+
+    .c-button--red
+    {
+        background-color: var(--rood-rood-accent-100);
+    }
+
+    .c-popup__buttons{
+        display: flex;
+        gap: var(--spacing-3);
+        width: 100%;
     }
 .c-personcard{
         flex-wrap: wrap;
@@ -88,9 +143,9 @@ margin-left: auto;
         height: 2rem;
 }
 
-.c-roomssearch{
+.c-roomsearch{
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 3fr 1.5fr;
     gap: var(--spacing-3);
     margin-bottom: var(--spacing-6);
 }
@@ -120,11 +175,14 @@ margin-left: auto;
     }
 
 
+
     .c-room__title
     {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-1);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    text-align: center;
+    word-break: break-word;
     }
 
     .c-rooms{
@@ -208,14 +266,10 @@ object-fit: cover;
                 
         }
 
-        .c-roomssearch
+        .c-roomsearch
         {
-                grid-template-columns: 1fr;
-        }
-
-        .c-roomssearch__zoeklabel
-        {
-                margin-bottom: var(--spacing-3);
+                grid-template-columns: 1fr 1fr;
+                gap:var(--spacing-3)
         }
 
         .c-removebutton
@@ -234,5 +288,28 @@ object-fit: cover;
                 padding: var(--spacing-3);
         }
 
+        .c-room{
+                flex-direction: column;
+        }
+
+        .c-room__info
+        {
+                flex-direction: column;
+                gap: var(--spacing-2);
+                display: flex;
+                align-items: center;
+        }
+
+        .c-room__button{
+         margin-left: 0;
+        }
 }
 
+
+@media (max-width: 480px) 
+{
+        .c-roomsearch
+        {
+                grid-template-columns: 1fr;
+        }
+}
