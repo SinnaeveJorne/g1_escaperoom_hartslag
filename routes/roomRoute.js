@@ -129,6 +129,33 @@ router.post('/isUserInARoom', async (req, res) => {
   }
 });
 
+router.post('/changepassword', async (req, res) => {
+  const { roompassword, roomname } = req.body;
+  //test if roompassword and roomname exists
+
+  if(roompassword == undefined || roomname == undefined || roomname === '') {
+    return res.json({ type: 'error', message: 'Kamernaam of wachtwoord is onjuist'});
+  }
+
+  const checkIfUserIsAdminQuery = 'SELECT * FROM gameroom g JOIN gamerooms r ON g.roomId = r.roomId WHERE g.userId = ? AND r.name = ? AND g.isAdmin = 1';
+  const userIsAdmin = await db.query(checkIfUserIsAdminQuery, [req.session.userId, roomname]);
+
+  if (userIsAdmin.length === 0) {
+    return res.json({ type: 'error', message: 'User is not an admin' });
+  }
+
+  if(roompassword.trim() === '') {
+    const updateRoomPasswordQuery = 'UPDATE gamerooms SET password = NULL WHERE name = ?';
+    await db.query(updateRoomPasswordQuery, [roomname]);
+    return res.json({ type: 'succes', message: 'Wachtwoord is verwijderd'});
+  }
+  else{
+    const updateRoomPasswordQuery = 'UPDATE gamerooms SET password = ? WHERE name = ?';
+    await db.query(updateRoomPasswordQuery, [roompassword, roomname]);
+    return res.json({ type: 'succes', message: 'Wachtwoord is aangepast'});
+  }
+});
+
 
 
 
