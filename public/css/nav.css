@@ -14,7 +14,7 @@
     color: var(--neutral-50);
     font-size: 18px;
     font-weight: bold;
-    position: relative;
+    position: sticky;
     z-index: 10;
 }
 .c-nav__mainside__links__link{
