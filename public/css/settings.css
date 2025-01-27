@@ -1,5 +1,8 @@
 /* Reset styles */
+.titlesprofiels{
+    margin-bottom: 3rem;
 
+}
 
 /* General body styling */
 .c-body--settings {
@@ -179,7 +182,7 @@
 }
 
 /* Terug naar instellingen button */
-.back-to-settings {
+/* .back-to-settings {
     display: flex;
     align-items: center;
     margin-top: 1rem;
@@ -187,20 +190,16 @@
     color: var(--neutral-700);
     text-decoration: none;
     cursor: pointer;
-    align-self: flex-start; /* Align to the left */
+    align-self: flex-start; 
     margin-left: 160px;
-}
+} */
 
 .back-to-settings--notifications {
     margin-left: 3rem;
 }
 
 /* Hide the back to settings button on smaller screens */
-@media (max-width: 400px) {
-    .back-to-settings {
-        display: none;
-    }
-}
+
 
 .back-to-settings svg {
     fill: var(--neutral-700);
@@ -213,7 +212,7 @@
     flex-direction: column; 
     align-items: center;
     width: 100%;
-    max-width: 900px;
+    max-width: 600px;
 }
 
 .othersettings__container {
@@ -259,17 +258,16 @@
     display: flex;
     align-items: center;
     margin-top: 1rem;
-    background-color: var(--neutral-50);
+    background: none;
     color: var(--neutral-700);
     text-decoration: none;
     cursor: pointer;
-    align-self: flex-start; /* Align to the left */
+    align-self: flex-end;
+    width: fit-content; /* Align to the left */
 }
-@media (max-width: 400px) {
-    .back-to-settings {
-        display: none;
-    }
-}
+.back-to-settings:hover {
+    background: none;}
+
 .back-to-settings svg {
     fill: var(--neutral-700);
     transition: fill 0.3s ease;
@@ -375,7 +373,7 @@
       background-color: var(--background-warning);
       border: 1px solid var(--icon-warning);
       padding: 1.5rem 2rem;
-      width: 700px;
+      max-width: 700px;
       margin-top: 1rem;
       margin-bottom: 3rem;
     }
@@ -405,13 +403,20 @@
     }
   
     .checkbox-container input[type="checkbox"] {
-      width: 2rem;
-      height: 2rem;
+      width: 1rem;
+      height: 1rem;
     }
   
     .checkbox-container label {
       font-size: 1rem;
       color: var(--neutral-700);
+    }
+    @media (max-width: 460px) {
+      .warning-box {
+        padding: 1rem;
+        flex-direction: column;
+      }
+     
     }
   
   
