@@ -204,3 +204,29 @@ gap: 1rem;
     }
 }
 
+.c-footer--mainside{
+   margin-top: 5rem;
+    display: flex;
+    min-height: 5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--neutral-100);
+    border-radius: var(--radius-l) var(--radius-l) 0 0;
+    height: max-content;
+    z-index: 3;
+    box-shadow: 0 0 5px 0 var(--neutral-400);
+    /* position: fixed; */
+    /* bottom: 0; */
+    flex-grow: 1;
+}
+body{
+    margin-bottom: 0;
+    
+}
+body:has(.c-footer--mainside){
+    /* margin-bottom: 4rem; */
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}

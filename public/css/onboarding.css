@@ -1,4 +1,6 @@
-
+.container--n{
+  min-height: 18.75rem;
+}
   
 .c-titlehoewerk{
     text-align: center;

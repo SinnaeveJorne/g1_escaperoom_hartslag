@@ -183,9 +183,18 @@ border-radius: var(--radius-m);
     align-items: end;
 }
 
-
-
-
+.c-room--leaderborder{
+    display: flex;
+ justify-content: space-between;
+}
+.c-room__info--leaderborder{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.text-center{
+    text-align: center;
+}
 @media (max-width: 768px) {
     .c-afterstats__label {
         font-size: 12px;
