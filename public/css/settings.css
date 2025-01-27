@@ -86,6 +86,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: -webkit-fill-available;
+
 }
 
 /* For smaller screens */
