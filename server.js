@@ -114,4 +114,6 @@ server.listen(port, () => {
   console.log(`Server is running on ${serverUrl}`);
   const deleteRoomQuery = 'DELETE FROM gameroom';
   db.query(deleteRoomQuery);
+  const deleteGameQuery = 'DELETE FROM gamerooms';
+  db.query(deleteGameQuery);
 });

@@ -1317,7 +1317,7 @@ body > div.container > div > div > div > svg  > line{
     grid-template-columns: repeat(4, 1fr);
   }
  
-  body > div.container > div > div > div > svg > path{
+  /* body > div.container > div > div > div > svg > path{
     stroke: var(--neutral-50);
     stroke-width: 4;
 
@@ -1326,7 +1326,7 @@ body > div.container > div > div > div > svg  > line{
   stroke: var(--neutral-50);
   stroke-width: 4;
 
-}
+} */
 }
 @media (max-width: 480px) {
   .c-btn--ingame{

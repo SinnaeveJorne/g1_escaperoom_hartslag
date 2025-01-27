@@ -38,8 +38,6 @@ module.exports = (server, sessionMiddleware) => {
 
 
       socket.on('joinroom', async (roomName) => {
-       
-
         // Check room permissions
         const userRoomQuery = `
           SELECT * 
@@ -96,10 +94,31 @@ module.exports = (server, sessionMiddleware) => {
           [roomName]
         );
 
-        gameNamespace.to(socket.id).emit('loadusers', { users: roomUsers });
+        //select the admin of the room
+         const checkAdminQuery = 'SELECT * FROM gameroom WHERE isAdmin = 1 AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+          const isAdmin = await db.query(checkAdminQuery, [roomName]);
+          adminid = isAdmin[0].userId;
+
+        gameNamespace.to(socket.id).emit('loadusers', { users: roomUsers, adminid: adminid });
       });
 
-      socket.on('kickuser', async (targetUser) => {
+      socket.on("changepassword", async () => {
+        const getRoomQuery = 'SELECT * FROM gamerooms WHERE name = ?';
+        const roomData = await db.query(getRoomQuery, [currentRoom]);
+        console.log(roomData[0].password);
+        console.log(currentRoom);
+        gameNamespace.to(currentRoom).emit('changepassword', {password: roomData[0].password});
+
+        if(roomData[0].password !== null){
+          gameNamespace.emit('setroompassword', {roomname: currentRoom});
+        }
+        else{
+          gameNamespace.emit('unsetroompassword', {roomname: currentRoom});
+        }
+        console.log("ik ga kijken of ik hier geraak");
+    });
+
+        socket.on('kickuser', async (targetUser) => {
         //make targetuser a number
         targetUser = parseInt(targetUser);
           //check if the person is admin then kick the user also disconnect the user from the room and delete the user from the room
@@ -173,7 +192,9 @@ module.exports = (server, sessionMiddleware) => {
         const admin = userSockets.get(isAdmin[0].userId);
         ///get userid from admin
         isadmin = isAdmin[0].userId;
-        gameNamespace.to(admin.id).emit('showadmin',isadmin);
+        gameNamespace.to(admin.id).emit('giveadminrights',isadmin);
+
+        gameNamespace.to(currentRoom).emit('showadmin', {id: isAdmin[0].userId});
       }
 
       socket.on('disconnect', async() => {
