@@ -41,15 +41,19 @@ router.post('/createroom', async (req, res) => {
   if(roompassword == undefined || roomname == undefined || roomname === '') {
     return res.json({ type: 'error', message: 'Kamernaam of wachtwoord is onjuist'});
   }
-  console.log("verder ?");
-  // Check if the room name already exists
+
+  if(roomname.length > 15) {
+    return res.json({ type: 'error', message: 'Kamernaam mag niet meer dan 15 karakters bevatten',input:"roomname"});
+  }
+
   const checkRoomNameQuery = 'SELECT * FROM gamerooms WHERE name = ?';
   const roomDetails = await db.query(checkRoomNameQuery, [roomname]);
 
   if (roomDetails.length !== 0) {
     return res.json({
       type: 'error',
-      message: 'Deze kamernaam bestaat al'
+      message: 'Deze kamernaam bestaat al',
+      input: 'roomname'
     });
   }
 

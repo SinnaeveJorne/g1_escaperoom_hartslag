@@ -55,6 +55,7 @@
   --background-background-color: #ffffff;
   --text-color: #000000;
   --text-white: #ffffff;
+  --groen-groen: rgb(40, 192, 40);
 
   /* font-sizes */
   --font-size-xs: 0.75rem;
@@ -303,6 +304,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 

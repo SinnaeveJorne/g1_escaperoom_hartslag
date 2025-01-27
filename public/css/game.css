@@ -13,7 +13,9 @@
 }
 
 .c-body__game{
-   height: calc(100dvh - 5rem - var(--spacing-6));
+   min-height: calc(100dvh - 10rem - var(--spacing-6) - var(--spacing-6));
+   margin: calc(var(--spacing-6) + 5rem) 0  calc(var(--spacing-6) + 5rem) 0;
+
 }
 .c-game__title{
     margin-bottom: var(--spacing-6);

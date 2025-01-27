@@ -34,6 +34,7 @@ const s = session({
     checkPeriod: 86400000 // Prune expired entries every 24h
   }),
   cookie: {
+  expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000),
   maxAge: 10 * 365 * 24 * 60 * 60 * 1000,
    sameSite: 'strict',
    httpOnly: true
