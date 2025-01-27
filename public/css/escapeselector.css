@@ -1,5 +1,9 @@
 /* Algemene styling */
 
+body{
+  min-height: calc(100dvh - 5rem - var(--spacing-6));
+  margin-bottom: calc(4rem + var(--spacing-6));
+}
      /* Default width: 50% */
      .swiper-container {
       width: 100%;
@@ -45,6 +49,28 @@
     height: 90%;
 }
 
+.c-escaperooms__room__locked{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-l);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-escaperooms__room__locked svg 
+{
+  height: 2rem;
+  width: 2rem;
+}
+
+.c-escaperooms__room__locked svg path
+{
+  fill: var(--text-white);
+}
 
   @media (max-width: 1200px) {
       .swiper-container {

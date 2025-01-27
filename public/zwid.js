@@ -43,7 +43,7 @@ function setNeedle(value) {
   }
   
   // Voorbeeld: zet de wijzer op 100
-  setNeedle(100);
+  setNeedle(110);
   
   // Voeg een slider toe voor interactie (optioneel)
   document.body.insertAdjacentHTML(

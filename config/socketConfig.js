@@ -30,6 +30,7 @@ module.exports = (server, sessionMiddleware) => {
     const userName = socket.request.session?.userName;
     const userId = socket.request.session?.userId;
     let currentRoom = null;
+    let kicked = false;
     let gameStrarted = false;
     
 
@@ -68,13 +69,16 @@ module.exports = (server, sessionMiddleware) => {
         userSockets.set(userId, socket);
         //set 
         socket.request.session.socketid = socket.id;
-        console.log(socket.request.session.socketid);
         socket.join(roomName);
 
        if(!rooms.has(roomName)){
           rooms.set(roomName);
           const roomData = await db.query('SELECT * FROM gamerooms WHERE name = ?', [roomName]);
-          gameNamespace.emit('roomcreated', { data: roomData[0] });
+          let haspassword = false;
+          if(roomData[0].password != null){
+            haspassword = true;
+          }
+          gameNamespace.emit('roomcreated', { data: roomData[0],haspassword: haspassword });
           showadmin();
         }
         else
@@ -106,13 +110,8 @@ module.exports = (server, sessionMiddleware) => {
             return;
           }
 
-          console.log(targetUser);
           const deleteUserQuery  = 'DELETE FROM gameroom WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
           await db.query(deleteUserQuery, [targetUser, currentRoom]);
-
-          // gameNamespace.in(currentRoom).emit('userleft', { userName, id: targetUser });
-          console.log(`${userName} has been removed from room ${currentRoom}`);
-          console.log(targetUser);
           userdisconnect(targetUser);
       
       });
@@ -149,7 +148,7 @@ module.exports = (server, sessionMiddleware) => {
         if(userSockets.has(targetUser)){
           const previousSocket = userSockets.get(targetUser);
           gameNamespace.to(previousSocket.id).emit('kicked');
-          console.log("ik ga naar deze stap");
+          kicked = true;
           previousSocket.disconnect(true);
 
           //if imporuser is true add this user in the database room
@@ -180,7 +179,9 @@ module.exports = (server, sessionMiddleware) => {
       socket.on('disconnect', async() => {
         console.log('User disconnected');
         userSockets.delete(userId);
-        socket.emit("disconnected", {message: "You have been disconnected"});
+        if(kicked === false){
+        socket.emit("disconnected", {message: "je internet is weggevallen"});
+        }
         if(gameStrarted === false){
         if (!userSockets.has(userId)) {
             if (currentRoom) {

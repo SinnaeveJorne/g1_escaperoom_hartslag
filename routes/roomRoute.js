@@ -10,6 +10,7 @@ const { isSet } = require('util/types');
 router.post('/joinroom', async (req, res) => {
   const {roompassword, roomname } = req.body;
   //trim the roomname and roompassword
+
   roomname.trim();
   roompassword.trim();
 //if roompassword and roomname existst if nog return error roomname cannot be empty

@@ -2,6 +2,7 @@
 
 let socket = "";
 let isadmin = false;
+let kicked = false;
 
 
 function init()
@@ -396,6 +397,22 @@ function rooms(){ // Connect to the namespace '/room'
   socket = io("/room");
   isadmin = false;
   socketevents();
+  const searchInput = document.querySelector('.js-roomssearch');
+  searchInput.addEventListener('input', () => {
+    const filter = searchInput.value.toLowerCase();
+    document.querySelectorAll('.c-room').forEach((room) => {
+      const roomTitle = room.querySelector('.c-room__title').textContent.toLowerCase();
+      if (roomTitle.includes(filter)) 
+      {
+        room.style.display = '';
+      }
+      else
+      {
+        room.style.display = 'none';
+      }
+    });
+  });
+  
 document.querySelector('.js-makeroom').addEventListener('click', async () => {
     showPopup({
         title: "Reconnected!",
@@ -515,7 +532,12 @@ function returnarrow()
           text: "Ja",
           action: () => {
             socket.disconnect();
-            nextroom('/rooms');
+            setTimeout(() => {
+              nextroom('/rooms');
+              kicked = true;
+              document.body.classList.remove('oplipicbackground');
+            }, 200);
+           
           },
           classlist: "c-button--red",
         },
@@ -613,6 +635,7 @@ function socketevents()
 
   socket.on('kicked', async() => {
     await nextroom('/rooms');
+    kicked = true;
     showPopup({
       title: "Je bent verwijderd uit de kamer",
       type: "melding",
@@ -631,7 +654,7 @@ function socketevents()
       if(room.dataset.name == rooms.name)
       {
         const roomcount = room.closest('.c-room').querySelector('.c-room__players');
-        roomcount.textContent = rooms.amount+'/8';
+        roomcount.textContent = rooms.amount+'/8 spelers';
       }
     });
   })
@@ -647,24 +670,114 @@ function socketevents()
   })
   
   socket.on('roomcreated', (room) => {
-    console.log("biep boop melding");
-    if(document.querySelector('.js-rooms'))
-    {
-  
-    const roomdiv = document.createElement('div');
-    roomdiv.classList.add('c-room');
-    roomdiv.innerHTML = `
-    <h3 class="c-room__title">${room.data.name}</h3>
-    <p class="c-room__players">${0}/8</p>
-    <button class="c-button js-joinroom" data-name="${room.data.name}" data-locked="true">Join</button>
-    `;
-    document.querySelector('.js-rooms').appendChild(roomdiv);
+    if (document.querySelector('.js-rooms')) {
+        const roomdiv = document.createElement('div');
+        roomdiv.classList.add('c-room');
+
+        // Create the room title with a lock icon if the room has a password
+        let roomTitleHtml = `
+            <h3 class="c-room__title">${room.data.name}</h3>
+        `;
+        
+        if (room.haspassword) {
+            roomTitleHtml = `
+                <h3 class="c-room__title">${room.data.name}
+                    <svg class="c-room__lock" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 10H22V7C22 5.4087 21.3679 3.88258 20.2426 2.75736C19.1174 1.63214 17.5913 1 16 1C14.4087 1 12.8826 1.63214 11.7574 2.75736C10.6321 3.88258 10 5.4087 10 7V10H6C5.46957 10 4.96086 10.2107 4.58579 10.5858C4.21071 10.9609 4 11.4696 4 12V26C4 26.5304 4.21071 27.0391 4.58579 27.4142C4.96086 27.7893 5.46957 28 6 28H26C26.5304 28 27.0391 27.7893 27.4142 27.4142C27.7893 27.0391 28 26.5304 28 26V12C28 11.4696 27.7893 10.9609 27.4142 10.5858C27.0391 10.2107 26.5304 10 26 10ZM17 19.8288V23C17 23.2652 16.8946 23.5196 16.7071 23.7071C16.5196 23.8946 16.2652 24 16 24C15.7348 24 15.4804 23.8946 15.2929 23.7071C15.1054 23.5196 15 23.2652 15 23V19.8288C14.3328 19.5929 13.7704 19.1287 13.4124 18.5183C13.0543 17.9079 12.9235 17.1905 13.0432 16.493C13.1629 15.7955 13.5253 15.1628 14.0663 14.7066C14.6074 14.2505 15.2923 14.0003 16 14.0003C16.7077 14.0003 17.3926 14.2505 17.9337 14.7066C18.4747 15.1628 18.8371 15.7955 18.9568 16.493C19.0765 17.1905 18.9457 17.9079 18.5876 18.5183C18.2296 19.1287 17.6672 19.5929 17 19.8288ZM20 10H12V7C12 5.93913 12.4214 4.92172 13.1716 4.17157C13.9217 3.42143 14.9391 3 16 3C17.0609 3 18.0783 3.42143 18.8284 4.17157C19.5786 4.92172 20 5.93913 20 7V10Z" fill="#343330"/>
+                    </svg>
+                </h3>
+            `;
+        }
+        
+        // Add room title and players count
+        roomdiv.innerHTML = `
+        <div class="c-room__info">
+            ${roomTitleHtml}
+            <p class="c-room__players">1/8 spelers</p>
+        </div>
+        `;
+
+        // Create the "Join" button
+        const joinButton = document.createElement('a');
+        joinButton.classList.add('c-button', 'c-room__button', 'js-joinroom');
+        joinButton.dataset.name = room.data.name;
+        
+        if (room.haspassword) {
+            joinButton.dataset.locked = true;
+            joinButton.innerHTML = 'Speel mee';
+        } else {
+            joinButton.innerHTML = 'Speel mee';
+        }
+        
+        roomdiv.appendChild(joinButton);
+
+        const searchInput = document.querySelector('.js-roomssearch');
+        if(searchInput.value != "")
+        {
+          const filter = searchInput.value.toLowerCase();
+          const roomTitle = room.data.name.toLowerCase();
+          if (!roomTitle.includes(filter)) {
+            roomdiv.style.display = "none";
+          }
+        }
+
+        // Append the room to the rooms list
+        document.querySelector('.js-rooms').appendChild(roomdiv);
+
+        const joinroombutton = document.querySelector('.js-joinroom[data-name="'+room.data.name+'"]');
+        joinroombutton.addEventListener('click', async () => {
+          if(joinroombutton.dataset.locked == "true")
+          {
+            showPopup({
+              title: "Kamer gegevens",
+              type: "join_room",
+              buttons: [
+                {
+                  text: "Speel mee!",
+                  action: async() => {
+                      const formData = new FormData(document.querySelector('.js-createroomform'));
+                      const data = Object.fromEntries(formData);
+                      
+                      console.log("doe ik dit");
+                          const response = await fetch('/joinroom', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify(data)
+                          });
+                          const jsonresponse = await response.json();;
+                          console.log(jsonresponse);
+        
+                          if (jsonresponse.type == 'succes')
+                          {
+                            console.log(jsonresponse.message);
+                              nextroom(`/room/${jsonresponse.message}`,jsonresponse.message);
+                          } 
+                          else {
+                              console.log(jsonresponse.message);
+                          }
+                      
+                     
+                  }
+                }
+              ],
+              extra: {name: joinroombutton.dataset.name}
+            });
+          }
+          else
+          {
+            nextroom(`/room/${joinroombutton.dataset.name}`,joinroombutton.dataset.name);
+          }
+        });
     }
-  }
-  );
+    
+});
+
 
   socket.on('disconnected', async(message) => {
     await nextroom('/rooms');
+    kicked = true;
     showPopup({
       title: message,
       type: "melding",
@@ -677,6 +790,56 @@ function socketevents()
       ]
     });
   });
+
+
+  socket.on("disconnect", async (reason) => {
+    //wait .3 seconds and check if kicked is true
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    console.log(kicked);
+    if(kicked == false)
+    {
+    const retryInterval = 5000; // Retry every 5 seconds
+    let isConnected = false;
+  
+    const checkConnection = async () => {
+      while (!isConnected) {
+        // Show the popup only once
+        showPopup({
+          title: "Verbinding verbroken",
+          type: "melding",
+          buttons: [
+            {
+              text: "Begrepen",
+              action: async () => {
+                // Redirect user to a different page if they acknowledge
+                await nextroom("/rooms");
+              }
+            }
+          ]
+        });
+  
+        // Wait for retryInterval before checking again
+        await new Promise((resolve) => setTimeout(resolve, retryInterval));
+  
+        // Check connection status
+        if (socket.connected) {
+          isConnected = true;
+          // Optionally hide popup or notify user of reconnection
+          console.log("Reconnected!");
+        }
+      }
+    };
+  
+    // Start checking for reconnection
+    await checkConnection();
+  }
+  else{
+    kicked = false;
+  }
+  });
+  
+
+  
 
   socket.on('startgame', async() => {
     await nextroom('/getgame');
