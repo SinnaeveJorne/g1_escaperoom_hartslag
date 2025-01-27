@@ -12,7 +12,7 @@
         <div class="container">
             <form class="c-roomsearch">
             <label class="c-roomssearch__zoeklabel c-label" for="kamerzoeken">
-                <input class="c-input" type="text" name="kamerzoeken" id="kamerzoeken" placeholder="Zoek kamer naam">
+                <input class="c-input js-roomssearch" type="text" name="kamerzoeken" id="kamerzoeken" placeholder="Zoek kamer naam">
 
             </label>
 
@@ -31,30 +31,34 @@
           
             <% rooms.forEach(room => { %>
                 <div class="c-room">
-                        <h3 class="c-room__title"><%= room.name %></h3>
-                    <div class="c-room__info">
-                        <h4 class="c-room__players"><%= room.aantalusers %>/8</h4>
+                  
+                        <div class="c-room__info">
+                            <% if(room.password != null) { %>               
+                                <h3 class="c-room__title"><%= room.name %>
+                                    <svg class="c-room__lock" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M26 10H22V7C22 5.4087 21.3679 3.88258 20.2426 2.75736C19.1174 1.63214 17.5913 1 16 1C14.4087 1 12.8826 1.63214 11.7574 2.75736C10.6321 3.88258 10 5.4087 10 7V10H6C5.46957 10 4.96086 10.2107 4.58579 10.5858C4.21071 10.9609 4 11.4696 4 12V26C4 26.5304 4.21071 27.0391 4.58579 27.4142C4.96086 27.7893 5.46957 28 6 28H26C26.5304 28 27.0391 27.7893 27.4142 27.4142C27.7893 27.0391 28 26.5304 28 26V12C28 11.4696 27.7893 10.9609 27.4142 10.5858C27.0391 10.2107 26.5304 10 26 10ZM17 19.8288V23C17 23.2652 16.8946 23.5196 16.7071 23.7071C16.5196 23.8946 16.2652 24 16 24C15.7348 24 15.4804 23.8946 15.2929 23.7071C15.1054 23.5196 15 23.2652 15 23V19.8288C14.3328 19.5929 13.7704 19.1287 13.4124 18.5183C13.0543 17.9079 12.9235 17.1905 13.0432 16.493C13.1629 15.7955 13.5253 15.1628 14.0663 14.7066C14.6074 14.2505 15.2923 14.0003 16 14.0003C16.7077 14.0003 17.3926 14.2505 17.9337 14.7066C18.4747 15.1628 18.8371 15.7955 18.9568 16.493C19.0765 17.1905 18.9457 17.9079 18.5876 18.5183C18.2296 19.1287 17.6672 19.5929 17 19.8288ZM20 10H12V7C12 5.93913 12.4214 4.92172 13.1716 4.17157C13.9217 3.42143 14.9391 3 16 3C17.0609 3 18.0783 3.42143 18.8284 4.17157C19.5786 4.92172 20 5.93913 20 7V10Z" fill="#343330"/>
+                                    </svg>  
+                                </h3>
+                            <% } else { %>
+                                <h3 class="c-room__title"><%= room.name %></h3>
+                            <% } %>
+                       
+                        <p class="c-room__players"><%= room.aantalusers %>/8 spelers</p>
+                    </div>
                         <% if(room.password != null) { %>
-                        <a class="c-button c-room__btn js-joinroom" data-name="<%= room.name %>" data-locked="true">
-                            <svg class="c-room__svgs" width="19" height="19" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 20C17.3807 20 18.5 18.8807 18.5 17.5C18.5 16.1193 17.3807 15 16 15C14.6193 15 13.5 16.1193 13.5 17.5C13.5 18.8807 14.6193 20 16 20Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 20V23" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M26 11H6C5.44772 11 5 11.4477 5 12V26C5 26.5523 5.44772 27 6 27H26C26.5523 27 27 26.5523 27 26V12C27 11.4477 26.5523 11 26 11Z" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M11 11V7C11 5.67392 11.5268 4.40215 12.4645 3.46447C13.4021 2.52678 14.6739 2 16 2C17.3261 2 18.5979 2.52678 19.5355 3.46447C20.4732 4.40215 21 5.67392 21 7V11" stroke="#343330" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            Join
+                        <a class="c-button c-room__button js-joinroom" data-name="<%= room.name %>" data-locked="true">
+                          Speel mee
                         </a>
                         <% } else { %>
-                            <a class="c-button c-room__btn js-joinroom" data-name="<%= room.name %>">
-                                Join
+                            <a class="c-button c-room__button js-joinroom" data-name="<%= room.name %>">
+                                Speel mee
                             </a>
                         <% } %>
-                    </div>
                 </div>
                     <% }) %>
         <% } %>
     </div>
-    <footer class="c-footer pagination" aria-label="Pagination">
+    <!-- <footer class="c-footer pagination" aria-label="Pagination">
         <ul class="pagination__list list-reset">
             <li class="pagination__item">
                 <a href="#" class="pagination__link " aria-label="Vorige pagina">&laquo;</a>
@@ -72,4 +76,4 @@
                 <a href="#" class="pagination__link" aria-label="Volgende pagina">&raquo;</a>
             </li>
         </ul>
-    </footer>
+    </footer> -->

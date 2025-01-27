@@ -51,8 +51,7 @@ const init = function () {
       needle.style.transform = `rotate(${angle}deg)`;
     }
   }
-
-  // Voorbeeld: zet de wijzer op 100
+  
   setNeedle(100);
 
   // Voeg een slider toe voor interactie (optioneel)
