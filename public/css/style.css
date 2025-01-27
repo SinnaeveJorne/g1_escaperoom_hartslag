@@ -1358,7 +1358,10 @@ body > div.container > div > div > div > svg  > line{
   justify-content: center;
   align-items: center;
 }
-.c-romedoor__item{
+
+
+/* Ensure doors have visible size and default border */
+.c-romedoor__item {
   color: var(--text-white);
   display: flex;
   justify-content: center;
@@ -1366,14 +1369,21 @@ body > div.container > div > div > div > svg  > line{
   background: url(../img/Closed.svg);
   background-size: cover;
   background-repeat: no-repeat;
+  border: 1px solid transparent; /* Default state */
   width: 6rem;
   height: 7rem;
+  cursor: pointer;
+  transition: border 0.3s ease; /* Smooth transition for border changes */
 }
-.c-romedoor__item--fout{
-  border: 3px solid var(--rood-rood-accent-100);
+
+/* Correct border (Yellow) */
+.correct-border {
+  border: 3px solid yellow !important; /* Ensure it applies */
 }
-.c-romedoor__item--corect{
-  border: 3px solid var(--geel-geel-accent-100);
+
+/* Wrong border (Red) */
+.wrong-border {
+  border: 3px solid red !important; /* Ensure it applies */
 }
 li.c-romedoor__item > h2{
   /* padding-right: 1rem; */
