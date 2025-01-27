@@ -50,6 +50,10 @@
     }
 }
 
+.settings-item--space{
+    margin-bottom: 1rem;
+}
+
 /* Individual settings item */
 .settings-item {
     display: flex;
