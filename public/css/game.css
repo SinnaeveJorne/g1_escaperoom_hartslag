@@ -12,6 +12,8 @@
     flex-direction: column;
 }
 
+
+
 .c-body__game{
    min-height: calc(100dvh - 10rem - var(--spacing-6) - var(--spacing-6));
    margin: calc(var(--spacing-6) + 5rem) 0  calc(var(--spacing-6) + 5rem) 0;
@@ -161,10 +163,11 @@ progressbar.innerHTML = `
 
 .c-gamebalk__progress__bar
 {
-  width: 10%;
+  width: 0%;
   background-color: var(--blauw-blauw-accent-70);
   border-radius: 1.25rem;
   height: 100%;
+  transition: .3s;
 }
 
 .c-game__story{

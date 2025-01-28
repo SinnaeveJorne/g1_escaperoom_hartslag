@@ -1250,7 +1250,12 @@ kickuserbutton.addEventListener('click', async () => {
 function startgame()
 {
 
+  const level = document.querySelector('.c-level').dataset.level;
+  //there are 8 levels in total c-gamebalk__progress__bar = level to 100
+  const levelprogress = document.querySelector('.c-gamebalk__progress__bar');
+  levelprogress.style.width = `${level * 12.5}%`;
   
+
   hidegame();
   hideheartbeat();
   storyskipbutton();
