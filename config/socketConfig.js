@@ -1,6 +1,5 @@
 const cookieParser = require('cookie-parser');
 const db = require('./db');
-const { use } = require('../routes/roomRoute');
 
 module.exports = (server, sessionMiddleware) => {
   const io = require('socket.io')(server, {
@@ -31,7 +30,9 @@ module.exports = (server, sessionMiddleware) => {
     const userId = socket.request.session?.userId;
     let currentRoom = null;
     let kicked = false;
-    let gameStrarted = false;
+    let gameStarted = false;
+    let beats = 0;
+    let average = 0;
     
 
     if (userName && userId) {
@@ -132,7 +133,7 @@ module.exports = (server, sessionMiddleware) => {
       
       });
 
-      socket.on('heartRate', heartbeat => {
+      socket.on('heartRate',async (heartbeat) => {
         gameNamespace.in(currentRoom).emit('heartRate', {heartbeat: heartbeat, id: userId});
         if(socket.request.session.heartbeat){
           //if heartbeat has a 2 difference with the session heartbeat mission is completed
@@ -141,6 +142,26 @@ module.exports = (server, sessionMiddleware) => {
             newlevel();
             socket.request.session.heartbeat = null;
           }
+        }
+        if(gameStarted == false)
+        {
+          beats += 1;
+          average += heartbeat;
+          if(beats == 20)
+          {
+            average = average / 20;
+            average = Math.floor(average);
+            if(average > 100){
+              return;
+            }
+            if(average < 40){
+              return;
+            }
+            const updateHeartRateQuery = 'UPDATE user SET heartrate = ? WHERE id = ?';
+            await db.query(updateHeartRateQuery, [average, userId]);
+            beats = 0;
+          }
+
         }
       });
 
@@ -154,6 +175,7 @@ module.exports = (server, sessionMiddleware) => {
 
         //delete the room via socket deleterooms
         gameNamespace.emit('deleteRoom', {name: currentRoom});
+        gameStarted = true;
         const setGameLevelto1 = 'UPDATE gameroom SET userLevel = 1 WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
         await db.query(setGameLevelto1, [currentRoom]);
 
@@ -193,13 +215,17 @@ module.exports = (server, sessionMiddleware) => {
               const getHeartRateQuery = 'SELECT heartrate FROM user WHERE id = ?';
               const userHeartRate = await db.query(getHeartRateQuery, [userId]);
               const heartrate = userHeartRate[0].heartrate;
+              if(heartrate === null){
+                heartrate = 70;
+              }
               const getIntensityQuery = 'SELECT intensity FROM levels WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?) AND level = (SELECT userLevel FROM gameroom WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?))';
               const intensity = await db.query(getIntensityQuery, [currentRoom, userId, currentRoom]);
               //calculate the heartrate
-              const age = 30;
+              const age = 20;
               const HR_rest = heartrate;
               const HR_max = 220 - age;
               const doelhartslag = HR_rest + (intensity[0].intensity/100 * (HR_max - HR_rest));
+              doelhartslag = Math.floor(doelhartslag);
               socket.emit('missioncompleted', {heartrate: doelhartslag});
               socket.request.session.heartbeat = doelhartslag;
       });
@@ -254,7 +280,7 @@ module.exports = (server, sessionMiddleware) => {
         if(kicked === false){
         socket.emit("disconnected", {message: "je internet is weggevallen"});
         }
-        if(gameStrarted === false){
+        if(gameStarted === false){
         if (!userSockets.has(userId)) {
             if (currentRoom) {
                 // Delete the user from the room
