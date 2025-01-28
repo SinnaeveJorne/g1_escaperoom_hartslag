@@ -113,7 +113,6 @@ module.exports = (server, sessionMiddleware) => {
         else{
           gameNamespace.emit('unsetroompassword', {roomname: currentRoom});
         }
-        console.log("ik ga kijken of ik hier geraak");
     });
 
         socket.on('kickuser', async (targetUser) => {
@@ -224,7 +223,7 @@ module.exports = (server, sessionMiddleware) => {
               const age = 20;
               const HR_rest = heartrate;
               const HR_max = 220 - age;
-              const doelhartslag = HR_rest + (intensity[0].intensity/100 * (HR_max - HR_rest));
+              let doelhartslag = HR_rest + (intensity[0].intensity/100 * (HR_max - HR_rest));
               doelhartslag = Math.floor(doelhartslag);
               socket.emit('missioncompleted', {heartrate: doelhartslag});
               socket.request.session.heartbeat = doelhartslag;
@@ -280,7 +279,7 @@ module.exports = (server, sessionMiddleware) => {
         if(kicked === false){
         socket.emit("disconnected", {message: "je internet is weggevallen"});
         }
-        if(gameStarted === false){
+      
         if (!userSockets.has(userId)) {
             if (currentRoom) {
                 // Delete the user from the room
@@ -353,7 +352,7 @@ module.exports = (server, sessionMiddleware) => {
                     }
                 }
             }
-        }
+        
         }
       });
     }

@@ -7,9 +7,13 @@ body{
      /* Default width: 50% */
      .swiper-container {
       width: 100%;
-      height: 500px;
+      height: 25rem;
       box-sizing: border-box;
       overflow: hidden;
+  }
+
+  .c-escaperooms{
+    margin-bottom: 7rem;
   }
 
   /* Add styling for the navigation arrows */

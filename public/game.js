@@ -528,6 +528,20 @@ function initStartGameButton() {
                 
                 document.querySelector('.c-main__game').innerHTML = html;
                 gamestarted = true;
+
+       
+
+          document.querySelector('.c-main__game').innerHTML += `<div class="c-gameinfo">
+            <div>
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <p class="js-currentheartbeat">0</p>
+            </div>
+            
+          </div>`
+
               }
               if (document.querySelector('.c-main__game'))
               {
@@ -962,92 +976,7 @@ function socketevents()
         userdiv.querySelector('p').textContent = heartbeat.heartbeat;
     }
 
-    if (document.querySelector('.js-duistlandplayfield')) {
-        const beerElement = document.querySelector('.beer'); // Select the beer element
-        const rangeDisplay = document.querySelector('.js-range'); // Select the js-range element
-        const duitsspel = document.querySelector('.js-beatroom'); // Game area
-
-        let timer = null; // Timer for 10-second check
-        let timerStart = null; // Start time for the timer
-        let beerVolume = 100; // Initial beer volume
-
-        // Add body class for styling
-        document.body.classList.add('c-body--duits');
-
-        // Generate random range
-        const heardrange = ["90-100", "100-110", "110-120", "120-130", "130-140", "140-150", "150-160", "160-170", "170-180"];
-        const randomIndex = Math.floor(Math.random() * heardrange.length);
-        const randomValue = heardrange[randomIndex];
-        const [min, max] = randomValue.split('-').map(Number); // Convert range to numbers
-
-        if (rangeDisplay) {
-            rangeDisplay.textContent = randomValue; // Display the range
-        } else {
-            console.error('Element with class .js-range not found.');
-        }
-
-        if (duitsspel) {
-            const heartbeatElement = duitsspel.querySelector('.germenbeat');
-
-            if (heartbeat.heartbeat) {
-                let heartbeatValue = heartbeat.heartbeat;
-
-                const checkHeartbeat = () => {
-                    if (heartbeatValue >= min && heartbeatValue <= max) {
-                        // Heartbeat is within range
-                        if (!timer) {
-                            timerStart = Date.now(); // Start timer
-                            timer = setInterval(() => {
-                                const elapsedTime = (Date.now() - timerStart) / 1000;
-
-                                if (elapsedTime >= 10) {
-                                    clearInterval(timer);
-                                    timer = null;
-                                    console.log("kaas"); // Log "kaas" after 10 seconds
-                                    if (beerElement) {
-                                        beerElement.classList.remove('animate-fillBeer'); // Stop animation
-                                    }
-                                }
-                            }, 100); // Check every 100ms
-                        }
-
-                        if (beerElement) {
-                            beerElement.classList.add('animate-fillBeer'); // Add animation
-                        }
-
-                        if (rangeDisplay) {
-                            rangeDisplay.textContent = 'Congrats'; // Display congrats
-                        }
-                    } else {
-                        // Heartbeat is out of range
-                        if (timer) {
-                            clearInterval(timer); // Stop the timer
-                            timer = null;
-                        }
-
-                        if (beerElement) {
-                            beerVolume = Math.max(beerVolume - 10, 0); // Reduce volume but not below 0
-                            beerElement.style.opacity = beerVolume / 100; // Adjust visual opacity
-                        }
-
-                        if (heartbeatElement) {
-                            heartbeatElement.textContent = `${heartbeatValue}`;
-                        }
-                    }
-                };
-
-                // Update heartbeat dynamically
-                setInterval(() => {
-                    heartbeatValue = Math.floor(Math.random() * 100) + 80; // Simulate heartbeat value between 80-180
-                    checkHeartbeat();
-                }, 1000); // Check every second
-            } else {
-                console.error('Element with class "germenbeat" not found in the game area.');
-            }
-        } else {
-            console.error('Game area not found.');
-        }
-    }
+   
 });
 if (document.querySelector('.js-romegame')) {
   document.body.classList.add('c-body--rome');
@@ -1409,7 +1338,12 @@ kickuserbutton.addEventListener('click', async () => {
 function startgame()
 {
 
+  const level = document.querySelector('.c-level').dataset.level;
+  //there are 8 levels in total c-gamebalk__progress__bar = level to 100
+  const levelprogress = document.querySelector('.c-gamebalk__progress__bar');
+  levelprogress.style.width = `${level * 12.5}%`;
   
+
   hidegame();
   hideheartbeat();
   storyskipbutton();
@@ -1498,6 +1432,11 @@ function startgame()
   // Initialize Game
   setupGame();
 }
+if(document.querySelector('.c-game--rome'))
+{
+  document.body.classList.add('c-body--rome');
+}
+
 
 }
 
@@ -1548,6 +1487,8 @@ function seeNeededHeartbeat(heartbeat)
 {
   hidegame();
   document.querySelector('.c-gamehartslag').style.display = '';
+  const heartbeatdiv = document.querySelector('.c-gamehartslag h3');
+  heartbeatdiv.textContent = `De hartslag die je moet halen is: ${heartbeat}`;
   const heartbeatdiv = document.querySelector('.c-gamehartslag');
   heartbeatdiv.innerHTML = `<h3 class="c-game__title text-center">De hartslag die je moet halen is: ${heartbeat}</h3>`;
 }

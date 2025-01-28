@@ -13,6 +13,8 @@
     text-align: center;
 }
 
+
+
 .c-body__game{
    min-height: calc(100dvh - 10rem - var(--spacing-6) - var(--spacing-6));
    margin: calc(var(--spacing-6) + 5rem) 0  calc(var(--spacing-6) + 5rem) 0;
@@ -78,6 +80,29 @@ progressbar.innerHTML = `
 </div>
 <div class="c-gamebalk__progress"></div>`; */
 
+.c-gamehartslag
+{
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+}
+
+.c-gamehartslag svg
+{
+  height: 5rem;
+  width: 5rem;
+}
+
+.c-gamehartslag h3, .c-gamehartslag h2
+{
+  color: var(--text-white);
+}
+
+
 .c-gamebalk
 {
     height: 5rem;
@@ -86,6 +111,7 @@ progressbar.innerHTML = `
     width: 100%;
     z-index: 5;
 }
+
 
 .c-gamebalk .container
 {
@@ -106,6 +132,23 @@ progressbar.innerHTML = `
     background-color: var(--blauw-blauw-accent-70);
 }
 
+.c-gameinfo{
+  height: fit-content;
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+    flex-direction: column;
+    width: fit-content;
+    bottom: 3rem;
+    top: 0;
+    color: var(--text-white);
+    top: 4rem;
+    position: fixed;
+    background: #00000050;
+    border-radius: var(--radius-l);
+    padding: 1rem;
+}
+
 .c-gamebalk__level h3
 {
     color: var(--text-white);
@@ -122,10 +165,11 @@ progressbar.innerHTML = `
 
 .c-gamebalk__progress__bar
 {
-  width: 10%;
+  width: 0%;
   background-color: var(--blauw-blauw-accent-70);
   border-radius: 1.25rem;
   height: 100%;
+  transition: .3s;
 }
 
 .c-game__story{
@@ -134,6 +178,7 @@ progressbar.innerHTML = `
     display: flex;
     flex-direction: column;
     text-align: center;
+
 }
 .js-currentheartbeat {
 text-align: center;
@@ -142,6 +187,7 @@ text-align: center;
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
+
 }
 .c-button:disabled
 {
