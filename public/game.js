@@ -1216,11 +1216,11 @@ function startgame()
     
     socket.on('heartRate', (heartbeat) => {
         // Zoek naar het juiste element met de class "germenbeat" en data-id
-        const userDiv = document.querySelector(`.js-beatroom[data-id="${heartbeat.id}"]`);
+        const duitsspel = document.querySelector(`.js-beatroom`);
         
-        if (userDiv) {
+        if (duitsspel) {
             // Zoek naar een <p>-element met de class "germenbeat" binnen dit element
-            const heartbeatElement = userDiv.querySelector('.germenbeat');
+            const heartbeatElement = duitsspel.querySelector('.germenbeat');
     
             if (heartbeatElement) {
                 const heartbeatValue = heartbeat.heartbeat; // De huidige hartslagwaarde
@@ -1242,7 +1242,7 @@ function startgame()
                 } else {
                     // Hartslag zit niet binnen de range, toon de huidige hartslag
                     if (heartbeatElement) {
-                        heartbeatElement.textContent = `${heartbeatValue} BPM`;
+                        heartbeatElement.textContent = `${heartbeatValue}`;
                     }
                 }
             } else {
