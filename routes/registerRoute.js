@@ -38,6 +38,14 @@ router.post('/register', async (req, res) => {
       });
     }
  
+    const re = /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if(!re.test(password)) {
+      return res.json({
+        type: 'error',
+        message: 'Wachtwoord moet minimaal 8 karakters lang zijn en minimaal 1 speciaal karakter bevatten',
+        inputtype: 'password'
+      });
+    }
 
 
     // Check if the user already exists
@@ -47,6 +55,16 @@ router.post('/register', async (req, res) => {
       return res.json({
         type: 'error',
         message: 'Deze email is al in gebruik',
+        inputtype: 'email'
+      });
+    }
+
+    //check if email is valid
+    const emailRe = /\S+@\S+\.\S+/;
+    if(!emailRe.test(email)) {
+      return res.json({
+        type: 'error',
+        message: 'Vul een geldig email adres in',
         inputtype: 'email'
       });
     }

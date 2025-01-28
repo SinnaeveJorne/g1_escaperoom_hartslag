@@ -152,6 +152,8 @@ module.exports = (server, sessionMiddleware) => {
           return;
         }
 
+        //delete the room via socket deleterooms
+        gameNamespace.emit('deleteRoom', {name: currentRoom});
         const setGameLevelto1 = 'UPDATE gameroom SET userLevel = 1 WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
         await db.query(setGameLevelto1, [currentRoom]);
 

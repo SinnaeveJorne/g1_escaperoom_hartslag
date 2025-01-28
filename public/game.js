@@ -178,6 +178,13 @@ function initStartGameButton() {
           </div>
       </form>`
         }
+
+        //prevent all forms from submitting
+        document.querySelectorAll('form').forEach(form => {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+          });
+        });
       
         const buttonContainer = document.createElement("div");
         buttonContainer.className = "c-popup__buttons";
