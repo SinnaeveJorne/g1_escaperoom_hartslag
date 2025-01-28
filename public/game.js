@@ -1207,8 +1207,8 @@ function startgame()
   <a class="c-button c-w50 js-startgame">start het spel</a>
   `;
   document.body.appendChild(footer);
-  hidegame();
 
+  hidegame();
 
   
   // hidegame();
