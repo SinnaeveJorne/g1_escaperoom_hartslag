@@ -1,110 +1,4 @@
 <% if (level) { %>
-        <% if (level === 2) { %>
-          <div class="c-game">
-          <div class="container c-main__game js-duistlandplayfield">
-            <p class="c-storytext text-center">
-              vul het bier aan, het begint pas te vullen tussen de gewenste hartslag </p> 
-                </div>
-              <div class="container text-center ">
-                <h1 class="c-white text-center js-range">100-120</h1>
-              </div>
-         <div class="container c-container--duits ">
-          <div class="beer-container">
-              <div class="beer"> <!-- Bubbel elementen -->
-                  <div class="foam-bubble" style="left: 10%; width: 10px; height: 10px; animation-delay: 0s;"></div>
-                  <div class="foam-bubble" style="left: 25%; width: 15px; height: 15px; animation-delay: 0.5s;"></div>
-                  <div class="foam-bubble" style="left: 50%; width: 20px; height: 20px; animation-delay: 1s;"></div>
-                  <div class="foam-bubble" style="left: 70%; width: 12px; height: 12px; animation-delay: 1.5s;"></div>
-                  <div class="foam-bubble" style="left: 85%; width: 18px; height: 18px; animation-delay: 2s;"></div></div>
-              <div class="foam">
-      
-              </div>    </div>
-         </div>
-         </div>
-         <div class="c-game__story">
-            <h1 class="c-game__title">Welkom in Duitsland</h1>
-            <p class="c-storytext">
-              “Wilkommen in Deutschland! Hier in het land van de biergartens en
-              de Beierse Alpen, waar de mensen net zo hartelijk zijn als de
-              schnitzels groot. <br> <br> Maar het is niet alleen feest en
-              gezelligheid. Er is een duistere kracht aan het werk, die de
-              vrede van het land bedreigt. Alleen door de juiste hartslag te
-              vinden, kun je de balans herstellen en de vrede bewaren.”
-            </p>
-          </div>
-          <div class="c-gamehartslag">
-          </div>
-          <div class="c-gameinfo">
-            <div>
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75"
-                  stroke="#E63946"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625"
-                  stroke="#E63946"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <div class="js-beatroom" data-id="14">
-                <p class="germenbeat">--</p>
-              </div>
-            </div>
-            <button class="c-tipingame js-tip--greece">
-              <svg class="js-tip--greece"
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  class="c-tipingame__svg"
-                  d="M7.21875 18.125H13.7812"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  class="c-tipingame__svg"
-                  d="M6.45596 13.0468C5.67582 12.4663 5.04393 11.7251 4.60775 10.8787C4.17157 10.0324 3.94245 9.10285 3.9376 8.16004C3.91791 4.77254 6.78573 1.95301 10.3418 1.87488C11.7199 1.84309 13.0736 2.22543 14.2107 2.96765C15.3478 3.70986 16.2106 4.77427 16.6767 6.00984C17.1428 7.24541 17.1885 8.5894 16.8074 9.85111C16.4262 11.1128 15.6375 12.2282 14.5533 13.0389C14.3141 13.2155 14.1203 13.4417 13.9866 13.7002C13.8528 13.9588 13.7826 14.2429 13.7814 14.5311V14.9999C13.7814 15.1656 13.7122 15.3246 13.5891 15.4418C13.4661 15.559 13.2991 15.6249 13.1251 15.6249H7.8751C7.70105 15.6249 7.53413 15.559 7.41106 15.4418C7.28799 15.3246 7.21885 15.1656 7.21885 14.9999V14.5311C7.21854 14.2448 7.14966 13.9622 7.01747 13.705C6.88527 13.4478 6.69324 13.2227 6.45596 13.0468Z"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  class="c-tipingame__svg"
-                  d="M11.1562 4.375C12.7969 4.63828 14.1594 5.9375 14.4375 7.5"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="c-modeltip">
-            <div class="c-tipmodel-body">
-                Did you know? Greece is famous for its ancient culture and beautiful islands!
-            </div>
-            <button class="c-tipmodel-close">Close</button>
-        </div>
-        <div class="overlay"></div>
-          <% } %>
         <% if (level === 1) { %>
           <div class="c-game__story">
             <h1 class="c-game__title">Welkom in Griekenland</h1>
@@ -127,75 +21,29 @@
               </div>
             </div>
             <div class="c-gamehartslag">
-            </div>
-          </div>
-          <div class="c-gameinfo">
-            <div>
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75"
-                  stroke="#E63946"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625"
-                  stroke="#E63946"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+              <h2>Behaal de volgende hartslag om door te gaan naar het volgende level</h2>
+              <svg class="c-gamehartslag__svg" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.75 15.9375H8.4375L10.3125 13.125L14.0625 18.75L15.9375 15.9375H18.75" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M2.85107 11.25C3.02404 9.70297 3.76115 8.27398 4.92146 7.23625C6.08177 6.19852 7.58386 5.62487 9.14053 5.625C11.7878 5.625 14.0554 7.06758 14.9999 9.375C15.9444 7.06758 18.212 5.625 20.8593 5.625C22.5376 5.625 24.1472 6.29171 25.3339 7.47846C26.5207 8.66522 27.1874 10.2748 27.1874 11.9531C27.1874 19.6875 14.9999 26.25 14.9999 26.25C14.9999 26.25 10.8562 24.0234 7.40147 20.625" stroke="#E63946" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
-              <p class="js-currentheartbeat">120</p>
-            </div>
-            <button class="c-tipingame js-tip--greece">
-              <svg class="js-tip--greece"
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  class="c-tipingame__svg"
-                  d="M7.21875 18.125H13.7812"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  class="c-tipingame__svg"
-                  d="M6.45596 13.0468C5.67582 12.4663 5.04393 11.7251 4.60775 10.8787C4.17157 10.0324 3.94245 9.10285 3.9376 8.16004C3.91791 4.77254 6.78573 1.95301 10.3418 1.87488C11.7199 1.84309 13.0736 2.22543 14.2107 2.96765C15.3478 3.70986 16.2106 4.77427 16.6767 6.00984C17.1428 7.24541 17.1885 8.5894 16.8074 9.85111C16.4262 11.1128 15.6375 12.2282 14.5533 13.0389C14.3141 13.2155 14.1203 13.4417 13.9866 13.7002C13.8528 13.9588 13.7826 14.2429 13.7814 14.5311V14.9999C13.7814 15.1656 13.7122 15.3246 13.5891 15.4418C13.4661 15.559 13.2991 15.6249 13.1251 15.6249H7.8751C7.70105 15.6249 7.53413 15.559 7.41106 15.4418C7.28799 15.3246 7.21885 15.1656 7.21885 14.9999V14.5311C7.21854 14.2448 7.14966 13.9622 7.01747 13.705C6.88527 13.4478 6.69324 13.2227 6.45596 13.0468Z"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  class="c-tipingame__svg"
-                  d="M11.1562 4.375C12.7969 4.63828 14.1594 5.9375 14.4375 7.5"
-                  stroke="#0A0A0A"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="c-modeltip">
-            <div class="c-tipmodel-body">
-                Did you know? Greece is famous for its ancient culture and beautiful islands!
-            </div>
-            <button class="c-tipmodel-close">Close</button>
-        </div>
+              <h3></h3>
+
         <div class="overlay"></div>      
     <% } %>
+    <% if (level === 2) { %>
+      <div class="c-game__story">
+        <h1 class="c-game__title">Welkom in Rome</h1>
+        <p class="c-storytext">
+          “Je staat in het majestueuze Colosseum, een plek waar ooit gladiatoren vochten onder het gejuich van duizenden. Nu is het stil, behalve het zachte ruisen van de wind door de oude stenen.<br><br>
+          Om de geheime doorgang te vinden, moet je door het doolhof navigeren. Elk pad leidt naar een rekenformule met 3 deuren; maar pas op, alleen één juiste route brengt je naar de uitgang”
+        </p>
+      </div>
+        <div class="c-game c-game--rome">
+        </div>
+
+        <div class="c-gamehartslag">
+        </div>
+
+    <div class="overlay"></div>      
+<% } %>
 <% } %>

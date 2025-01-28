@@ -77,6 +77,29 @@ progressbar.innerHTML = `
 </div>
 <div class="c-gamebalk__progress"></div>`; */
 
+.c-gamehartslag
+{
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+}
+
+.c-gamehartslag svg
+{
+  height: 5rem;
+  width: 5rem;
+}
+
+.c-gamehartslag h3, .c-gamehartslag h2
+{
+  color: var(--text-white);
+}
+
+
 .c-gamebalk
 {
     height: 5rem;
@@ -84,6 +107,7 @@ progressbar.innerHTML = `
     top: 0;
     width: 100%;
 }
+
 
 .c-gamebalk .container
 {
@@ -102,6 +126,23 @@ progressbar.innerHTML = `
     justify-content: center;
     align-items: center;
     background-color: var(--blauw-blauw-accent-70);
+}
+
+.c-gameinfo{
+  height: fit-content;
+    display: flex;
+    gap: var(--spacing-3);
+    align-items: center;
+    flex-direction: column;
+    width: fit-content;
+    bottom: 3rem;
+    top: 0;
+    color: var(--text-white);
+    top: 4rem;
+    position: fixed;
+    background: #00000050;
+    border-radius: var(--radius-l);
+    padding: 1rem;
 }
 
 .c-gamebalk__level h3
@@ -131,6 +172,7 @@ progressbar.innerHTML = `
     align-items: center;
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .c-button:disabled
