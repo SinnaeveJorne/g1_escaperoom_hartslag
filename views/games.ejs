@@ -1,7 +1,49 @@
 <% if (level) { %>
+  <% if (level === 1) { %>
+    <div class="c-game__story js-romegame">
+      <p class="c-storytext ">
+        “Je staat in het majestueuze Colosseum, een plek waar ooit gladiatoren vochten onder het gejuich van duizenden. Nu is het stil, behalve het zachte ruisen van de wind door de oude stenen.<br><br>
+Om de geheime doorgang te vinden, moet je door het doolhof navigeren. Elk pad leidt naar een rekenformule met 3 deuren; maar pas op, alleen één juiste route brengt je naar de uitgang.”
+      </p>
+    </div>
+    <div class="c-game">
+   
+      <div class="c-romequestion js-romegame">
+       <h1 class="text-white">C - X = ?</h1>
+      </div>
+      <ul class="c-romedoor__list">
+       <li class="c-romedoor__item c-romedoor__item--fout"><h2>
+   
+         IX
+       </h2>
+     </li>
+       <li class="c-romedoor__item c-romedoor__item--corect"><h2>
+   
+         XC
+       </h2>
+     </li>
+       <li class="c-romedoor__item"><h2>
+   
+         LX
+       </h2>
+     </li>
+      </ul>
+      <p class="c-romesecondpart o-hidden">De deur blijft gesloten...
+       Stem je ritme af, voel de balans, en laat je hart de sleutel zijn.</p>
+       </div>
+  <div class="c-modeltip">
+        <div class="c-tipmodel-body">
+            Did you know? Greece is famous for its ancient culture and beautiful islands!
+        </div>
+        <button class="c-tipmodel-close">Close</button>
+    </div>
+    <div class="overlay"></div>
+
+    <% } %>
         <% if (level === 2) { %>
           <div class="c-game">
-          <div class="container c-main__game js-duistlandplayfield">
+            <!-- c-main__game -->
+          <div class="container  js-duistlandplayfield">
             <p class="c-storytext text-center">
               vul het bier aan, het begint pas te vullen tussen de gewenste hartslag </p> 
                 </div>
@@ -34,7 +76,7 @@
           </div>
           <div class="c-gamehartslag">
           </div>
-          <div class="c-gameinfo">
+          <!-- <div class="c-gameinfo">
             <div>
               <svg
                 width="30"
@@ -96,7 +138,7 @@
                 />
               </svg>
             </button>
-          </div>
+          </div> -->
           <div class="c-modeltip">
             <div class="c-tipmodel-body">
                 Did you know? Greece is famous for its ancient culture and beautiful islands!
@@ -105,7 +147,7 @@
         </div>
         <div class="overlay"></div>
           <% } %>
-        <% if (level === 1) { %>
+        <% if (level === 3) { %>
           <div class="c-game__story">
             <h1 class="c-game__title">Welkom in Griekenland</h1>
             <p class="c-storytext">
@@ -129,7 +171,7 @@
             <div class="c-gamehartslag">
             </div>
           </div>
-          <div class="c-gameinfo">
+          <!-- <div class="c-gameinfo">
             <div>
               <svg
                 width="30"
@@ -189,7 +231,7 @@
                 />
               </svg>
             </button>
-          </div>
+          </div> -->
           <div class="c-modeltip">
             <div class="c-tipmodel-body">
                 Did you know? Greece is famous for its ancient culture and beautiful islands!
