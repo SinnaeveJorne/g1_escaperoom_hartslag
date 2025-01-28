@@ -1493,12 +1493,25 @@ li.c-romedoor__item > h2{
   transition: width 0.1s linear;
 }
 
+.c-zwiderland__gauge-wrapper {
+  transform: scale(2); 
+  transform-origin: center;
+  display: inline-block;
+  margin-top: -60px;
+}
+
+@media (max-width: 600px) {
+  .c-zwiderland__gauge-wrapper {
+    transform: scale(1.5);
+  }
+}
+
+
 .zwidtimer-label {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
   color: var(--text-white);
-
 }
 .c-zwiderland__gauge {
   position: relative;
