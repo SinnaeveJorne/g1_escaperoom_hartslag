@@ -13,9 +13,7 @@
     left: 0;
     z-index: 0;
 }
-.c-torchbelg{
-   width: 200px;
-}
+
 
 .c-belggameindication{
     display: flex;
@@ -33,3 +31,16 @@
         flex-direction: column-reverse;
     }
 }
+
+.c-torchbelg {
+    width: 200px;
+    opacity: 0.3;
+    transition: opacity 1s ease;
+  }
+
+  #gameImage {
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+ 
