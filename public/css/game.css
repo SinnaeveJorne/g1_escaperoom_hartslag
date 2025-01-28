@@ -70,6 +70,76 @@ margin-top: calc(var(--spacing-6) + 5rem);
     align-items: center;
 }
 
+/* progressbar.classList.add('c-gamebalk');
+progressbar.innerHTML = `
+<div class="c-gamebalk__level">
+  <h3>1</h3>
+</div>
+<div class="c-gamebalk__progress"></div>`; */
+
+.c-gamebalk
+{
+    height: 5rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.c-gamebalk .container
+{
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  height: 100%;
+}
+
+.c-gamebalk__level
+{
+   height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blauw-blauw-accent-70);
+}
+
+.c-gamebalk__level h3
+{
+    color: var(--text-white);
+}
+.c-gamebalk__progress
+{
+  flex:1;
+  height: 1.5rem;
+  background-color: var(--background-background-color);
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.c-gamebalk__progress__bar
+{
+  width: 10%;
+  background-color: var(--blauw-blauw-accent-70);
+  border-radius: 1.25rem;
+  height: 100%;
+}
+
+.c-game__story{
+  width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.c-button:disabled
+{
+  background-color: var(--blauw-blauw-accent-40);
+  color: var(--text-white);
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) 
 {
     .c-greece__playfield {

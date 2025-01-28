@@ -81,7 +81,6 @@ app.use(roomsRoute);
 app.use(roomRoute);
 app.use(leaderbordRoute);
 app.use(gameroute);
-
 app.use(mainRoute);
 
 
@@ -116,4 +115,6 @@ server.listen(port, () => {
   db.query(deleteRoomQuery);
   const deleteGameQuery = 'DELETE FROM gamerooms';
   db.query(deleteGameQuery);
+  const deletelevelsQuery = 'DELETE FROM levels';
+  db.query(deletelevelsQuery);
 });
