@@ -16,6 +16,7 @@
     font-weight: bold;
     position: sticky;
     z-index: 10;
+    top: 0;
 }
 .c-nav__mainside__links__link{
     color: var(--neutral-50) !important;
@@ -118,6 +119,13 @@
 
 .c-menu__popup-menu a:hover {
     background-color: #f5f5f5;
+
+}
+.c-menu__popup-menu a:first-child:hover{
+    border-radius: 8px 8px 0 0;
+}
+.c-menu__popup-menu a:last-child:hover{
+    border-radius: 0 0 8px 8px;
 }
 
 .c-menu__popup-menu--visible {
