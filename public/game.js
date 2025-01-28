@@ -367,6 +367,7 @@ function initStartGameButton() {
         if (socket !== "") {
           socket.emit("heartRate", heartRate);
         }
+        
 
       }
       
