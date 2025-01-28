@@ -1,6 +1,7 @@
 /* Reset styles */
 .titlesprofiels{
     margin-bottom: 3rem;
+    text-align: center;
 
 }
 
@@ -9,7 +10,7 @@
     background-color: var(--neutral-50); 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     font-family: 'Inter', sans-serif;
 }
 
@@ -29,6 +30,7 @@
     flex-direction: column;
     gap: 2rem;
     padding: 1.5rem;
+    margin: 0 auto;
 }
 
 /* Section titles */
@@ -358,6 +360,10 @@
 /* Delete Account page */
 .warning__container{
     padding: 1.5rem;
+    display: flex    ;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
   }
   
   .c-body--verwijderenAccount {
@@ -366,7 +372,6 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: center;
       height: 100vh;
       margin: 0;
       background-color: var(--neutral-50);
