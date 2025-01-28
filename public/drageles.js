@@ -1,6 +1,59 @@
+// Timer constants and elements
+const ftotalTime = 30; // 30 seconds total
+let fcurrentTime = ftotalTime;
+const ftimerBar = document.getElementById("franstimer-bar");
+const ftimerLabel = document.getElementById("franstimer-label");
+const heartratecontainer = document.getElementById("heart-rate-container");
+const textfransopdracht = document.querySelectorAll("textfransopdracht");
+
+// Log elements to ensure they are correctly selected
+console.log(ftimerBar, ftimerLabel);
+
+// Remove hidden class to ensure timer is visible
+ftimerBar.classList.remove('o-hidden');
+ftimerLabel.classList.remove('o-hidden');
+
+// Function to format time as mm:ss
+function fformatTime(fseconds) {
+  const fminutes = Math.floor(fseconds / 60);
+  const fsecs = fseconds % 60;
+  return `${fminutes.toString().padStart(2, "0")}:${fsecs.toString().padStart(2, "0")}`;
+}
+
+// Timer update function
+function fupdateTimer() {
+  // Calculate progress bar width
+  const percentage = (fcurrentTime / ftotalTime) * 100;
+  ftimerBar.style.width = `${percentage}%`;
+
+  // Update timer label
+  ftimerLabel.textContent = fformatTime(fcurrentTime);
+  console.log(`Timer updated: ${ftimerLabel.textContent}`);
+
+  if (fcurrentTime > 0) {
+    fcurrentTime--;
+    setTimeout(fupdateTimer, 1000); // Call the function every second
+  } else {
+    ftimerLabel.textContent = "Time's up!";
+    ftimerBar.style.background = "#ff0000"; // Turn the bar red
+    console.log("Timer finished!");
+    showCongratulations(); // Show the congratulations message
+  }
+}
+
+// Function to display the congratulations message
+function showCongratulations() {
+  const congratsContainer = document.querySelector('.c-congertscontainer');
+  congratsContainer.classList.remove('o-hidden');
+  console.log('Congratulations! Time is up!');
+}
+
+// Draggable rings and drop zones functionality
 const draggables = document.querySelectorAll('.draggable');
 const dropzones = document.querySelectorAll('.dropzone');
+let totalRingsPlaced = 0;
 
+// Make rings draggable
 let currentDraggable = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -62,6 +115,20 @@ draggables.forEach((draggable) => {
         const zoneRect = closestZone.getBoundingClientRect();
         currentDraggable.style.left = `${zoneRect.left}px`;
         currentDraggable.style.top = `${zoneRect.top}px`;
+
+        // Increment the total rings placed
+        totalRingsPlaced++;
+        console.log(`Ring placed correctly. Total placed: ${totalRingsPlaced}`);
+
+        // Check if all rings have been placed
+        if (totalRingsPlaced === 5) {
+          console.log('All rings placed. Starting the timer...');
+          fupdateTimer(); // Start the timer when all rings are placed
+          heartratecontainer.classList.remove('o-hidden');
+          const txtContainer = document.querySelector('.c-container--textfransopdracht');
+          txtContainer.classList.remove('o-hidden');
+        }
+
       } else {
         alert(`Only ${zoneColor} items can be dropped here!`);
         currentDraggable.style.left = '';
@@ -75,40 +142,3 @@ draggables.forEach((draggable) => {
     currentDraggable = null; // Release the current draggable
   });
 });
-
-
-const ftotalTime = 0.5 * 60; // Totale tijd in seconden (30 seconden)
-let fcurrentTime = ftotalTime;
-
-// Elementen selecteren
-const ftimerBar = document.getElementById("franstimer-bar");
-const ftimerLabel = document.getElementById("franstimer-label");
-
-// Functie om de tijd te formatteren als mm:ss
-function fformatTime(fseconds) {
-  const fminutes = Math.floor(fseconds / 60);
-  const fsecs = fseconds % 60;
-  return `${fminutes.toString().padStart(2, "0")}:${fsecs.toString().padStart(2, "0")}`;
-}
-
-// Functie om de timer te updaten
-function fupdateTimer() {
-  // Bereken breedte van de balk
-  const percentage = (fcurrentTime / ftotalTime) * 100;
-  ftimerBar.style.width = `${percentage}%`;
-
-  // Update de tijd onder de balk
-  ftimerLabel.textContent = fformatTime(fcurrentTime);
-
-  // Aftellen
-  if (fcurrentTime > 0) {
-    fcurrentTime--;
-    setTimeout(fupdateTimer, 1000); // Herhaal elke seconde
-  } else {
-    ftimerLabel.textContent = "Time's up!";
-    ftimerBar.style.background = "#ff0000"; // Balk wordt rood
-  }
-}
-
-// Start de timer
-fupdateTimer();
