@@ -19,10 +19,9 @@
         </form></div>
         <div class="container js-rooms c-rooms">
         <% if (rooms && rooms.length > 0) { %>
-          
             <% rooms.forEach(room => { %>
+                <% if (!room.isActive) { %>
                 <div class="c-room">
-                  
                         <div class="c-room__info">
                             <% if(room.password != null) { %>               
                                 <h3 class="c-room__title"><%= room.name %>
@@ -45,8 +44,11 @@
                                 Speel mee
                             </a>
                         <% } %>
+                    
                 </div>
+                <% } %>
                     <% }) %>
+                    
         <% } %>
     </div>
     <!-- <footer class="c-footer pagination" aria-label="Pagination">
