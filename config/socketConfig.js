@@ -54,9 +54,6 @@ module.exports = (server, sessionMiddleware) => {
 
         currentRoom = roomName;
 
-        socket.on('heartRate', heartbeat => {
-          gameNamespace.in(currentRoom).emit('heartRate', {heartbeat: heartbeat, id: userId});
-        });
 
         // Handle reconnection
         if (userSockets.has(userId)) {
@@ -135,6 +132,18 @@ module.exports = (server, sessionMiddleware) => {
       
       });
 
+      socket.on('heartRate', heartbeat => {
+        gameNamespace.in(currentRoom).emit('heartRate', {heartbeat: heartbeat, id: userId});
+        if(socket.request.session.heartbeat){
+          //if heartbeat has a 2 difference with the session heartbeat mission is completed
+          if(socket.request.session.heartbeat - 2 <= heartbeat && socket.request.session.heartbeat + 2 >= heartbeat){
+            console.log('goed gedaan alex');
+            newlevel();
+            socket.request.session.heartbeat = null;
+          }
+        }
+      });
+
       socket.on('startgame', async () => {
         const checkAdminQuery = 'SELECT * FROM gameroom WHERE userId = ? AND isAdmin = 1 AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
         const isAdmin = await db.query(checkAdminQuery, [userId, currentRoom]);
@@ -146,6 +155,27 @@ module.exports = (server, sessionMiddleware) => {
         const setGameLevelto1 = 'UPDATE gameroom SET userLevel = 1 WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
         await db.query(setGameLevelto1, [currentRoom]);
 
+        // id Primary	int(11)			No	None		AUTO_INCREMENT	Change Change	Drop Drop	
+        // 2	roomId	int(11)			No	None			Change Change	Drop Drop	
+        // 3	level	int(11)			No	None			Change Change	Drop Drop	
+        // 4	intensity	int(11)			No	None			Change Change	Drop Drop	
+
+        //insert a random intensity so 10 20 30 40 50 60 70 80 90 those numbers only
+        //then insert 8 levels in the database with the roomid and the intensity
+
+        const insertLevelsQuery = 'INSERT INTO levels (roomId, level, intensity) VALUES (?, ?, ?)';
+        const roomData = await db.query('SELECT * FROM gamerooms WHERE name = ?', [currentRoom]);
+        for(let i = 1; i <= 8; i++){
+          let intensity;
+          do {
+              intensity = Math.floor(Math.random() * 9) * 10;
+          } while (intensity === 0 || intensity === 100);
+          await db.query(insertLevelsQuery, [roomData[0].roomId, i, intensity]);
+      }
+
+      
+
+
         //set room to active
         const setRoomActive = 'UPDATE gamerooms SET isActive = 1 WHERE name = ?';
         await db.query(setRoomActive, [currentRoom]);
@@ -154,10 +184,29 @@ module.exports = (server, sessionMiddleware) => {
       }
       );
 
+      socket.on("missioncompleted", async () => {
+        //set missionCompleted to true
+        const setMissionCompleted = 'UPDATE gameroom SET missionCompleted = 1 WHERE userId = ? and roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+        await db.query(setMissionCompleted, [userId, currentRoom]);
+              const getHeartRateQuery = 'SELECT heartrate FROM user WHERE id = ?';
+              const userHeartRate = await db.query(getHeartRateQuery, [userId]);
+              const heartrate = userHeartRate[0].heartrate;
+              const getIntensityQuery = 'SELECT intensity FROM levels WHERE roomId = (SELECT roomId FROM gamerooms WHERE name = ?) AND level = (SELECT userLevel FROM gameroom WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?))';
+              const intensity = await db.query(getIntensityQuery, [currentRoom, userId, currentRoom]);
+              //calculate the heartrate
+              const age = 30;
+              const HR_rest = heartrate;
+              const HR_max = 220 - age;
+              const doelhartslag = HR_rest + (intensity[0].intensity/100 * (HR_max - HR_rest));
+              socket.emit('missioncompleted', {heartrate: doelhartslag});
+              socket.request.session.heartbeat = doelhartslag;
+      });
 
     async function newlevel(){
-      const setGameLevelto1 = 'UPDATE gameroom SET userLevel = userLevel + 1 where userId = ?';
-      await db.query(setGameLevelto1, [userId]);
+      // const setGameLevelto1 = 'UPDATE gameroom SET userLevel = userLevel + 1 where userId = ?  ';
+      // you also need to set completed to false
+      const setGameLevel = 'UPDATE gameroom SET userLevel = userLevel + 1, missionCompleted = 0 WHERE userId = ? AND roomId = (SELECT roomId FROM gamerooms WHERE name = ?)';
+      await db.query(setGameLevel, [userId, currentRoom]);
       socket.emit('nextlevel');
     }
 

@@ -1,8 +1,10 @@
 <% if (level) { %>
-        <% if (level === 1) { %>
+        <% if (level === 2) { %>
+          <div class="c-game">
           <div class="container c-main__game js-duistlandplayfield">
             <p class="c-storytext text-center">
-              vul het bier aan, het begint pas te vullen tussen de gewenste hartslag </p>     </div>
+              vul het bier aan, het begint pas te vullen tussen de gewenste hartslag </p> 
+                </div>
               <div class="container text-center ">
                 <h1 class="c-white text-center js-range">100-120</h1>
               </div>
@@ -18,6 +20,20 @@
       
               </div>    </div>
          </div>
+         </div>
+         <div class="c-game__story">
+            <h1 class="c-game__title">Welkom in Duitsland</h1>
+            <p class="c-storytext">
+              “Wilkommen in Deutschland! Hier in het land van de biergartens en
+              de Beierse Alpen, waar de mensen net zo hartelijk zijn als de
+              schnitzels groot. <br> <br> Maar het is niet alleen feest en
+              gezelligheid. Er is een duistere kracht aan het werk, die de
+              vrede van het land bedreigt. Alleen door de juiste hartslag te
+              vinden, kun je de balans herstellen en de vrede bewaren.”
+            </p>
+          </div>
+          <div class="c-gamehartslag">
+          </div>
           <div class="c-gameinfo">
             <div>
               <svg
@@ -89,14 +105,13 @@
         </div>
         <div class="overlay"></div>
           <% } %>
-        <% if (level === 2) { %>
-        <div class="container c-game-container">
+        <% if (level === 1) { %>
           <div class="c-game__story">
             <h1 class="c-game__title">Welkom in Griekenland</h1>
             <p class="c-storytext">
               “Ah Griekenlanden, geboorteplaats van de Olympische Spelen! Een land
               doordrenkt van geschiedenis en legendes, waar de geesten van oude goden
-              en helden nog lijken te fluisteren tussen de ruïnes. Het Olympisch vuur
+              en helden nog lijken te fluisteren tussen de ruïnes. <br> <br>Het Olympisch vuur
               is onverwachts gedoofd. Alleen door een eeuwenoud, mysterieus ritueel
               uit te voeren kan de vlam weer tot leven worden gewekt. Jij bent de
               sleutel tot dit herontwaken – De toekomst van het vuur ligt in jouw
@@ -104,9 +119,14 @@
             </p>
           </div>
             <div class="c-game">
-              <h1 class="c-game__title">Vind de juiste icons</h1>
+              <h1 class="c-game__title">Vind de 4 verloren <svg width="72" height="73" viewBox="0 0 72 73">
+                <path d="M63.7151 19.5533L35.9406 69.1687L7.931 19.6857L63.7151 19.5533Z" stroke="white" stroke-width="3"></path>
+                <line x1="24.0536" y1="47.1963" x2="49.3036" y2="47.1963" stroke="white" stroke-width="3"></line>
+              </svg></h1>
               <div class="js-greeceplayfield c-greece__playfield">
               </div>
+            </div>
+            <div class="c-gamehartslag">
             </div>
           </div>
           <div class="c-gameinfo">
